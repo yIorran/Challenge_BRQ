@@ -15,5 +15,5 @@ public interface CategoriaGateway {
 
     CategoriaResponseDomain adicionaCategoria(CategoriaRequestDomain categoriaRequestDomain);
 
-    CategoriaResponseDomain atualizaCategoria(Integer id, CategoriaRequestDomain categoriaRequestDomain);
+    CategoriaResponseDomain atualizaCategoria(CategoriaResponseDomain categoriaResponseDomain);
 }

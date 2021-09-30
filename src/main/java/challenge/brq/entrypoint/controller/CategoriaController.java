@@ -57,7 +57,6 @@ public class CategoriaController {
         CategoriaRequestDomain categoriaIdRequestDomain = CategoriaEntryPointMapperRequest.converter(categoriaModelRequest);
         CategoriaResponseDomain responseDomainId = categoriaUseCase.atualizaCategoria(idCategoria,categoriaIdRequestDomain);
         CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterParaAtualizacao(idCategoria,responseDomainId);
-        return new ResponseEntity<>(categoriaModelResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(categoriaModelResponse, HttpStatus.OK);
     }
-
 }

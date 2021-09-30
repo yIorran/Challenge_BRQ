@@ -32,11 +32,10 @@ public class CategoriaUseCase {
 
     public CategoriaResponseDomain atualizaCategoria(Integer id,CategoriaRequestDomain categoriaRequestDomain){
         CategoriaResponseDomain categoriaAtual = consultarCategoriasPeloId(id);
-        categoriaAtual.builder()
-                .idCategoria(id)
+        categoriaAtual = CategoriaResponseDomain.builder()
+                .idCategoria(categoriaAtual.getIdCategoria())
                 .nomeCategoria(categoriaRequestDomain.getNomeCategoria())
                 .build();
-        return categoriaGateway.atualizaCategoria(id,categoriaRequestDomain);
+        return categoriaGateway.atualizaCategoria(categoriaAtual);
     }
-
 }

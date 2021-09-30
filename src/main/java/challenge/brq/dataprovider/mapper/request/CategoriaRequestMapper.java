@@ -2,6 +2,7 @@ package challenge.brq.dataprovider.mapper.request;
 
 import challenge.brq.dataprovider.entity.CategoriaEntity;
 import challenge.brq.usecase.domain.model.request.CategoriaRequestDomain;
+import challenge.brq.usecase.domain.model.response.CategoriaResponseDomain;
 
 public class CategoriaRequestMapper {
 
@@ -10,11 +11,10 @@ public class CategoriaRequestMapper {
                 .nomeCategoria(categoriaRequestDomain.getNomeCategoria())
                 .build();
     }
-
-    public static CategoriaEntity converterParaAtualizacao(Integer id, CategoriaRequestDomain categoriaRequestDomain) {
+    public static CategoriaEntity converterParaAtualizacao(CategoriaResponseDomain categoriaResponseDomain) {
         return CategoriaEntity.builder()
-                .nomeCategoria(categoriaRequestDomain.getNomeCategoria())
-                .idCategoria(id)
+                .nomeCategoria(categoriaResponseDomain.getNomeCategoria())
+                .idCategoria(categoriaResponseDomain.getIdCategoria())
                 .build();
     }
 }

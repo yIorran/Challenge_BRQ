@@ -46,11 +46,10 @@ public class CategoriaDataProvider implements CategoriaGateway {
     }
 
     @Override
-    public CategoriaResponseDomain atualizaCategoria(Integer id,CategoriaRequestDomain categoriaRequestDomain) {
-        CategoriaEntity categoriaEntity = CategoriaRequestMapper.converterParaAtualizacao(id,categoriaRequestDomain);
-        CategoriaEntity categoriaEntitySalvo = categoriaRepository.findByIdCategoria(id);
-        categoriaRepository.save(categoriaEntity);
-        return CategoriaResponseMapper.converterCategoriaParaAtualizacao(categoriaEntitySalvo.getIdCategoria(),categoriaEntity);
+    public CategoriaResponseDomain atualizaCategoria(CategoriaResponseDomain categoriaResponseDomain) {
+        CategoriaEntity categoriaEntity = CategoriaRequestMapper.converterParaAtualizacao(categoriaResponseDomain);
+        CategoriaEntity categoriaEntitieSalvo = categoriaRepository.save(categoriaEntity);
+        return CategoriaResponseMapper.converterCategoria(categoriaEntitieSalvo);
     }
 
     private Boolean validarCategoriaPeloNome(CategoriaRequestDomain categoriaRequestDomain){
