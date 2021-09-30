@@ -18,10 +18,17 @@ public class CategoriaResponseMapper {
         return categoriaResponseDomains;
     }
 
-    public static CategoriaResponseDomain converterCategoria(CategoriaEntity categoria){
+    public static CategoriaResponseDomain converterCategoria(CategoriaEntity categoriaEntity){
         return CategoriaResponseDomain.builder()
-                .idCategoria(categoria.getIdCategoria())
-                .nomeCategoria(categoria.getNomeCategoria())
+                .idCategoria(categoriaEntity.getIdCategoria())
+                .nomeCategoria(categoriaEntity.getNomeCategoria())
+                .build();
+    }
+
+    public static CategoriaResponseDomain converterCategoriaParaAtualizacao(Integer id, CategoriaEntity categoriaEntity){
+        return CategoriaResponseDomain.builder()
+                .idCategoria(id)
+                .nomeCategoria(categoriaEntity.getNomeCategoria())
                 .build();
     }
 

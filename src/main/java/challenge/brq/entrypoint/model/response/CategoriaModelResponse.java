@@ -1,4 +1,4 @@
-package challenge.brq.entrypoint.mode.response;
+package challenge.brq.entrypoint.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -12,9 +12,10 @@ import lombok.ToString;
 @ToString
 public class CategoriaModelResponse {
 
-    @JsonProperty(value = "nome_categoria")
-    private String nomeCategoria;
-    @JsonProperty(value = "id_categoria")
+
+    @JsonProperty("id")
     private Integer idCategoria;
+    @JsonProperty("nome")
+    private String nomeCategoria;
 
 }

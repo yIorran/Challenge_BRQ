@@ -1,6 +1,6 @@
 package challenge.brq.entrypoint.mapper.response;
 
-import challenge.brq.entrypoint.mode.response.ProdutoModelResponse;
+import challenge.brq.entrypoint.model.response.ProdutoModelResponse;
 import challenge.brq.usecase.domain.model.response.ProdutoResponseDomain;
 
 import java.util.ArrayList;

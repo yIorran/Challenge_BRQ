@@ -12,5 +12,5 @@ public interface CategoriaRepository extends JpaRepository<CategoriaEntity, Inte
 
     CategoriaEntity findByNomeCategoriaIgnoreCase(String categoriaEntity);
 
-    List <CategoriaEntity> findByIdCategoria(Integer IdCategoria);
+    CategoriaEntity findByIdCategoria(Integer IdCategoria);
 }

@@ -2,7 +2,7 @@ package challenge.brq.entrypoint.controller;
 
 import challenge.brq.entrypoint.mapper.request.ProdutoEntryPointMapperRequest;
 import challenge.brq.entrypoint.mapper.response.ProdutoEntryPointMapperResponse;
-import challenge.brq.entrypoint.mode.response.ProdutoModelResponse;
+import challenge.brq.entrypoint.model.response.ProdutoModelResponse;
 import challenge.brq.usecase.ProdutoUseCase;
 import challenge.brq.usecase.domain.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.domain.model.response.ProdutoResponseDomain;

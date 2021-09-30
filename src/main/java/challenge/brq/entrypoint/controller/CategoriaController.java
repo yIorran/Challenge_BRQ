@@ -1,10 +1,14 @@
 package challenge.brq.entrypoint.controller;
 
+import challenge.brq.entrypoint.mapper.request.CategoriaEntryPointMapperRequest;
 import challenge.brq.entrypoint.mapper.response.CategoriaEntryPointMapperResponse;
-import challenge.brq.entrypoint.mode.response.CategoriaModelResponse;
+import challenge.brq.entrypoint.model.request.CategoriaModelRequest;
+import challenge.brq.entrypoint.model.response.CategoriaModelResponse;
 import challenge.brq.usecase.CategoriaUseCase;
+import challenge.brq.usecase.domain.model.request.CategoriaRequestDomain;
 import challenge.brq.usecase.domain.model.response.CategoriaResponseDomain;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +22,7 @@ public class CategoriaController {
     private CategoriaUseCase categoriaUseCase;
 
     @GetMapping
-    public ResponseEntity<List<CategoriaModelResponse>> listarCategorias(){
+    public ResponseEntity<Object> listarCategorias(){
         List<CategoriaResponseDomain> categoriasModel = categoriaUseCase.consultarCategorias();
         if(categoriasModel.isEmpty()){
             return ResponseEntity.noContent().build();
@@ -28,23 +32,32 @@ public class CategoriaController {
     }
 
     @GetMapping("{idCategoria}")
-    public ResponseEntity<CategoriaModelResponse> listarCategorias(@PathVariable Integer idCategoria){
+    public ResponseEntity<Object> listarCategorias(@PathVariable Integer idCategoria){
         CategoriaResponseDomain categoriasModel = categoriaUseCase.consultarCategoriasPeloId(idCategoria);
-        CategoriaModelResponse dataModelResponse = CategoriaEntryPointMapperResponse.converterCategoria(categoriasModel);
-        return ResponseEntity.ok(dataModelResponse);
+        CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterCategoria(categoriasModel);
+        return ResponseEntity.ok(categoriaModelResponse);
     }
-
-
 
     @DeleteMapping("{idCategoria}")
     public ResponseEntity<Object> excluiCategoriaPeloIdExplicit(@PathVariable Integer idCategoria){
-        excluiCategoriaPeloId(idCategoria);
+        categoriaUseCase.excluiCategoriaPeloId(idCategoria);
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping
+    public ResponseEntity<CategoriaModelResponse> adicionaCategoria(@RequestBody CategoriaModelRequest categoriaModelRequest){
+        CategoriaRequestDomain categoriaRequestDomain = CategoriaEntryPointMapperRequest.converter(categoriaModelRequest);
+         CategoriaResponseDomain categoriaResponseDomain = categoriaUseCase.adicionaCategoria(categoriaRequestDomain);
+        CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterCategoria(categoriaResponseDomain);
+        return new ResponseEntity<>(categoriaModelResponse, HttpStatus.CREATED);
+    }
 
-    public void excluiCategoriaPeloId(Integer idCategoria) {
-        categoriaUseCase.excluiCategoriaPeloId(idCategoria);
+    @PutMapping("{idCategoria}")
+    public ResponseEntity<CategoriaModelResponse> atualizaCategoria(@PathVariable Integer idCategoria,@RequestBody CategoriaModelRequest categoriaModelRequest){
+        CategoriaRequestDomain categoriaIdRequestDomain = CategoriaEntryPointMapperRequest.converter(categoriaModelRequest);
+        CategoriaResponseDomain responseDomainId = categoriaUseCase.atualizaCategoria(idCategoria,categoriaIdRequestDomain);
+        CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterParaAtualizacao(idCategoria,responseDomainId);
+        return new ResponseEntity<>(categoriaModelResponse, HttpStatus.CREATED);
     }
 
 }

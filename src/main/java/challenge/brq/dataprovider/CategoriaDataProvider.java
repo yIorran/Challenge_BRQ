@@ -1,6 +1,7 @@
 package challenge.brq.dataprovider;
 
 import challenge.brq.dataprovider.entity.CategoriaEntity;
+import challenge.brq.dataprovider.mapper.request.CategoriaRequestMapper;
 import challenge.brq.dataprovider.mapper.response.CategoriaResponseMapper;
 import challenge.brq.dataprovider.repository.CategoriaRepository;
 import challenge.brq.usecase.domain.model.request.CategoriaRequestDomain;
@@ -21,7 +22,7 @@ public class CategoriaDataProvider implements CategoriaGateway {
     private CategoriaRepository categoriaRepository;
 
     @Override
-    public List<CategoriaResponseDomain> consultarCategoriaPeloNome() {
+    public List<CategoriaResponseDomain> consultarCategoria() {
         List<CategoriaEntity> categoriaEntity = categoriaRepository.findAll();
         return CategoriaResponseMapper.converter(categoriaEntity);
     }
@@ -37,6 +38,21 @@ public class CategoriaDataProvider implements CategoriaGateway {
         categoriaRepository.deleteById(idCategoria);
     }
 
+    @Override
+    public CategoriaResponseDomain adicionaCategoria(CategoriaRequestDomain categoriaRequestDomain) {
+        CategoriaEntity categoriaEntity = CategoriaRequestMapper.converter(categoriaRequestDomain);
+        CategoriaEntity categoriaEntitySalvo = categoriaRepository.save(categoriaEntity);
+        return CategoriaResponseMapper.converterCategoria(categoriaEntitySalvo);
+    }
+
+    @Override
+    public CategoriaResponseDomain atualizaCategoria(Integer id,CategoriaRequestDomain categoriaRequestDomain) {
+        CategoriaEntity categoriaEntity = CategoriaRequestMapper.converterParaAtualizacao(id,categoriaRequestDomain);
+        CategoriaEntity categoriaEntitySalvo = categoriaRepository.findByIdCategoria(id);
+        categoriaRepository.save(categoriaEntity);
+        return CategoriaResponseMapper.converterCategoriaParaAtualizacao(categoriaEntitySalvo.getIdCategoria(),categoriaEntity);
+    }
+
     private Boolean validarCategoriaPeloNome(CategoriaRequestDomain categoriaRequestDomain){
         CategoriaEntity tipo = categoriaRepository.findByNomeCategoriaIgnoreCase(categoriaRequestDomain.getNomeCategoria());
         if(tipo == null){
@@ -45,11 +61,4 @@ public class CategoriaDataProvider implements CategoriaGateway {
         return tipo.getNomeCategoria().equalsIgnoreCase(categoriaRequestDomain.getNomeCategoria());
     }
 
-    private Boolean validarCategoriaPeloId(CategoriaRequestDomain categoriaRequestDomain){
-        List <CategoriaEntity> tipo = categoriaRepository.findByIdCategoria(categoriaRequestDomain.getIdCategoria());
-        if(tipo == null){
-            return false;
-        }
-        return true;
-    }
 }

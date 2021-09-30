@@ -1,6 +1,6 @@
 package challenge.brq.entrypoint.mapper.response;
 
-import challenge.brq.entrypoint.mode.response.CategoriaModelResponse;
+import challenge.brq.entrypoint.model.response.CategoriaModelResponse;
 import challenge.brq.usecase.domain.model.response.CategoriaResponseDomain;
 
 import java.util.ArrayList;
@@ -20,6 +20,13 @@ public class CategoriaEntryPointMapperResponse {
     public static CategoriaModelResponse converterCategoria(CategoriaResponseDomain categoriaResponseDomain){
         return CategoriaModelResponse.builder()
                 .idCategoria(categoriaResponseDomain.getIdCategoria())
+                .nomeCategoria(categoriaResponseDomain.getNomeCategoria())
+                .build();
+    }
+
+    public static CategoriaModelResponse converterParaAtualizacao(Integer id, CategoriaResponseDomain categoriaResponseDomain){
+        return CategoriaModelResponse.builder()
+                .idCategoria(id)
                 .nomeCategoria(categoriaResponseDomain.getNomeCategoria())
                 .build();
     }

@@ -1,4 +1,4 @@
-package challenge.brq.entrypoint.mode.response;
+package challenge.brq.entrypoint.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
