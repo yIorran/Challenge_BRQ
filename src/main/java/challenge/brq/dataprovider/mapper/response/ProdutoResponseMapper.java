@@ -19,10 +19,18 @@ public class ProdutoResponseMapper {
         return produtosResponseDomain;
     }
 
-    private static ProdutoResponseDomain converterProduto(ProdutoEntity produtoEntity){
+    public static ProdutoResponseDomain converterProduto(ProdutoEntity produtoEntity){
         return ProdutoResponseDomain.builder()
                 .codigoProduto(produtoEntity.getCodigoProduto())
-                .nomeProduto(produtoEntity.getNomeProduto()).build();
+                .nomeProduto(produtoEntity.getNomeProduto())
+                .descricaoProduto(produtoEntity.getDescricaoProduto())
+                .marcaProduto(produtoEntity.getMarcaProduto())
+                .quantidadeProduto(produtoEntity.getQuantidadeProduto())
+                .precoProduto(produtoEntity.getPrecoProduto())
+                .produtoAtivo(true)
+                .produtoOfertado(false)
+                .porcentagem(0)
+                .build();
     }
 
 }

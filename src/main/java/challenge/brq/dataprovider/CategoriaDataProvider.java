@@ -52,6 +52,7 @@ public class CategoriaDataProvider implements CategoriaGateway {
         return CategoriaResponseMapper.converterCategoria(categoriaEntitieSalvo);
     }
 
+
     private Boolean validarCategoriaPeloNome(CategoriaRequestDomain categoriaRequestDomain){
         CategoriaEntity tipo = categoriaRepository.findByNomeCategoriaIgnoreCase(categoriaRequestDomain.getNomeCategoria());
         if(tipo == null){

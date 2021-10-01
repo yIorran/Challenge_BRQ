@@ -1,8 +1,12 @@
 package challenge.brq.dataprovider.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Builder
 @Getter
@@ -19,5 +23,8 @@ public class CategoriaEntity {
 
     @Column(name = "NOME_CATEGORIA_PRODUTO")
     private String nomeCategoria;
+
+    @OneToMany(mappedBy = "categoriaProduto")
+    private List<ProdutoEntity> produtos;
 
 }

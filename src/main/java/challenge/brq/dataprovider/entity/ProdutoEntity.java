@@ -37,10 +37,13 @@ public class ProdutoEntity {
     private Boolean produtoOfertado;
 
     @Column(name = "PORCENT_OFERTA_PROD")
-    private Integer porcentagem_oferta;
+    private Integer porcentagemoferta;
+
+    @Column(name = "MARCA_PRODUTO")
+    private String marcaProduto;
 
     @ManyToOne
-    @JoinColumn(name = "NOME_CATEGORIA_PRODUTO")
+    @JoinColumn(name = "ID_CATEGORIA_PRODUTO")
     private CategoriaEntity categoriaProduto;
 
 }

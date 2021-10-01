@@ -11,13 +11,22 @@ public class ProdutoEntryPointMapperResponse {
     public static List<ProdutoModelResponse> converter
             (List<ProdutoResponseDomain> produtosResponseDomain){
         List<ProdutoModelResponse> produtosModelResponse = new ArrayList<>();
-        produtosResponseDomain.forEach(produtoResponseDomain -> {ProdutoModelResponse produtoModelResponse = converterProduto(produtoResponseDomain);});
-
+        produtosResponseDomain.forEach(produtoResponseDomain -> {ProdutoModelResponse produtoModelResponse = converterProduto(produtoResponseDomain);
+        produtosModelResponse.add(produtoModelResponse);
+        });
         return produtosModelResponse;
     }
 
-    private static ProdutoModelResponse converterProduto(ProdutoResponseDomain produtoResponseDomain){
+    public static ProdutoModelResponse converterProduto(ProdutoResponseDomain produtoResponseDomain){
         return ProdutoModelResponse.builder().codigoProduto(produtoResponseDomain.getCodigoProduto())
-                .nomeProduto(produtoResponseDomain.getNomeProduto()).build();
+                .nomeProduto(produtoResponseDomain.getNomeProduto())
+                .descricaoProduto(produtoResponseDomain.getDescricaoProduto())
+                .marcaProduto(produtoResponseDomain.getMarcaProduto())
+                .quantidadeProduto(produtoResponseDomain.getQuantidadeProduto())
+                .precoProduto(produtoResponseDomain.getPrecoProduto())
+                .produtoAtivo(true)
+                .produtoOfertado(false)
+                .porcentagem(0)
+                .build();
     }
 }

@@ -41,7 +41,7 @@ public class CategoriaController {
     @DeleteMapping("{idCategoria}")
     public ResponseEntity<Object> excluiCategoriaPeloIdExplicit(@PathVariable Integer idCategoria){
         categoriaUseCase.excluiCategoriaPeloId(idCategoria);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping

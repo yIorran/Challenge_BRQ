@@ -14,8 +14,20 @@ public class ProdutoUseCase {
 
     private final ProdutoGateway produtoGateway;
 
-    public List<ProdutoResponseDomain> consultarProdutos(ProdutoRequestDomain produtoRequestDomain){
-        return produtoGateway.consultarProdutos(produtoRequestDomain);
+    public List<ProdutoResponseDomain> consultarProdutos(){
+        return produtoGateway.consultarProdutos();
+    }
+
+    public ProdutoResponseDomain adicionaProdutos(ProdutoRequestDomain produtoRequestDomain){
+        return produtoGateway.adicionaProdutos(produtoRequestDomain);
+    }
+
+    public void excluiProdutoPeloId(Integer idCategoria){
+        produtoGateway.excluirProdutosPeloId(idCategoria);
+    }
+
+    public ProdutoResponseDomain consultarProdutosPeloId(Integer idProduto){
+        return produtoGateway.consultarProdutosPeloId(idProduto);
     }
 
 }
