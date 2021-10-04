@@ -14,4 +14,6 @@ public interface ProdutoGateway {
     ProdutoResponseDomain adicionaProdutos(ProdutoRequestDomain produtoRequestDomain);
 
     void excluirProdutosPeloId(Integer idProduto);
+
+    List<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca);
 }

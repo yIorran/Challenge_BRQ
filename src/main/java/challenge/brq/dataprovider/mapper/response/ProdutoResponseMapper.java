@@ -33,4 +33,18 @@ public class ProdutoResponseMapper {
                 .build();
     }
 
+    public static ProdutoResponseDomain converterProdutoParaBusca(ProdutoEntity produtoEntity, String marca){
+        return ProdutoResponseDomain.builder()
+                .codigoProduto(produtoEntity.getCodigoProduto())
+                .nomeProduto(produtoEntity.getNomeProduto())
+                .descricaoProduto(produtoEntity.getDescricaoProduto())
+                .marcaProduto(marca)
+                .quantidadeProduto(produtoEntity.getQuantidadeProduto())
+                .precoProduto(produtoEntity.getPrecoProduto())
+                .produtoAtivo(true)
+                .produtoOfertado(false)
+                .porcentagem(0)
+                .build();
+    }
+
 }

@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 public interface ProdutoRepository extends JpaRepository<ProdutoEntity, Integer> {
 
-    ProdutoEntity findByMarcaProduto(String marca);
+    List<ProdutoEntity> findByMarcaProdutoContaining(String marca);
 
 }

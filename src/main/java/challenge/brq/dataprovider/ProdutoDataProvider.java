@@ -43,11 +43,17 @@ public class ProdutoDataProvider implements ProdutoGateway {
         produtoRepository.deleteById(idProduto);
     }
 
+    @Override
+    public List<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca) {
+        List<ProdutoEntity> produtoEntity = produtoRepository.findByMarcaProdutoContaining(marca);
+        return ProdutoResponseMapper.converter(produtoEntity);
+    }
+
     private Boolean validarProduto(ProdutoRequestDomain produtoRequestDomain){
-        ProdutoEntity produtoEntity = produtoRepository.findByMarcaProduto(produtoRequestDomain.getMarcaProduto());
+        List<ProdutoEntity> produtoEntity = produtoRepository.findByMarcaProdutoContaining(produtoRequestDomain.getMarcaProduto());
         if (produtoEntity == null){
             return false;
         }
-        return produtoEntity.getMarcaProduto().equalsIgnoreCase(produtoRequestDomain.getMarcaProduto());
+        return true;
     }
 }

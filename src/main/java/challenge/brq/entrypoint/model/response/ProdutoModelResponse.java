@@ -6,6 +6,8 @@ import lombok.*;
 @Getter
 @Builder
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 public class ProdutoModelResponse {
 

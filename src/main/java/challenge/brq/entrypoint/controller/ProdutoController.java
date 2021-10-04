@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/produtos")
@@ -29,10 +30,10 @@ public class ProdutoController {
     private ProdutoUseCase produtoUseCase;
 
     @GetMapping
-    public ResponseEntity<List<ProdutoModelResponse>> listarProdutos(){
-        List<ProdutoResponseDomain> produtosModel = produtoUseCase.consultarProdutos();
-        if(produtosModel.isEmpty()){
-            return ResponseEntity.noContent().build();
+    public ResponseEntity<List<ProdutoModelResponse>> listarProdutosPelaMarca(@RequestParam(required = false) String marca){
+        List<ProdutoResponseDomain> produtosModel = produtoUseCase.consultarProdutosPelaMarca(marca);
+        if (produtosModel.isEmpty()) {
+        produtosModel = produtoUseCase.consultarProdutos();
         }
         List<ProdutoModelResponse> dataModelResponse = ProdutoEntryPointMapperResponse.converter(produtosModel);
         return ResponseEntity.ok(dataModelResponse);
@@ -59,3 +60,5 @@ public class ProdutoController {
         return ResponseEntity.ok().build();
     }
 }
+
+

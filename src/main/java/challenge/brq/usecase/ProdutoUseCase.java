@@ -30,4 +30,8 @@ public class ProdutoUseCase {
         return produtoGateway.consultarProdutosPeloId(idProduto);
     }
 
+    public List<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca){
+        return produtoGateway.consultarProdutosPelaMarca(marca);
+    }
+
 }
