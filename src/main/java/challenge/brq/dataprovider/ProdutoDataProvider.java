@@ -49,6 +49,14 @@ public class ProdutoDataProvider implements ProdutoGateway {
         return ProdutoResponseMapper.converter(produtoEntity);
     }
 
+    @Override
+    public ProdutoResponseDomain atualizaProdutos(ProdutoResponseDomain produtoResponseDomain) {
+        ProdutoEntity produtoEntity = ProdutoRequestMapper.converterParaAtualizacao(produtoResponseDomain);
+        ProdutoEntity produtoEntitySalvo = produtoRepository.save(produtoEntity);
+        return ProdutoResponseMapper.converterProdutoParaAtualizacao(produtoEntitySalvo);
+    }
+
+
     private Boolean validarProduto(ProdutoRequestDomain produtoRequestDomain){
         List<ProdutoEntity> produtoEntity = produtoRepository.findByMarcaProdutoContaining(produtoRequestDomain.getMarcaProduto());
         if (produtoEntity == null){

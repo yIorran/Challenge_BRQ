@@ -59,6 +59,15 @@ public class ProdutoController {
         produtoUseCase.excluiProdutoPeloId(idProduto);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("{idProduto}")
+    public ResponseEntity<ProdutoModelResponse> atualizarProdutos(@PathVariable Integer idProduto,@RequestBody ProdutoModelRequest produtoModelRequest){
+        ProdutoRequestDomain produtoRequestDomain = ProdutoEntryPointMapperRequest.converter(produtoModelRequest);
+        ProdutoResponseDomain produtoResponseDomain = produtoUseCase.atualizarProdutos(idProduto,produtoRequestDomain);
+        ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterParaAtualizacao(idProduto,produtoResponseDomain);
+        return new ResponseEntity<>(produtoModelResponse, HttpStatus.OK);
+    }
+
 }
 
 

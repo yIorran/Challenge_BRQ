@@ -6,14 +6,16 @@ import challenge.brq.usecase.domain.model.request.ProdutoRequestDomain;
 public class ProdutoEntryPointMapperRequest {
 
     public static ProdutoRequestDomain converter(ProdutoModelRequest produtoModelRequest){
-        return ProdutoRequestDomain.builder().nomeProduto(produtoModelRequest.getNome())
+        return ProdutoRequestDomain.builder()
+                .codigoProduto(produtoModelRequest.getIdProduto())
+                .nomeProduto(produtoModelRequest.getNome())
                 .descricaoProduto(produtoModelRequest.getDescricao())
                 .marcaProduto(produtoModelRequest.getMarca())
                 .quantidadeProduto(produtoModelRequest.getQuantidade())
                 .precoProduto(produtoModelRequest.getPreco())
-                .produtoAtivo(true)
-                .produtoOfertado(false)
-                .porcentagem(0)
+                .produtoAtivo(produtoModelRequest.getAtivo())
+                .produtoOfertado(produtoModelRequest.getOfertado())
+                .porcentagem(produtoModelRequest.getPorcentagem())
                 .build();
     }
 

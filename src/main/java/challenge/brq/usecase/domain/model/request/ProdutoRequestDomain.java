@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 public class ProdutoRequestDomain {
 
+    private Integer codigoProduto;
     private String nomeProduto;
     private String descricaoProduto;
     private String marcaProduto;

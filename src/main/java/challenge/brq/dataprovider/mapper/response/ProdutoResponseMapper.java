@@ -5,6 +5,7 @@ import challenge.brq.usecase.domain.model.response.ProdutoResponseDomain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ProdutoResponseMapper {
 
@@ -30,6 +31,21 @@ public class ProdutoResponseMapper {
                 .produtoAtivo(true)
                 .produtoOfertado(false)
                 .porcentagem(0)
+                .build();
+    }
+
+
+    public static ProdutoResponseDomain converterProdutoParaAtualizacao(ProdutoEntity produtoEntity){
+        return ProdutoResponseDomain.builder()
+                .codigoProduto(produtoEntity.getCodigoProduto())
+                .nomeProduto(produtoEntity.getNomeProduto())
+                .descricaoProduto(produtoEntity.getDescricaoProduto())
+                .marcaProduto(produtoEntity.getMarcaProduto())
+                .quantidadeProduto(produtoEntity.getQuantidadeProduto())
+                .precoProduto(produtoEntity.getPrecoProduto())
+                .produtoAtivo(produtoEntity.getProdutoAtivo())
+                .produtoOfertado(produtoEntity.getProdutoOfertado())
+                .porcentagem(produtoEntity.getPorcentagemoferta())
                 .build();
     }
 

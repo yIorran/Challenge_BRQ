@@ -11,11 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProdutoModelRequest {
 
+    private Integer idProduto;
     private String nome;
     private String descricao;
     private String marca;
     private Integer quantidade;
     private Double preco;
+    private Boolean ativo;
+    private Boolean ofertado;
     private Integer porcentagem;
+
 
 }

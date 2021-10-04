@@ -24,9 +24,23 @@ public class ProdutoEntryPointMapperResponse {
                 .marcaProduto(produtoResponseDomain.getMarcaProduto())
                 .quantidadeProduto(produtoResponseDomain.getQuantidadeProduto())
                 .precoProduto(produtoResponseDomain.getPrecoProduto())
-                .produtoAtivo(true)
-                .produtoOfertado(false)
+                .ativo(true)
+                .ofertado(false)
                 .porcentagem(0)
+                .build();
+    }
+
+    public static ProdutoModelResponse converterParaAtualizacao(Integer id, ProdutoResponseDomain produtoResponseDomain){
+        return ProdutoModelResponse.builder()
+                .codigoProduto(id)
+                .nomeProduto(produtoResponseDomain.getNomeProduto())
+                .descricaoProduto(produtoResponseDomain.getDescricaoProduto())
+                .marcaProduto(produtoResponseDomain.getMarcaProduto())
+                .quantidadeProduto(produtoResponseDomain.getQuantidadeProduto())
+                .precoProduto(produtoResponseDomain.getPrecoProduto())
+                .ativo(produtoResponseDomain.getProdutoAtivo())
+                .ofertado(produtoResponseDomain.getProdutoOfertado())
+                .porcentagem(produtoResponseDomain.getPorcentagem())
                 .build();
     }
 }

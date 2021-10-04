@@ -34,4 +34,19 @@ public class ProdutoUseCase {
         return produtoGateway.consultarProdutosPelaMarca(marca);
     }
 
+    public ProdutoResponseDomain atualizarProdutos(Integer id, ProdutoRequestDomain produtoRequestDomain){
+        ProdutoResponseDomain categoriaAtual = consultarProdutosPeloId(id);
+        categoriaAtual = ProdutoResponseDomain.builder()
+                .codigoProduto(categoriaAtual.getCodigoProduto())
+                .nomeProduto(produtoRequestDomain.getNomeProduto())
+                .descricaoProduto(produtoRequestDomain.getDescricaoProduto())
+                .marcaProduto(produtoRequestDomain.getMarcaProduto())
+                .quantidadeProduto(produtoRequestDomain.getQuantidadeProduto())
+                .precoProduto(produtoRequestDomain.getPrecoProduto())
+                .produtoAtivo(produtoRequestDomain.getProdutoAtivo())
+                .produtoOfertado(produtoRequestDomain.getProdutoOfertado())
+                .porcentagem(produtoRequestDomain.getPorcentagem())
+                .build();
+        return produtoGateway.atualizaProdutos(categoriaAtual);
+    }
 }

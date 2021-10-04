@@ -24,9 +24,9 @@ public class ProdutoModelResponse {
     @JsonProperty(value = "preco")
     private Double precoProduto;
     @JsonProperty(value = "ativo")
-    private Boolean produtoAtivo;
+    private Boolean ativo;
     @JsonProperty(value = "ofertado")
-    private Boolean produtoOfertado;
+    private Boolean ofertado;
     @JsonProperty(value = "porcentagem")
     private Integer porcentagem;
 
