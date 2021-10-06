@@ -1,5 +1,6 @@
 package challenge.brq.entrypoint.model.response;
 
+import challenge.brq.dataprovider.entity.CategoriaEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -12,22 +13,24 @@ import lombok.*;
 public class ProdutoModelResponse {
 
     @JsonProperty(value = "id")
-    private Integer codigoProduto;
+    private Integer idProduto;
     @JsonProperty(value = "nome")
-    private String nomeProduto;
+    private String nome;
     @JsonProperty(value = "descricao")
-    private String descricaoProduto;
+    private String descricao;
     @JsonProperty(value = "marca")
-    private String marcaProduto;
+    private String marca;
     @JsonProperty(value = "quantidade")
-    private Integer quantidadeProduto;
+    private Integer quantidade;
     @JsonProperty(value = "preco")
-    private Double precoProduto;
+    private Double preco;
     @JsonProperty(value = "ativo")
     private Boolean ativo;
     @JsonProperty(value = "ofertado")
     private Boolean ofertado;
     @JsonProperty(value = "porcentagem")
     private Integer porcentagem;
+    @JsonProperty(value = "categoria")
+    private CategoriaEntity categoria;
 
 }

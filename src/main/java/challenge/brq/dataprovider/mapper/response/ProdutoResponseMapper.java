@@ -28,9 +28,9 @@ public class ProdutoResponseMapper {
                 .marcaProduto(produtoEntity.getMarcaProduto())
                 .quantidadeProduto(produtoEntity.getQuantidadeProduto())
                 .precoProduto(produtoEntity.getPrecoProduto())
-                .produtoAtivo(true)
-                .produtoOfertado(false)
-                .porcentagem(0)
+                .produtoAtivo(produtoEntity.getProdutoAtivo())
+                .produtoOfertado(produtoEntity.getProdutoOfertado())
+                .porcentagem(produtoEntity.getPorcentagemoferta())
                 .build();
     }
 

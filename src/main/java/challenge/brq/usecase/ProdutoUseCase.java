@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -30,14 +31,14 @@ public class ProdutoUseCase {
         return produtoGateway.consultarProdutosPeloId(idProduto);
     }
 
-    public List<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca){
+    public List<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca) {
         return produtoGateway.consultarProdutosPelaMarca(marca);
     }
 
     public ProdutoResponseDomain atualizarProdutos(Integer id, ProdutoRequestDomain produtoRequestDomain){
-        ProdutoResponseDomain categoriaAtual = consultarProdutosPeloId(id);
-        categoriaAtual = ProdutoResponseDomain.builder()
-                .codigoProduto(categoriaAtual.getCodigoProduto())
+        ProdutoResponseDomain produtoAtual = consultarProdutosPeloId(id);;
+        produtoAtual = ProdutoResponseDomain.builder()
+                .codigoProduto(produtoAtual.getCodigoProduto())
                 .nomeProduto(produtoRequestDomain.getNomeProduto())
                 .descricaoProduto(produtoRequestDomain.getDescricaoProduto())
                 .marcaProduto(produtoRequestDomain.getMarcaProduto())
@@ -47,6 +48,26 @@ public class ProdutoUseCase {
                 .produtoOfertado(produtoRequestDomain.getProdutoOfertado())
                 .porcentagem(produtoRequestDomain.getPorcentagem())
                 .build();
-        return produtoGateway.atualizaProdutos(categoriaAtual);
+        return produtoGateway.atualizaProdutos(produtoAtual);
     }
-}
+
+    public ProdutoResponseDomain atualizarProdutosParcial(Integer id, ProdutoRequestDomain produtoRequestDomain) {
+        ProdutoResponseDomain produtoAtual = consultarProdutosPeloId(id);
+        produtoAtual = ProdutoResponseDomain.builder()
+                .codigoProduto(produtoAtual.getCodigoProduto())
+                .nomeProduto(produtoRequestDomain.getNomeProduto() == null ? produtoAtual.getNomeProduto() : produtoRequestDomain.getNomeProduto())
+                .descricaoProduto(produtoRequestDomain.getDescricaoProduto() == null ? produtoAtual.getDescricaoProduto() : produtoRequestDomain.getDescricaoProduto())
+                .marcaProduto(produtoRequestDomain.getMarcaProduto() == null ? produtoAtual.getMarcaProduto() : produtoRequestDomain.getMarcaProduto())
+                .quantidadeProduto(produtoRequestDomain.getQuantidadeProduto() == null ? produtoAtual.getQuantidadeProduto() : produtoRequestDomain.getQuantidadeProduto())
+                .precoProduto(produtoRequestDomain.getPrecoProduto() == null ? produtoAtual.getPrecoProduto() : produtoRequestDomain.getPrecoProduto())
+                .produtoAtivo(produtoRequestDomain.getProdutoAtivo() == null ? produtoAtual.getProdutoAtivo() : produtoRequestDomain.getProdutoAtivo())
+                .produtoOfertado(produtoRequestDomain.getProdutoOfertado() == null ? produtoAtual.getProdutoOfertado() : produtoRequestDomain.getProdutoOfertado())
+                .porcentagem(produtoRequestDomain.getPorcentagem() == null ? produtoAtual.getPorcentagem() : produtoRequestDomain.getPorcentagem())
+                .build();
+        return produtoGateway.atualizaProdutos(produtoAtual);
+    }
+
+
+
+    }
+

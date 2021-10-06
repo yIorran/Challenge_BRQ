@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
+
+
 @AllArgsConstructor
 @Component
 public class ProdutoDataProvider implements ProdutoGateway {
@@ -56,12 +58,10 @@ public class ProdutoDataProvider implements ProdutoGateway {
         return ProdutoResponseMapper.converterProdutoParaAtualizacao(produtoEntitySalvo);
     }
 
-
-    private Boolean validarProduto(ProdutoRequestDomain produtoRequestDomain){
-        List<ProdutoEntity> produtoEntity = produtoRepository.findByMarcaProdutoContaining(produtoRequestDomain.getMarcaProduto());
-        if (produtoEntity == null){
-            return false;
-        }
-        return true;
+    @Override
+    public ProdutoResponseDomain atualizarProdutosParcial(ProdutoResponseDomain produtoResponseDomain) {
+        ProdutoEntity produtoEntity = ProdutoRequestMapper.converterParaAtualizacao(produtoResponseDomain);
+        ProdutoEntity produtoEntitySalvo = produtoRepository.save(produtoEntity);
+        return ProdutoResponseMapper.converterProdutoParaAtualizacao(produtoEntitySalvo);
     }
 }

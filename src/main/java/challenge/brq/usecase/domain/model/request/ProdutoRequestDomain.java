@@ -2,8 +2,10 @@ package challenge.brq.usecase.domain.model.request;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 
+@ToString
 @Builder
 @Getter
 public class ProdutoRequestDomain {

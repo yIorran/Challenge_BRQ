@@ -1,5 +1,6 @@
 package challenge.brq.entrypoint.model.request;
 
+import challenge.brq.dataprovider.entity.CategoriaEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class ProdutoModelRequest {
     private Boolean ativo;
     private Boolean ofertado;
     private Integer porcentagem;
+    private CategoriaEntity categoria;
 
 
 }

@@ -1,6 +1,7 @@
 package challenge.brq.entrypoint.mapper.response;
 
 import challenge.brq.entrypoint.model.response.ProdutoModelResponse;
+import challenge.brq.usecase.domain.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.domain.model.response.ProdutoResponseDomain;
 
 import java.util.ArrayList;
@@ -18,29 +19,30 @@ public class ProdutoEntryPointMapperResponse {
     }
 
     public static ProdutoModelResponse converterProduto(ProdutoResponseDomain produtoResponseDomain){
-        return ProdutoModelResponse.builder().codigoProduto(produtoResponseDomain.getCodigoProduto())
-                .nomeProduto(produtoResponseDomain.getNomeProduto())
-                .descricaoProduto(produtoResponseDomain.getDescricaoProduto())
-                .marcaProduto(produtoResponseDomain.getMarcaProduto())
-                .quantidadeProduto(produtoResponseDomain.getQuantidadeProduto())
-                .precoProduto(produtoResponseDomain.getPrecoProduto())
-                .ativo(true)
-                .ofertado(false)
-                .porcentagem(0)
-                .build();
-    }
-
-    public static ProdutoModelResponse converterParaAtualizacao(Integer id, ProdutoResponseDomain produtoResponseDomain){
-        return ProdutoModelResponse.builder()
-                .codigoProduto(id)
-                .nomeProduto(produtoResponseDomain.getNomeProduto())
-                .descricaoProduto(produtoResponseDomain.getDescricaoProduto())
-                .marcaProduto(produtoResponseDomain.getMarcaProduto())
-                .quantidadeProduto(produtoResponseDomain.getQuantidadeProduto())
-                .precoProduto(produtoResponseDomain.getPrecoProduto())
+        return ProdutoModelResponse.builder().idProduto(produtoResponseDomain.getCodigoProduto())
+                .nome(produtoResponseDomain.getNomeProduto())
+                .descricao(produtoResponseDomain.getDescricaoProduto())
+                .marca(produtoResponseDomain.getMarcaProduto())
+                .quantidade(produtoResponseDomain.getQuantidadeProduto())
+                .preco(produtoResponseDomain.getPrecoProduto())
                 .ativo(produtoResponseDomain.getProdutoAtivo())
                 .ofertado(produtoResponseDomain.getProdutoOfertado())
                 .porcentagem(produtoResponseDomain.getPorcentagem())
                 .build();
     }
+
+    public static ProdutoModelResponse converterParaAtualizacao(Integer id, ProdutoResponseDomain produtoResponseDomain){
+        return ProdutoModelResponse.builder()
+                .idProduto(id)
+                .nome(produtoResponseDomain.getNomeProduto())
+                .descricao(produtoResponseDomain.getDescricaoProduto())
+                .marca(produtoResponseDomain.getMarcaProduto())
+                .quantidade(produtoResponseDomain.getQuantidadeProduto())
+                .preco(produtoResponseDomain.getPrecoProduto())
+                .ativo(produtoResponseDomain.getProdutoAtivo())
+                .ofertado(produtoResponseDomain.getProdutoOfertado())
+                .porcentagem(produtoResponseDomain.getPorcentagem())
+                .build();
+    }
+
 }

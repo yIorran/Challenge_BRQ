@@ -18,4 +18,6 @@ public interface ProdutoGateway {
     List<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca);
 
     ProdutoResponseDomain atualizaProdutos(ProdutoResponseDomain produtoResponseDomain);
+
+    ProdutoResponseDomain atualizarProdutosParcial(ProdutoResponseDomain produtoResponseDomain);
 }
