@@ -1,11 +1,12 @@
 package challenge.brq.dataprovider.mapper.response;
 
+import challenge.brq.dataprovider.entity.CategoriaEntity;
 import challenge.brq.dataprovider.entity.ProdutoEntity;
+import challenge.brq.usecase.domain.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.domain.model.response.ProdutoResponseDomain;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ProdutoResponseMapper {
 
@@ -31,6 +32,7 @@ public class ProdutoResponseMapper {
                 .produtoAtivo(produtoEntity.getProdutoAtivo())
                 .produtoOfertado(produtoEntity.getProdutoOfertado())
                 .porcentagem(produtoEntity.getPorcentagemoferta())
+                .categoria(produtoEntity.getCategoria())
                 .build();
     }
 
@@ -46,6 +48,7 @@ public class ProdutoResponseMapper {
                 .produtoAtivo(produtoEntity.getProdutoAtivo())
                 .produtoOfertado(produtoEntity.getProdutoOfertado())
                 .porcentagem(produtoEntity.getPorcentagemoferta())
+                .categoria(produtoEntity.getCategoria())
                 .build();
     }
 

@@ -20,4 +20,6 @@ public interface ProdutoGateway {
     ProdutoResponseDomain atualizaProdutos(ProdutoResponseDomain produtoResponseDomain);
 
     ProdutoResponseDomain atualizarProdutosParcial(ProdutoResponseDomain produtoResponseDomain);
+
+    List<ProdutoResponseDomain> consultarProdutosPelaCategoria(String nome);
 }

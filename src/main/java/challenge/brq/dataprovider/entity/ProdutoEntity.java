@@ -3,7 +3,6 @@ package challenge.brq.dataprovider.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -43,8 +42,8 @@ public class ProdutoEntity {
     @Column(name = "MARCA_PRODUTO")
     private String marcaProduto;
 
-    @ManyToOne
+    @ManyToOne(targetEntity=CategoriaEntity.class)
     @JoinColumn(name = "ID_CATEGORIA_PRODUTO")
-    private CategoriaEntity categoriaProduto;
+    private CategoriaEntity categoria;
 
 }

@@ -39,31 +39,32 @@ public class ProdutoController {
      * Então retornará itens da marca
      */
     @GetMapping
-    public ResponseEntity<List<ProdutoModelResponse>> listarProdutosPelaMarca(@RequestParam(required = false) String marca){
-        List<ProdutoResponseDomain> produtosModel = produtoUseCase.consultarProdutosPelaMarca(marca);
-        if (produtosModel.isEmpty()) {
-        produtosModel = produtoUseCase.consultarProdutos();
+    public ResponseEntity<List<ProdutoModelResponse>> listarProdutosPelaMarca(@RequestParam(required = false) String marca) {
+        List<ProdutoResponseDomain> produtosModelRetornaMarca = produtoUseCase.consultarProdutosPelaMarca(marca);
+        List<ProdutoResponseDomain> produtosModelRetornaTodos = produtoUseCase.consultarProdutos();
+        List<ProdutoModelResponse> dataModelResponse;
+        if (produtosModelRetornaMarca.isEmpty()) {
+            dataModelResponse = ProdutoEntryPointMapperResponse.converter(produtosModelRetornaTodos);
         }
-        List<ProdutoModelResponse> dataModelResponse = ProdutoEntryPointMapperResponse.converter(produtosModel);
+        else{
+            dataModelResponse = ProdutoEntryPointMapperResponse.converter(produtosModelRetornaMarca);
+        }
         return ResponseEntity.ok(dataModelResponse);
     }
-
-
     /**
      * Método responsável por receber um Id, fazer a busca no banco
      * @param idProduto
      * @return Retorna o item referente ao ID informado
      */
     @GetMapping("{idProduto}")
-    public ResponseEntity<Object> listarProdutos(@PathVariable Integer idProduto){
+    public ResponseEntity<Object> consultarProdutosPeloID(@PathVariable Integer idProduto) {
         ProdutoResponseDomain produtosModel = produtoUseCase.consultarProdutosPeloId(idProduto);
         ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterProduto(produtosModel);
         return ResponseEntity.ok(produtoModelResponse);
     }
 
-
     @PostMapping
-    public ResponseEntity<ProdutoModelResponse> adicionaProduto(@RequestBody ProdutoModelRequest produtoModelRequest){
+    public ResponseEntity<ProdutoModelResponse> adicionaProduto(@RequestBody ProdutoModelRequest produtoModelRequest) {
         ProdutoRequestDomain produtoRequestDomain = ProdutoEntryPointMapperRequest.converter(produtoModelRequest);
         ProdutoResponseDomain produtoResponseDomain = produtoUseCase.adicionaProdutos(produtoRequestDomain);
         ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterProduto(produtoResponseDomain);
@@ -71,13 +72,14 @@ public class ProdutoController {
     }
 
     @DeleteMapping("{idProduto}")
-    public ResponseEntity<Object> excluiCategoriaPeloIdExplicit(@PathVariable Integer idProduto){
+    public ResponseEntity<Object> excluiCategoriaPeloIdExplicit(@PathVariable Integer idProduto) {
         produtoUseCase.excluiProdutoPeloId(idProduto);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("{idProduto}")
-    public ResponseEntity<ProdutoModelResponse> atualizarProdutos(@PathVariable Integer idProduto,@RequestBody ProdutoModelRequest produtoModelRequest){
+    public ResponseEntity<ProdutoModelResponse> atualizarProdutos(@PathVariable Integer idProduto,
+                                                                  @RequestBody ProdutoModelRequest produtoModelRequest) {
         ProdutoRequestDomain produtoRequestDomain = ProdutoEntryPointMapperRequest.converterParaAtualizacao(produtoModelRequest);
         ProdutoResponseDomain produtoResponseDomain = produtoUseCase.atualizarProdutos(idProduto,produtoRequestDomain);
         ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterParaAtualizacao(idProduto,produtoResponseDomain);

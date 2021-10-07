@@ -1,5 +1,6 @@
 package challenge.brq.usecase.domain.model.response;
 
+import challenge.brq.dataprovider.entity.CategoriaEntity;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,5 +18,6 @@ public class ProdutoResponseDomain {
     private Boolean produtoAtivo;
     private Boolean produtoOfertado;
     private Integer porcentagem;
+    private CategoriaEntity categoria;
 
 }

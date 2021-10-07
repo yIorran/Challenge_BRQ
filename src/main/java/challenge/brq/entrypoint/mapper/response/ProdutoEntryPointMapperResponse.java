@@ -1,7 +1,6 @@
 package challenge.brq.entrypoint.mapper.response;
 
 import challenge.brq.entrypoint.model.response.ProdutoModelResponse;
-import challenge.brq.usecase.domain.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.domain.model.response.ProdutoResponseDomain;
 
 import java.util.ArrayList;
@@ -28,8 +27,10 @@ public class ProdutoEntryPointMapperResponse {
                 .ativo(produtoResponseDomain.getProdutoAtivo())
                 .ofertado(produtoResponseDomain.getProdutoOfertado())
                 .porcentagem(produtoResponseDomain.getPorcentagem())
+                .categoria(produtoResponseDomain.getCategoria())
                 .build();
     }
+
 
     public static ProdutoModelResponse converterParaAtualizacao(Integer id, ProdutoResponseDomain produtoResponseDomain){
         return ProdutoModelResponse.builder()
@@ -42,6 +43,7 @@ public class ProdutoEntryPointMapperResponse {
                 .ativo(produtoResponseDomain.getProdutoAtivo())
                 .ofertado(produtoResponseDomain.getProdutoOfertado())
                 .porcentagem(produtoResponseDomain.getPorcentagem())
+                .categoria(produtoResponseDomain.getCategoria())
                 .build();
     }
 

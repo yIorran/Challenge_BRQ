@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 
-
 @AllArgsConstructor
 @Component
 public class ProdutoDataProvider implements ProdutoGateway {
@@ -63,5 +62,11 @@ public class ProdutoDataProvider implements ProdutoGateway {
         ProdutoEntity produtoEntity = ProdutoRequestMapper.converterParaAtualizacao(produtoResponseDomain);
         ProdutoEntity produtoEntitySalvo = produtoRepository.save(produtoEntity);
         return ProdutoResponseMapper.converterProdutoParaAtualizacao(produtoEntitySalvo);
+    }
+
+    @Override
+    public List<ProdutoResponseDomain> consultarProdutosPelaCategoria(String nome) {
+        List<ProdutoEntity> produtoEntity = produtoRepository.findByCategoriaContaining(nome);
+        return ProdutoResponseMapper.converter(produtoEntity);
     }
 }

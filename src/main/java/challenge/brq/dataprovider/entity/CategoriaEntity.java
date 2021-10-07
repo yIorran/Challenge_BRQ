@@ -1,5 +1,6 @@
 package challenge.brq.dataprovider.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,10 +22,12 @@ public class CategoriaEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idCategoria;
 
+    @JsonIgnore
     @Column(name = "NOME_CATEGORIA_PRODUTO")
     private String nomeCategoria;
 
-    @OneToMany(mappedBy = "categoriaProduto")
+    @JsonIgnore
+    @OneToMany(mappedBy = "categoria", targetEntity=ProdutoEntity.class)
     private List<ProdutoEntity> produtos;
 
 }

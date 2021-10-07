@@ -30,6 +30,7 @@ public class ProdutoRequestMapper {
                 .produtoAtivo(produtoResponseDomain.getProdutoAtivo())
                 .produtoOfertado(produtoResponseDomain.getProdutoOfertado())
                 .porcentagemoferta(produtoResponseDomain.getPorcentagem())
+                .categoria(produtoResponseDomain.getCategoria())
                 .build();
     }
 }

@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -31,6 +30,10 @@ public class ProdutoUseCase {
         return produtoGateway.consultarProdutosPeloId(idProduto);
     }
 
+    public List<ProdutoResponseDomain> consultarProdutosPelaCategoria(String nome){
+        return produtoGateway.consultarProdutosPelaCategoria(nome);
+    }
+
     public List<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca) {
         return produtoGateway.consultarProdutosPelaMarca(marca);
     }
@@ -47,6 +50,7 @@ public class ProdutoUseCase {
                 .produtoAtivo(produtoRequestDomain.getProdutoAtivo())
                 .produtoOfertado(produtoRequestDomain.getProdutoOfertado())
                 .porcentagem(produtoRequestDomain.getPorcentagem())
+                .categoria(produtoRequestDomain.getCategoria())
                 .build();
         return produtoGateway.atualizaProdutos(produtoAtual);
     }
@@ -63,6 +67,7 @@ public class ProdutoUseCase {
                 .produtoAtivo(produtoRequestDomain.getProdutoAtivo() == null ? produtoAtual.getProdutoAtivo() : produtoRequestDomain.getProdutoAtivo())
                 .produtoOfertado(produtoRequestDomain.getProdutoOfertado() == null ? produtoAtual.getProdutoOfertado() : produtoRequestDomain.getProdutoOfertado())
                 .porcentagem(produtoRequestDomain.getPorcentagem() == null ? produtoAtual.getPorcentagem() : produtoRequestDomain.getPorcentagem())
+                .categoria(produtoRequestDomain.getCategoria() == null ? produtoAtual.getCategoria() : produtoRequestDomain.getCategoria())
                 .build();
         return produtoGateway.atualizaProdutos(produtoAtual);
     }
