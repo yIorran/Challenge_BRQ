@@ -45,9 +45,12 @@ public class ProdutoDataProvider implements ProdutoGateway {
     }
 
     @Override
-    public List<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca) {
-        List<ProdutoEntity> produtoEntity = produtoRepository.findByMarcaProdutoContaining(marca);
-        return ProdutoResponseMapper.converter(produtoEntity);
+    public List<ProdutoResponseDomain> consultarProdutosPelaMarcaOuCategoria(String marcaOuCategoria) {
+        List<ProdutoEntity> produtoEntityMarcaOuCategoria = produtoRepository.findByMarcaProdutoContaining(marcaOuCategoria);
+        if(produtoEntityMarcaOuCategoria.isEmpty()){
+            produtoEntityMarcaOuCategoria = produtoRepository.categoria(marcaOuCategoria);
+        }
+        return ProdutoResponseMapper.converter(produtoEntityMarcaOuCategoria);
     }
 
     @Override
@@ -64,9 +67,4 @@ public class ProdutoDataProvider implements ProdutoGateway {
         return ProdutoResponseMapper.converterProdutoParaAtualizacao(produtoEntitySalvo);
     }
 
-    @Override
-    public List<ProdutoResponseDomain> consultarProdutosPelaCategoria(String nome) {
-        List<ProdutoEntity> produtoEntity = produtoRepository.findByCategoriaContaining(nome);
-        return ProdutoResponseMapper.converter(produtoEntity);
-    }
 }

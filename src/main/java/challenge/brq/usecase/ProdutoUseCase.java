@@ -30,12 +30,13 @@ public class ProdutoUseCase {
         return produtoGateway.consultarProdutosPeloId(idProduto);
     }
 
-    public List<ProdutoResponseDomain> consultarProdutosPelaCategoria(String nome){
-        return produtoGateway.consultarProdutosPelaCategoria(nome);
-    }
 
-    public List<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca) {
-        return produtoGateway.consultarProdutosPelaMarca(marca);
+    public List<ProdutoResponseDomain> consultarProdutosPelaMarcaOuCategoria(String marca, String categoria) {
+       if (marca == null) {
+           return produtoGateway.consultarProdutosPelaMarcaOuCategoria(categoria);
+       }
+        else
+        return produtoGateway.consultarProdutosPelaMarcaOuCategoria(marca);
     }
 
     public ProdutoResponseDomain atualizarProdutos(Integer id, ProdutoRequestDomain produtoRequestDomain){

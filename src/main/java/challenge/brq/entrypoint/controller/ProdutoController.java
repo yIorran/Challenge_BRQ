@@ -39,15 +39,13 @@ public class ProdutoController {
      * Então retornará itens da marca
      */
     @GetMapping
-    public ResponseEntity<List<ProdutoModelResponse>> listarProdutosPelaMarca(@RequestParam(required = false) String marca) {
-        List<ProdutoResponseDomain> produtosModelRetornaMarca = produtoUseCase.consultarProdutosPelaMarca(marca);
-        List<ProdutoResponseDomain> produtosModelRetornaTodos = produtoUseCase.consultarProdutos();
-        List<ProdutoModelResponse> dataModelResponse;
-        if (produtosModelRetornaMarca.isEmpty()) {
-            dataModelResponse = ProdutoEntryPointMapperResponse.converter(produtosModelRetornaTodos);
-        }
-        else{
-            dataModelResponse = ProdutoEntryPointMapperResponse.converter(produtosModelRetornaMarca);
+    public ResponseEntity<List<ProdutoModelResponse>> listarProdutosPelaMarca(@RequestParam(required = false) String marca,
+                                                                              @RequestParam(required = false) String categoria) {
+        List<ProdutoResponseDomain> produtosModelRetornaMarcaOuCategoria = produtoUseCase.consultarProdutosPelaMarcaOuCategoria(marca, categoria);
+        List<ProdutoResponseDomain> produtoModelRetornaTodos = produtoUseCase.consultarProdutos();
+        List<ProdutoModelResponse> dataModelResponse = ProdutoEntryPointMapperResponse.converter(produtoModelRetornaTodos);
+        if (!produtosModelRetornaMarcaOuCategoria.isEmpty()) {
+            dataModelResponse = ProdutoEntryPointMapperResponse.converter(produtosModelRetornaMarcaOuCategoria);
         }
         return ResponseEntity.ok(dataModelResponse);
     }
