@@ -46,8 +46,9 @@ public class ProdutoController {
         List<ProdutoModelResponse> dataModelResponse = ProdutoEntryPointMapperResponse.converter(produtoModelRetornaTodos);
         if (!produtosModelRetornaMarcaOuCategoria.isEmpty()) {
             dataModelResponse = ProdutoEntryPointMapperResponse.converter(produtosModelRetornaMarcaOuCategoria);
+            return ResponseEntity.ok(dataModelResponse);
         }
-        return ResponseEntity.ok(dataModelResponse);
+        return ResponseEntity.noContent().build();
     }
     /**
      * Método responsável por receber um Id, fazer a busca no banco
@@ -58,7 +59,10 @@ public class ProdutoController {
     public ResponseEntity<Object> consultarProdutosPeloID(@PathVariable Integer idProduto) {
         ProdutoResponseDomain produtosModel = produtoUseCase.consultarProdutosPeloId(idProduto);
         ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterProduto(produtosModel);
-        return ResponseEntity.ok(produtoModelResponse);
+        if(produtoModelResponse != null) {
+            return ResponseEntity.ok(produtoModelResponse);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping

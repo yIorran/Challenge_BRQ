@@ -28,7 +28,11 @@ public class CategoriaDataProvider implements CategoriaGateway {
     @Override
     public CategoriaResponseDomain consultarCategoriaPeloId(Integer idCategoria) {
         Optional<CategoriaEntity> categoriaEntity = categoriaRepository.findById(idCategoria);
-        return CategoriaResponseMapper.converterCategoria(categoriaEntity.get());
+        if(categoriaEntity.isPresent()) {
+            return CategoriaResponseMapper.converterCategoria(categoriaEntity.get());
+        }
+        else
+            return null;
     }
 
     @Override
@@ -38,9 +42,15 @@ public class CategoriaDataProvider implements CategoriaGateway {
 
     @Override
     public CategoriaResponseDomain adicionaCategoria(CategoriaRequestDomain categoriaRequestDomain) {
-        CategoriaEntity categoriaEntity = CategoriaRequestMapper.converter(categoriaRequestDomain);
-        CategoriaEntity categoriaEntitySalvo = categoriaRepository.save(categoriaEntity);
-        return CategoriaResponseMapper.converterCategoria(categoriaEntitySalvo);
+        Optional<CategoriaEntity> checarNomeEntity = Optional.ofNullable(categoriaRepository.findByNomeCategoriaIgnoreCaseLike(categoriaRequestDomain.getNomeCategoria()));
+        if(checarNomeEntity.isEmpty()){
+            CategoriaEntity categoriaEntity = CategoriaRequestMapper.converter(categoriaRequestDomain);
+            CategoriaEntity categoriaEntitySalvo = categoriaRepository.save(categoriaEntity);
+            return CategoriaResponseMapper.converterCategoria(categoriaEntitySalvo);
+        }
+        else {
+            return null;
+        }
     }
 
     @Override
@@ -48,15 +58,6 @@ public class CategoriaDataProvider implements CategoriaGateway {
         CategoriaEntity categoriaEntity = CategoriaRequestMapper.converterParaAtualizacao(categoriaResponseDomain);
         CategoriaEntity categoriaEntitieSalvo = categoriaRepository.save(categoriaEntity);
         return CategoriaResponseMapper.converterCategoria(categoriaEntitieSalvo);
-    }
-
-
-    private Boolean validarCategoriaPeloNome(CategoriaRequestDomain categoriaRequestDomain){
-        CategoriaEntity tipo = categoriaRepository.findByNomeCategoriaIgnoreCase(categoriaRequestDomain.getNomeCategoria());
-        if(tipo == null){
-            return false;
-        }
-        return tipo.getNomeCategoria().equalsIgnoreCase(categoriaRequestDomain.getNomeCategoria());
     }
 
 }
