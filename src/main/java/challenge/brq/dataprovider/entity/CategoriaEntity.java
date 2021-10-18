@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 
+
+/**
+ * Classe de entidade categoria
+ */
 @Builder
 @Getter
 @AllArgsConstructor

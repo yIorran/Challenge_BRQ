@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * Classe de entidade produto
+ */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor

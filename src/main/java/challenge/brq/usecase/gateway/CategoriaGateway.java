@@ -16,4 +16,6 @@ public interface CategoriaGateway {
     CategoriaResponseDomain adicionaCategoria(CategoriaRequestDomain categoriaRequestDomain);
 
     CategoriaResponseDomain atualizaCategoria(CategoriaResponseDomain categoriaResponseDomain);
+
+    CategoriaResponseDomain consultarCategoriaPeloNome(String nome);
 }

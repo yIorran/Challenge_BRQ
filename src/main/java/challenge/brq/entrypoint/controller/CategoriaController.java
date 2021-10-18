@@ -34,9 +34,6 @@ public class CategoriaController {
     @GetMapping("{idCategoria}")
     public ResponseEntity<Object> listarCategorias(@PathVariable Integer idCategoria){
         CategoriaResponseDomain categoriasModel = categoriaUseCase.consultarCategoriasPeloId(idCategoria);
-        if(categoriasModel == null){
-            return ResponseEntity.notFound().build();
-        }
         CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterCategoria(categoriasModel);
         return ResponseEntity.ok(categoriaModelResponse);
 
@@ -49,12 +46,9 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoriaModelResponse> adicionaCategoria(@RequestBody CategoriaModelRequest categoriaModelRequest) {
+    public ResponseEntity<?> adicionaCategoria(@RequestBody CategoriaModelRequest categoriaModelRequest) {
         CategoriaRequestDomain categoriaRequestDomain = CategoriaEntryPointMapperRequest.converter(categoriaModelRequest);
-         CategoriaResponseDomain categoriaResponseDomain = categoriaUseCase.adicionaCategoria(categoriaRequestDomain);
-        if(categoriaResponseDomain == null){
-            return ResponseEntity.unprocessableEntity().build();
-        }
+        CategoriaResponseDomain categoriaResponseDomain = categoriaUseCase.adicionaCategoria(categoriaRequestDomain);
         CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterCategoria(categoriaResponseDomain);
         return new ResponseEntity<>(categoriaModelResponse, HttpStatus.CREATED);
     }
@@ -66,4 +60,5 @@ public class CategoriaController {
         CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterParaAtualizacao(idCategoria,responseDomainId);
         return new ResponseEntity<>(categoriaModelResponse, HttpStatus.OK);
     }
+
 }

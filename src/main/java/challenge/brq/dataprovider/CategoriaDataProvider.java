@@ -42,15 +42,9 @@ public class CategoriaDataProvider implements CategoriaGateway {
 
     @Override
     public CategoriaResponseDomain adicionaCategoria(CategoriaRequestDomain categoriaRequestDomain) {
-        Optional<CategoriaEntity> checarNomeEntity = Optional.ofNullable(categoriaRepository.findByNomeCategoriaIgnoreCaseLike(categoriaRequestDomain.getNomeCategoria()));
-        if(checarNomeEntity.isEmpty()){
             CategoriaEntity categoriaEntity = CategoriaRequestMapper.converter(categoriaRequestDomain);
             CategoriaEntity categoriaEntitySalvo = categoriaRepository.save(categoriaEntity);
             return CategoriaResponseMapper.converterCategoria(categoriaEntitySalvo);
-        }
-        else {
-            return null;
-        }
     }
 
     @Override
@@ -58,6 +52,16 @@ public class CategoriaDataProvider implements CategoriaGateway {
         CategoriaEntity categoriaEntity = CategoriaRequestMapper.converterParaAtualizacao(categoriaResponseDomain);
         CategoriaEntity categoriaEntitieSalvo = categoriaRepository.save(categoriaEntity);
         return CategoriaResponseMapper.converterCategoria(categoriaEntitieSalvo);
+    }
+
+    @Override
+    public CategoriaResponseDomain consultarCategoriaPeloNome(String nome) {
+        CategoriaEntity categoriaEntity = categoriaRepository.findByNomeCategoriaIgnoreCaseLike(nome);
+        if(categoriaEntity != null) {
+            return CategoriaResponseMapper.converterCategoria(categoriaEntity);
+        }
+        else
+            return null;
     }
 
 }
