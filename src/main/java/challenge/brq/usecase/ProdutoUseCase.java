@@ -1,5 +1,6 @@
 package challenge.brq.usecase;
 
+import challenge.brq.dataprovider.mapper.request.CategoriaRequestMapper;
 import challenge.brq.usecase.domain.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.domain.model.response.ProdutoResponseDomain;
 import challenge.brq.usecase.gateway.ProdutoGateway;
@@ -51,7 +52,7 @@ public class ProdutoUseCase {
                 .produtoAtivo(produtoRequestDomain.getProdutoAtivo())
                 .produtoOfertado(produtoRequestDomain.getProdutoOfertado())
                 .porcentagem(produtoRequestDomain.getPorcentagem())
-                .categoria(produtoRequestDomain.getCategoria())
+                .categoria(produtoAtual.getCategoria())
                 .build();
         return produtoGateway.atualizaProdutos(produtoAtual);
     }
@@ -68,7 +69,7 @@ public class ProdutoUseCase {
                 .produtoAtivo(produtoRequestDomain.getProdutoAtivo() == null ? produtoAtual.getProdutoAtivo() : produtoRequestDomain.getProdutoAtivo())
                 .produtoOfertado(produtoRequestDomain.getProdutoOfertado() == null ? produtoAtual.getProdutoOfertado() : produtoRequestDomain.getProdutoOfertado())
                 .porcentagem(produtoRequestDomain.getPorcentagem() == null ? produtoAtual.getPorcentagem() : produtoRequestDomain.getPorcentagem())
-                .categoria(produtoRequestDomain.getCategoria() == null ? produtoAtual.getCategoria() : produtoRequestDomain.getCategoria())
+                .categoria(produtoRequestDomain.getCategoria() == null ? produtoAtual.getCategoria() : CategoriaRequestMapper.converterId(produtoRequestDomain.getCategoria()))
                 .build();
         return produtoGateway.atualizaProdutos(produtoAtual);
     }

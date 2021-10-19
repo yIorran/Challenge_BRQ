@@ -1,8 +1,10 @@
 package challenge.brq.dataprovider.entity;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * Classe de entidade produto
@@ -16,8 +18,9 @@ import javax.persistence.*;
 @Table(name = "TB_PROD")
 public class ProdutoEntity {
 
+    @EqualsAndHashCode.Include
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "COD_PROD")
     private Integer codigoProduto;
 
@@ -46,7 +49,20 @@ public class ProdutoEntity {
     private String marcaProduto;
 
     @ManyToOne(targetEntity=CategoriaEntity.class)
-    @JoinColumn(name = "ID_CATEGORIA_PRODUTO")
+    @JoinColumn(nullable = false)
     private CategoriaEntity categoria;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        ProdutoEntity that = (ProdutoEntity) o;
+
+        return Objects.equals(codigoProduto, that.codigoProduto);
+    }
+
+    @Override
+    public int hashCode() {
+        return 1685932735;
+    }
 }

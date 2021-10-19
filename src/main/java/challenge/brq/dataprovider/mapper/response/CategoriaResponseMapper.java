@@ -20,7 +20,7 @@ public class CategoriaResponseMapper {
 
     public static CategoriaResponseDomain converterCategoria(CategoriaEntity categoriaEntity){
         return CategoriaResponseDomain.builder()
-                .idCategoria(categoriaEntity.getIdCategoria())
+                .idCategoria(categoriaEntity.getId())
                 .nomeCategoria(categoriaEntity.getNomeCategoria())
                 .build();
     }

@@ -1,7 +1,9 @@
 package challenge.brq.entrypoint.model.response;
 
 import challenge.brq.dataprovider.entity.CategoriaEntity;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
 @Getter
@@ -10,6 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProdutoModelResponse {
 
     @JsonProperty(value = "id")

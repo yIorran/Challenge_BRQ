@@ -16,7 +16,16 @@ import java.util.List;
 
 
 /**
- * Classe responsável por ser o entrypoint da aplicação, contendo os métodos put, patch, delete, post e get.
+ * Classe controller operando com a rota "/produtos"
+ * Classe responsável pelos métodos de:
+ * > listar todos os produtos
+ * > consultar por ID
+ * > consultar por marca
+ * > consultar por categoria
+ * > excluir por ID
+ * > adicionar produto
+ * > atualizar produto
+ * > atualizar produto parcialmente
  */
 @RestController
 @RequestMapping("/produtos")
@@ -65,6 +74,14 @@ public class ProdutoController {
         return ResponseEntity.notFound().build();
     }
 
+    /**
+     * Metodo responsavel por persistir um novo produto no banco, recebendo um ProdutoModelRequest
+     * e retornando um ProdutoModelResponse.
+     *
+     * @param produtoModelRequest
+     *
+     * @return produtoModelResponse
+     */
     @PostMapping
     public ResponseEntity<ProdutoModelResponse> adicionaProduto(@RequestBody ProdutoModelRequest produtoModelRequest) {
         ProdutoRequestDomain produtoRequestDomain = ProdutoEntryPointMapperRequest.converter(produtoModelRequest);
@@ -73,12 +90,37 @@ public class ProdutoController {
         return new ResponseEntity<>(produtoModelResponse, HttpStatus.CREATED);
     }
 
+    /**
+     * Metodo responsavel por excluir um produto pelo Id informado na rota "produtos/{id}"
+     *
+     * @param idProduto
+     *
+     * @return void
+     */
     @DeleteMapping("{idProduto}")
     public ResponseEntity<Object> excluiCategoriaPeloIdExplicit(@PathVariable Integer idProduto) {
         produtoUseCase.excluiProdutoPeloId(idProduto);
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Metodo responsavel por atualizar um produto persistido no banco
+     * Para atualizacao precisa informar no JSON
+     * "nome":
+     * "descricao":
+     * "marca":
+     * "quantidade":
+     * "preco":
+     * "ativo":
+     * "ofertado":
+     * "porcentagem":
+     *
+     * @param idProduto
+     *
+     * @param produtoModelRequest
+     *
+     * @return produtoModelResponse
+     */
     @PutMapping("{idProduto}")
     public ResponseEntity<ProdutoModelResponse> atualizarProdutos(@PathVariable Integer idProduto,
                                                                   @RequestBody ProdutoModelRequest produtoModelRequest) {
@@ -88,9 +130,25 @@ public class ProdutoController {
         return new ResponseEntity<>(produtoModelResponse, HttpStatus.OK);
     }
 
+    /**
+     * Metodo responsavel por atualizar parcialmente um produto persistido no banco
+     * Para a atualizacao parcial pode informar apenas os atributos desejados
+     *
+     * PARA CATEGORIA:
+     *
+     *                             "categoria":{
+     *                               "id":2
+     *                              }
+     *
+     * @param idProduto
+     *
+     * @param produtoModelRequest
+     *
+     * @return produtoModelResponse
+     */
     @PatchMapping("{idProduto}")
     public ResponseEntity<ProdutoModelResponse> atualizarProdutosParcial(@PathVariable Integer idProduto,@RequestBody ProdutoModelRequest produtoModelRequest) {
-    ProdutoRequestDomain produtoRequestDomain = ProdutoEntryPointMapperRequest.converterParaAtualizacao(produtoModelRequest);
+        ProdutoRequestDomain produtoRequestDomain = ProdutoEntryPointMapperRequest.converterParaAtualizacaoParcial(produtoModelRequest);
         ProdutoResponseDomain produtoResponseDomain = produtoUseCase.atualizarProdutosParcial(idProduto,produtoRequestDomain);
         ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterParaAtualizacao(idProduto,produtoResponseDomain);
         return new ResponseEntity<>(produtoModelResponse, HttpStatus.OK);

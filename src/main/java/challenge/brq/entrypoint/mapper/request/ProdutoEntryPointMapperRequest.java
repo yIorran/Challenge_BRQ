@@ -16,7 +16,7 @@ public class ProdutoEntryPointMapperRequest {
                 .produtoAtivo(true)
                 .produtoOfertado(false)
                 .porcentagem(0)
-                .categoria(produtoModelRequest.getCategoria())
+                .categoria(CategoriaEntryPointMapperRequest.converterId(produtoModelRequest.getCategoria().getId()))
                 .build();
     }
 
@@ -25,6 +25,21 @@ public class ProdutoEntryPointMapperRequest {
                 marcaProduto(marca)
                 .build();
     }
+    public static ProdutoRequestDomain converterParaAtualizacaoParcial(ProdutoModelRequest produtoModelRequest){
+        return ProdutoRequestDomain.builder()
+                .codigoProduto(produtoModelRequest.getIdProduto())
+                .nomeProduto(produtoModelRequest.getNome())
+                .descricaoProduto(produtoModelRequest.getDescricao())
+                .marcaProduto(produtoModelRequest.getMarca())
+                .quantidadeProduto(produtoModelRequest.getQuantidade())
+                .precoProduto(produtoModelRequest.getPreco())
+                .produtoAtivo(produtoModelRequest.getAtivo())
+                .produtoOfertado(produtoModelRequest.getOfertado())
+                .porcentagem(produtoModelRequest.getPorcentagem())
+                .categoria(CategoriaEntryPointMapperRequest.converterId(produtoModelRequest.getCategoria().getId()))
+                .build();
+    }
+
     public static ProdutoRequestDomain converterParaAtualizacao(ProdutoModelRequest produtoModelRequest){
         return ProdutoRequestDomain.builder()
                 .codigoProduto(produtoModelRequest.getIdProduto())
@@ -36,7 +51,6 @@ public class ProdutoEntryPointMapperRequest {
                 .produtoAtivo(produtoModelRequest.getAtivo())
                 .produtoOfertado(produtoModelRequest.getOfertado())
                 .porcentagem(produtoModelRequest.getPorcentagem())
-                .categoria(produtoModelRequest.getCategoria())
                 .build();
     }
 

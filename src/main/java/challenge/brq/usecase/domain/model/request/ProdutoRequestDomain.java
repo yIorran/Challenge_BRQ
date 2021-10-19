@@ -1,6 +1,5 @@
 package challenge.brq.usecase.domain.model.request;
 
-import challenge.brq.dataprovider.entity.CategoriaEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -20,7 +19,7 @@ public class ProdutoRequestDomain {
     private Boolean produtoAtivo;
     private Boolean produtoOfertado;
     private Integer porcentagem;
-    private CategoriaEntity categoria;
+    private CategoriaRequestDomain categoria;
 
 
 }
