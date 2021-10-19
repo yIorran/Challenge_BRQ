@@ -64,7 +64,6 @@ public class ProdutoDataProvider implements ProdutoGateway {
         return ProdutoResponseMapper.converterProdutoParaAtualizacao(produtoEntitySalvo);
     }
 
-    @Transactional
     @Override
     public ProdutoResponseDomain atualizarProdutosParcial(ProdutoResponseDomain produtoResponseDomain) {
         ProdutoEntity produtoEntity = ProdutoRequestMapper.converterParaAtualizacao(produtoResponseDomain);

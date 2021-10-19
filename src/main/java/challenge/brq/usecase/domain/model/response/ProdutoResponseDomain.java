@@ -18,6 +18,6 @@ public class ProdutoResponseDomain {
     private Boolean produtoAtivo;
     private Boolean produtoOfertado;
     private Integer porcentagem;
-    private CategoriaEntity categoria;
+    private CategoriaResponseDomain categoria;
 
 }

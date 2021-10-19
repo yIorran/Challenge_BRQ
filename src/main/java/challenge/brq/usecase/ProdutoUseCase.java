@@ -1,7 +1,8 @@
 package challenge.brq.usecase;
 
-import challenge.brq.dataprovider.mapper.request.CategoriaRequestMapper;
+import challenge.brq.usecase.domain.model.request.CategoriaRequestDomain;
 import challenge.brq.usecase.domain.model.request.ProdutoRequestDomain;
+import challenge.brq.usecase.domain.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.domain.model.response.ProdutoResponseDomain;
 import challenge.brq.usecase.gateway.ProdutoGateway;
 import lombok.AllArgsConstructor;
@@ -41,7 +42,7 @@ public class ProdutoUseCase {
     }
 
     public ProdutoResponseDomain atualizarProdutos(Integer id, ProdutoRequestDomain produtoRequestDomain){
-        ProdutoResponseDomain produtoAtual = consultarProdutosPeloId(id);;
+        ProdutoResponseDomain produtoAtual = consultarProdutosPeloId(id);
         produtoAtual = ProdutoResponseDomain.builder()
                 .codigoProduto(produtoAtual.getCodigoProduto())
                 .nomeProduto(produtoRequestDomain.getNomeProduto())
@@ -69,9 +70,16 @@ public class ProdutoUseCase {
                 .produtoAtivo(produtoRequestDomain.getProdutoAtivo() == null ? produtoAtual.getProdutoAtivo() : produtoRequestDomain.getProdutoAtivo())
                 .produtoOfertado(produtoRequestDomain.getProdutoOfertado() == null ? produtoAtual.getProdutoOfertado() : produtoRequestDomain.getProdutoOfertado())
                 .porcentagem(produtoRequestDomain.getPorcentagem() == null ? produtoAtual.getPorcentagem() : produtoRequestDomain.getPorcentagem())
-                .categoria(produtoRequestDomain.getCategoria() == null ? produtoAtual.getCategoria() : CategoriaRequestMapper.converterId(produtoRequestDomain.getCategoria()))
+                .categoria(produtoRequestDomain.getCategoria() == null ? produtoAtual.getCategoria() : converter(produtoRequestDomain.getCategoria()))
                 .build();
-        return produtoGateway.atualizaProdutos(produtoAtual);
+        return produtoGateway.atualizarProdutosParcial(produtoAtual);
+    }
+
+    private CategoriaResponseDomain converter(CategoriaRequestDomain categoriaRequestDomain){
+        return CategoriaResponseDomain.builder()
+                .idCategoria(categoriaRequestDomain.getIdCategoria())
+                .nomeCategoria(categoriaRequestDomain.getNomeCategoria())
+                .build();
     }
 
 

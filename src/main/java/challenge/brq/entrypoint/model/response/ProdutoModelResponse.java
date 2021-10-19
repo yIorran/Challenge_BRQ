@@ -34,6 +34,6 @@ public class ProdutoModelResponse {
     @JsonProperty(value = "porcentagem")
     private Integer porcentagem;
     @JsonProperty(value = "categoria")
-    private CategoriaEntity categoria;
+    private CategoriaModelResponse categoria;
 
 }

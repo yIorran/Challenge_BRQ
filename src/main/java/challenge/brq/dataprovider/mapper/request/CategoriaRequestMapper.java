@@ -4,6 +4,8 @@ import challenge.brq.dataprovider.entity.CategoriaEntity;
 import challenge.brq.usecase.domain.model.request.CategoriaRequestDomain;
 import challenge.brq.usecase.domain.model.response.CategoriaResponseDomain;
 
+import java.util.Objects;
+
 /**
  * Classe de conversores
  */
@@ -16,6 +18,9 @@ public class CategoriaRequestMapper {
     }
 
     public static CategoriaEntity converterId(CategoriaRequestDomain categoriaRequestDomain) {
+        if (Objects.isNull(categoriaRequestDomain)) {
+            return CategoriaEntity.builder().build();
+        }
         return CategoriaEntity.builder()
                 .id(categoriaRequestDomain.getIdCategoria())
                 .build();
@@ -27,4 +32,15 @@ public class CategoriaRequestMapper {
                 .id(categoriaResponseDomain.getIdCategoria())
                 .build();
     }
+
+    public static CategoriaEntity converterIdResponse(CategoriaResponseDomain categoriaResponseDomain) {
+        if (Objects.isNull(categoriaResponseDomain)) {
+            return null;
+        }
+        return CategoriaEntity.builder()
+                .id(categoriaResponseDomain.getIdCategoria())
+                .build();
+    }
+
+
 }
