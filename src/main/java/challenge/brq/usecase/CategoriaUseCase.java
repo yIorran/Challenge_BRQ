@@ -39,12 +39,13 @@ public class CategoriaUseCase {
     }
 
     public CategoriaResponseDomain atualizaCategoria(Integer id,CategoriaRequestDomain categoriaRequestDomain){
-        CategoriaResponseDomain categoriaAtual = consultarCategoriasPeloId(id);
-        categoriaAtual = CategoriaResponseDomain.builder()
-                .idCategoria(categoriaAtual.getIdCategoria())
+        CategoriaResponseDomain categoriaAtualPeloId = consultarCategoriasPeloId(id);
+        CategoriaResponseDomain categoriaAtualPeloNome = consultarCategoriaPeloNome(categoriaRequestDomain.getNomeCategoria());
+        categoriaAtualPeloId = CategoriaResponseDomain.builder()
+                .idCategoria(categoriaAtualPeloId.getIdCategoria())
                 .nomeCategoria(categoriaRequestDomain.getNomeCategoria())
                 .build();
-        return categoriaGateway.atualizaCategoria(categoriaAtual);
+        return categoriaGateway.atualizaCategoria(categoriaAtualPeloId);
     }
 
     public CategoriaResponseDomain consultarCategoriaPeloNome(String nome){
