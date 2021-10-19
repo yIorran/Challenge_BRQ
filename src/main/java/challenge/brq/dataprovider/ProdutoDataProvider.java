@@ -9,6 +9,7 @@ import challenge.brq.usecase.domain.model.response.ProdutoResponseDomain;
 import challenge.brq.usecase.gateway.ProdutoGateway;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,7 @@ public class ProdutoDataProvider implements ProdutoGateway {
         return ProdutoResponseMapper.converterProduto(produtoEntity.get());
     }
 
+    @Transactional
     @Override
     public ProdutoResponseDomain adicionaProdutos(ProdutoRequestDomain produtoRequestDomain) {
         ProdutoEntity produtoEntity = ProdutoRequestMapper.converter(produtoRequestDomain);
@@ -39,6 +41,7 @@ public class ProdutoDataProvider implements ProdutoGateway {
         return ProdutoResponseMapper.converterProduto(produtoEntitySalvo);
     }
 
+    @Transactional
     @Override
     public void excluirProdutosPeloId(Integer idProduto) {
         produtoRepository.deleteById(idProduto);
@@ -53,6 +56,7 @@ public class ProdutoDataProvider implements ProdutoGateway {
         return ProdutoResponseMapper.converter(produtoEntityMarcaOuCategoria);
     }
 
+    @Transactional
     @Override
     public ProdutoResponseDomain atualizaProdutos(ProdutoResponseDomain produtoResponseDomain) {
         ProdutoEntity produtoEntity = ProdutoRequestMapper.converterParaAtualizacao(produtoResponseDomain);

@@ -27,7 +27,7 @@ public class ProdutoEntryPointMapperResponse {
                 .ativo(produtoResponseDomain.getProdutoAtivo())
                 .ofertado(produtoResponseDomain.getProdutoOfertado())
                 .porcentagem(produtoResponseDomain.getPorcentagem())
-                .categoria(produtoResponseDomain.getCategoria())
+                .categoria(CategoriaEntryPointMapperResponse.converterCategoria(produtoResponseDomain.getCategoria()))
                 .build();
     }
 
@@ -43,7 +43,7 @@ public class ProdutoEntryPointMapperResponse {
                 .ativo(produtoResponseDomain.getProdutoAtivo())
                 .ofertado(produtoResponseDomain.getProdutoOfertado())
                 .porcentagem(produtoResponseDomain.getPorcentagem())
-                .categoria(produtoResponseDomain.getCategoria())
+                .categoria(CategoriaEntryPointMapperResponse.converterCategoria(produtoResponseDomain.getCategoria()))
                 .build();
     }
 

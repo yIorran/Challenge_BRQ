@@ -16,6 +16,7 @@ public class ProdutoRequestMapper {
                 .produtoAtivo(true)
                 .produtoOfertado(false)
                 .porcentagemoferta(0)
+                .categoria(CategoriaRequestMapper.converterId(produtoRequestDomain.getCategoria()))
                 .build();
     }
 
@@ -30,7 +31,7 @@ public class ProdutoRequestMapper {
                 .produtoAtivo(produtoResponseDomain.getProdutoAtivo())
                 .produtoOfertado(produtoResponseDomain.getProdutoOfertado())
                 .porcentagemoferta(produtoResponseDomain.getPorcentagem())
-                .categoria(produtoResponseDomain.getCategoria())
+                .categoria(CategoriaRequestMapper.converterIdResponse(produtoResponseDomain.getCategoria()))
                 .build();
     }
 }

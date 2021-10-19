@@ -10,6 +10,5 @@ public interface CategoriaRepository extends JpaRepository<CategoriaEntity, Inte
 
     CategoriaEntity findByNomeCategoriaIgnoreCaseLike(String categoriaEntity);
 
-    CategoriaEntity findByIdCategoria(Integer IdCategoria);
 
 }

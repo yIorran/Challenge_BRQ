@@ -1,8 +1,8 @@
 package challenge.brq.dataprovider.mapper.response;
 
-import challenge.brq.dataprovider.entity.CategoriaEntity;
 import challenge.brq.dataprovider.entity.ProdutoEntity;
-import challenge.brq.usecase.domain.model.response.CategoriaResponseDomain;
+import challenge.brq.dataprovider.mapper.request.CategoriaRequestMapper;
+import challenge.brq.entrypoint.mapper.response.CategoriaEntryPointMapperResponse;
 import challenge.brq.usecase.domain.model.response.ProdutoResponseDomain;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class ProdutoResponseMapper {
                 .produtoAtivo(produtoEntity.getProdutoAtivo())
                 .produtoOfertado(produtoEntity.getProdutoOfertado())
                 .porcentagem(produtoEntity.getPorcentagemoferta())
-                .categoria(produtoEntity.getCategoria())
+                .categoria(CategoriaResponseMapper.converterCategoria(produtoEntity.getCategoria()))
                 .build();
     }
 
@@ -48,22 +48,7 @@ public class ProdutoResponseMapper {
                 .produtoAtivo(produtoEntity.getProdutoAtivo())
                 .produtoOfertado(produtoEntity.getProdutoOfertado())
                 .porcentagem(produtoEntity.getPorcentagemoferta())
-                .categoria(produtoEntity.getCategoria())
+                .categoria(CategoriaResponseMapper.converterCategoria(produtoEntity.getCategoria()))
                 .build();
     }
-
-    public static ProdutoResponseDomain converterProdutoParaBusca(ProdutoEntity produtoEntity, String marca){
-        return ProdutoResponseDomain.builder()
-                .codigoProduto(produtoEntity.getCodigoProduto())
-                .nomeProduto(produtoEntity.getNomeProduto())
-                .descricaoProduto(produtoEntity.getDescricaoProduto())
-                .marcaProduto(marca)
-                .quantidadeProduto(produtoEntity.getQuantidadeProduto())
-                .precoProduto(produtoEntity.getPrecoProduto())
-                .produtoAtivo(true)
-                .produtoOfertado(false)
-                .porcentagem(0)
-                .build();
-    }
-
 }

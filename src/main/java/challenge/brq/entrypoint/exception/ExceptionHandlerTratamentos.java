@@ -1,6 +1,7 @@
 package challenge.brq.entrypoint.exception;
 
 import challenge.brq.usecase.exception.CategoriaDuplicadaException;
+import challenge.brq.usecase.exception.CategoriaEmUsoException;
 import challenge.brq.usecase.exception.CategoriaNaoEncontradaException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,15 @@ public class ExceptionHandlerTratamentos  extends ExceptionModelResponse {
         HttpStatus httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
 
         ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, e);
+
+        return ResponseEntity.status(httpStatus).body(exceptionModelResponse);
+    }
+
+    @ExceptionHandler(CategoriaEmUsoException.class)
+    public final ResponseEntity<?> handlerEntidadeEmUso(Exception exception) {
+        HttpStatus httpStatus = HttpStatus.CONFLICT;
+
+        ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, exception);
 
         return ResponseEntity.status(httpStatus).body(exceptionModelResponse);
     }

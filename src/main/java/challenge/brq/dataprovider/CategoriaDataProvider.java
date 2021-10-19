@@ -9,6 +9,7 @@ import challenge.brq.usecase.domain.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.gateway.CategoriaGateway;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,11 +36,14 @@ public class CategoriaDataProvider implements CategoriaGateway {
             return null;
     }
 
+    @Transactional
     @Override
     public void excluiCategoriaPeloId(Integer idCategoria) {
         categoriaRepository.deleteById(idCategoria);
+        categoriaRepository.flush();
     }
 
+    @Transactional
     @Override
     public CategoriaResponseDomain adicionaCategoria(CategoriaRequestDomain categoriaRequestDomain) {
             CategoriaEntity categoriaEntity = CategoriaRequestMapper.converter(categoriaRequestDomain);
@@ -47,6 +51,7 @@ public class CategoriaDataProvider implements CategoriaGateway {
             return CategoriaResponseMapper.converterCategoria(categoriaEntitySalvo);
     }
 
+    @Transactional
     @Override
     public CategoriaResponseDomain atualizaCategoria(CategoriaResponseDomain categoriaResponseDomain) {
         CategoriaEntity categoriaEntity = CategoriaRequestMapper.converterParaAtualizacao(categoriaResponseDomain);

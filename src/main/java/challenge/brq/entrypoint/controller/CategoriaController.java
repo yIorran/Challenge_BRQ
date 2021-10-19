@@ -14,6 +14,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Classe controller operando com a rota "/categorias"
+ * Classe responsável pelos métodos de:
+ * > listar todas as categorias
+ * > consultar por ID
+ * > excluir por ID
+ * > adicionar categoria
+ * > atualizar categoria
+ */
+
 @RestController
 @RequestMapping("/categorias")
 @AllArgsConstructor
@@ -21,6 +31,12 @@ public class CategoriaController {
 
     private CategoriaUseCase categoriaUseCase;
 
+    /**
+     * Metodo responsavel por listar todas as categorias, caso nao haja nenhuma sera retornado
+     * HTTPstatus NO_CONTENT com um body vazio
+     *
+     * @return CategoriaModelResponse
+     */
     @GetMapping
     public ResponseEntity<Object> listarCategorias(){
         List<CategoriaResponseDomain> categoriasModel = categoriaUseCase.consultarCategorias();
@@ -31,31 +47,72 @@ public class CategoriaController {
         return ResponseEntity.ok(dataModelResponse);
     }
 
+    /**
+     * Metodo responsavel por consultar uma categoria pelo Id informado na rota "categoria/{id}"
+     * Caso nao exista a categoria pelo ID informado sera retornado um HTTPStatus NOT_FOUND
+     * Caso exista, retornara a categoria referente àquele id com HTTPStatus OK
+     *
+     * @param idCategoria
+     *
+     * @return CategoriaModelResponse
+     */
     @GetMapping("{idCategoria}")
     public ResponseEntity<Object> listarCategorias(@PathVariable Integer idCategoria){
         CategoriaResponseDomain categoriasModel = categoriaUseCase.consultarCategoriasPeloId(idCategoria);
         CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterCategoria(categoriasModel);
         return ResponseEntity.ok(categoriaModelResponse);
-
     }
 
+    /**
+     * Metodo responsavel por excluir uma categoria pelo Id informado na rota "categorias/{id}"
+     * Caso nao exista a categoria pelo ID informado sera retornado um HTTPStatus NOT_FOUND
+     * Caso exista, retornara a categoria referente àquele id com HTTPStatus OK
+     *
+     * @param idCategoria
+     *
+     * @return void
+     */
     @DeleteMapping("{idCategoria}")
-    public ResponseEntity<Object> excluiCategoriaPeloIdExplicit(@PathVariable Integer idCategoria){
+    public ResponseEntity<Void> excluiCategoriaPeloId(@PathVariable Integer idCategoria){
         categoriaUseCase.excluiCategoriaPeloId(idCategoria);
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Metodo responsavel por persistir uma nova categoria no banco, recebendo um CategoriaModelRequest
+     * e retornando um CategoriaModelResponse.
+     *
+     * Caso a categoria ja esteja persistida em nosso banco num ID diferente sera retornado
+     * um HTTPStatus 422 UNPROCESSABLE_ENTITY
+     *
+     * Caso a categoria nao esteja persistida sera retornado um HTTPStatus CREATED 204
+     *
+     * @param categoriaModelRequest
+     *
+     * @return CategoriaModelResponse
+     */
     @PostMapping
     public ResponseEntity<?> adicionaCategoria(@RequestBody CategoriaModelRequest categoriaModelRequest) {
-        CategoriaRequestDomain categoriaRequestDomain = CategoriaEntryPointMapperRequest.converter(categoriaModelRequest);
+        CategoriaRequestDomain categoriaRequestDomain = CategoriaEntryPointMapperRequest.converterNome(categoriaModelRequest);
         CategoriaResponseDomain categoriaResponseDomain = categoriaUseCase.adicionaCategoria(categoriaRequestDomain);
         CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterCategoria(categoriaResponseDomain);
         return new ResponseEntity<>(categoriaModelResponse, HttpStatus.CREATED);
     }
 
+    /**
+     * Metodo responsavel por atualizar uma categoria persistida no banco
+     * Caso o nome dessa categoria esteja presente em outro ID no banco, sera retornado um HTTPStatus 422 UNPROCESSABLE_ENTITY
+     * sempre proibindo a duplicata de objetos no banco
+     *
+     * @param idCategoria
+     *
+     * @param categoriaModelRequest
+     *
+     * @return CategoriaModelResponse
+     */
     @PutMapping("{idCategoria}")
     public ResponseEntity<CategoriaModelResponse> atualizaCategoria(@PathVariable Integer idCategoria,@RequestBody CategoriaModelRequest categoriaModelRequest){
-        CategoriaRequestDomain categoriaIdRequestDomain = CategoriaEntryPointMapperRequest.converter(categoriaModelRequest);
+        CategoriaRequestDomain categoriaIdRequestDomain = CategoriaEntryPointMapperRequest.converterNome(categoriaModelRequest);
         CategoriaResponseDomain responseDomainId = categoriaUseCase.atualizaCategoria(idCategoria,categoriaIdRequestDomain);
         CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterParaAtualizacao(idCategoria,responseDomainId);
         return new ResponseEntity<>(categoriaModelResponse, HttpStatus.OK);
