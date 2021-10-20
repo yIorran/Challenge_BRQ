@@ -21,3 +21,34 @@ this is why I am developing this code mentored by: @kevingabrielmelo and @CaioHB
 - When adding a new product, the attributes "ofertado", "ativo" and "porcentagem" are setted with default values, being: <br>"ativo":true, <br>"ofertado":false <br>and "porcentagem":0
 - While updating a full procuct using PUT verb, we must inform the procuct ID on PathVariable and in the body inform: "nome", "descricao", "quantidade", "preco", "ofertado", "ativo", "porcentagem" and "categoria"{"id"} (this last one just if necessary).
 - You can also update a product partially using the PATCH verb, so you just inform the attributes you are going to change.
+
+## Routes: 
+### GET
+
+ Listing all categories:
+ ``` 
+ http://localhost:8079/categorias/
+ ```
+ Finding category by id:
+ ```
+ http://localhost:8079/categorias/{idCategory}
+ ```
+ Listing all products:
+```
+ http://localhost:8079/produtos?marca={findAll}
+```
+ Finding by category name:
+```
+ http://localhost:8079/produtos?categoria={categoryName}
+```
+ Finding by product's brandName:
+```
+ http://localhost:8079/produtos?marca={brandName}
+```
+ Finding by product id:
+```
+ http://localhost:8079/produtos/{id}
+```
+ <br>
+
+
