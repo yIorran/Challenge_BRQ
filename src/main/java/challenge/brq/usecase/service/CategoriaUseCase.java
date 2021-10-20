@@ -1,8 +1,8 @@
-package challenge.brq.usecase;
+package challenge.brq.usecase.service;
 
-import challenge.brq.usecase.domain.model.request.CategoriaRequestDomain;
-import challenge.brq.usecase.domain.model.response.CategoriaResponseDomain;
-import challenge.brq.usecase.domain.model.response.ProdutoResponseDomain;
+import challenge.brq.usecase.model.request.CategoriaRequestDomain;
+import challenge.brq.usecase.model.response.CategoriaResponseDomain;
+import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import challenge.brq.usecase.exception.CategoriaDuplicadaException;
 import challenge.brq.usecase.exception.CategoriaEmUsoException;
 import challenge.brq.usecase.exception.CategoriaNaoEncontradaException;
@@ -23,9 +23,10 @@ public class CategoriaUseCase {
 
     /**
      * Metodo responsavel por retornar todos os objetos persistidos no banco
+     *
      * @return CategoriaResponseDomain(Gateway)
      */
-    public List<CategoriaResponseDomain> consultarCategorias(){
+    public List<CategoriaResponseDomain> consultarCategorias() {
         return categoriaGateway.consultarCategoria();
     }
 
@@ -35,25 +36,22 @@ public class CategoriaUseCase {
      * que recebera o tratamento apropriado pela classe exception handler
      *
      * @param idCategoria
-     *
      * @return CategoriaResponseDomain
      */
-    public CategoriaResponseDomain consultarCategoriasPeloId(Integer idCategoria){
+    public CategoriaResponseDomain consultarCategoriasPeloId(Integer idCategoria) {
         CategoriaResponseDomain categoriaResponseDomain = categoriaGateway.consultarCategoriaPeloId(idCategoria);
-        if(categoriaResponseDomain == null){
+        if (categoriaResponseDomain == null) {
             throw new CategoriaNaoEncontradaException("Categoria não encontrada: " + idCategoria);
         }
-        return categoriaGateway.consultarCategoriaPeloId(idCategoria);
+        return categoriaResponseDomain;
     }
 
     /**
      * Metodo responsavel por excluir uma categoria do banco pelo ID informado
      *
-     * @param idCategoria
-     *
-     * return void
+     * @param idCategoria return void
      */
-    public void excluiCategoriaPeloId(Integer idCategoria){
+    public void excluiCategoriaPeloId(Integer idCategoria) {
         consultarSeCategoriaTemProduto(consultarCategoriasPeloId(idCategoria));
         categoriaGateway.excluiCategoriaPeloId(idCategoria);
     }
@@ -63,11 +61,11 @@ public class CategoriaUseCase {
      * nome esta ja esta persistida
      *
      * @param categoriaRequestDomain
-     *
      * @return CategoriaResponseDomain
      */
-    public CategoriaResponseDomain adicionaCategoria(CategoriaRequestDomain categoriaRequestDomain){
-        consultarCategoriaPeloNome(categoriaRequestDomain.getNomeCategoria());
+    public CategoriaResponseDomain adicionaCategoria(CategoriaRequestDomain categoriaRequestDomain) {
+        String nome = categoriaRequestDomain.getNomeCategoria();
+        consultarCategoriaPeloNome(nome);
         return categoriaGateway.adicionaCategoria(categoriaRequestDomain);
     }
 
@@ -75,13 +73,14 @@ public class CategoriaUseCase {
      * Metodo responsavel por atualizar uma categoria do banco e validar se aquele ID informado no path existe, caso nao exista
      * sera lancada excessao
      * e se o nome informado para atualizacao ja existe no banco, caso exista sera lancada excessao
+     *
      * @param id
      * @param categoriaRequestDomain
      * @return CategoriaResponseDomain
      */
-    public CategoriaResponseDomain atualizaCategoria(Integer id,CategoriaRequestDomain categoriaRequestDomain){
+    public CategoriaResponseDomain atualizaCategoria(Integer id, CategoriaRequestDomain categoriaRequestDomain) {
         CategoriaResponseDomain categoriaAtualPeloId = consultarCategoriasPeloId(id);
-        CategoriaResponseDomain categoriaAtualPeloNome = consultarCategoriaPeloNome(categoriaRequestDomain.getNomeCategoria());
+        consultarCategoriaPeloNome(categoriaRequestDomain.getNomeCategoria());
         categoriaAtualPeloId = CategoriaResponseDomain.builder()
                 .idCategoria(categoriaAtualPeloId.getIdCategoria())
                 .nomeCategoria(categoriaRequestDomain.getNomeCategoria())
@@ -94,12 +93,11 @@ public class CategoriaUseCase {
      * validacao para mudancas como atualizar e adicionar o banco
      *
      * @param nome
-     *
      * @returnCategoriaResponseDomain
      */
-    private CategoriaResponseDomain consultarCategoriaPeloNome(String nome){
+    private CategoriaResponseDomain consultarCategoriaPeloNome(String nome) {
         CategoriaResponseDomain categoriaResponseDomain = categoriaGateway.consultarCategoriaPeloNome(nome);
-        if(categoriaResponseDomain != null){
+        if (categoriaResponseDomain != null) {
             throw new CategoriaDuplicadaException("Categoria já existente: " + nome);
         }
         return categoriaGateway.consultarCategoriaPeloNome(nome);
@@ -109,13 +107,12 @@ public class CategoriaUseCase {
      * Método responsável por verificar se uma categoria está vinculada a um produto antes de sua exclusão
      *
      * @param categoriaResponseDomain
-     *
      * @return produtoResponseDomain
      */
-    private Object consultarSeCategoriaTemProduto(CategoriaResponseDomain categoriaResponseDomain){
+    private Object consultarSeCategoriaTemProduto(CategoriaResponseDomain categoriaResponseDomain) {
         CategoriaResponseDomain categoriaSalva = categoriaGateway.consultarCategoriaPeloNome(categoriaResponseDomain.getNomeCategoria());
         List<ProdutoResponseDomain> produtoResponseDomain = produtoGateway.consultarProdutosPelaMarcaOuCategoria(categoriaSalva.getNomeCategoria());
-        if(!produtoResponseDomain.isEmpty()){
+        if (!produtoResponseDomain.isEmpty()) {
             throw new CategoriaEmUsoException("Categoria em uso para um produto");
         }
         return produtoResponseDomain;

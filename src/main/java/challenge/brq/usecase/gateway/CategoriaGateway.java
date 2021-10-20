@@ -1,7 +1,7 @@
 package challenge.brq.usecase.gateway;
 
-import challenge.brq.usecase.domain.model.request.CategoriaRequestDomain;
-import challenge.brq.usecase.domain.model.response.CategoriaResponseDomain;
+import challenge.brq.usecase.model.request.CategoriaRequestDomain;
+import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 
 import java.util.List;
 

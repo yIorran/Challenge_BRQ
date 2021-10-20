@@ -1,9 +1,9 @@
-package challenge.brq.usecase;
+package challenge.brq.usecase.service;
 
-import challenge.brq.usecase.domain.model.request.CategoriaRequestDomain;
-import challenge.brq.usecase.domain.model.request.ProdutoRequestDomain;
-import challenge.brq.usecase.domain.model.response.CategoriaResponseDomain;
-import challenge.brq.usecase.domain.model.response.ProdutoResponseDomain;
+import challenge.brq.usecase.model.request.CategoriaRequestDomain;
+import challenge.brq.usecase.model.request.ProdutoRequestDomain;
+import challenge.brq.usecase.model.response.CategoriaResponseDomain;
+import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import challenge.brq.usecase.gateway.ProdutoGateway;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,32 +16,31 @@ public class ProdutoUseCase {
 
     private final ProdutoGateway produtoGateway;
 
-    public List<ProdutoResponseDomain> consultarProdutos(){
+    public List<ProdutoResponseDomain> consultarProdutos() {
         return produtoGateway.consultarProdutos();
     }
 
-    public ProdutoResponseDomain adicionaProdutos(ProdutoRequestDomain produtoRequestDomain){
+    public ProdutoResponseDomain adicionaProdutos(ProdutoRequestDomain produtoRequestDomain) {
         return produtoGateway.adicionaProdutos(produtoRequestDomain);
     }
 
-    public void excluiProdutoPeloId(Integer idCategoria){
+    public void excluiProdutoPeloId(Integer idCategoria) {
         produtoGateway.excluirProdutosPeloId(idCategoria);
     }
 
-    public ProdutoResponseDomain consultarProdutosPeloId(Integer idProduto){
+    public ProdutoResponseDomain consultarProdutosPeloId(Integer idProduto) {
         return produtoGateway.consultarProdutosPeloId(idProduto);
     }
 
 
     public List<ProdutoResponseDomain> consultarProdutosPelaMarcaOuCategoria(String marca, String categoria) {
-       if (marca == null) {
-           return produtoGateway.consultarProdutosPelaMarcaOuCategoria(categoria);
-       }
-        else
-        return produtoGateway.consultarProdutosPelaMarcaOuCategoria(marca);
+        if (marca == null) {
+            return produtoGateway.consultarProdutosPelaMarcaOuCategoria(categoria);
+        } else
+            return produtoGateway.consultarProdutosPelaMarcaOuCategoria(marca);
     }
 
-    public ProdutoResponseDomain atualizarProdutos(Integer id, ProdutoRequestDomain produtoRequestDomain){
+    public ProdutoResponseDomain atualizarProdutos(Integer id, ProdutoRequestDomain produtoRequestDomain) {
         ProdutoResponseDomain produtoAtual = consultarProdutosPeloId(id);
         produtoAtual = ProdutoResponseDomain.builder()
                 .codigoProduto(produtoAtual.getCodigoProduto())
@@ -75,14 +74,11 @@ public class ProdutoUseCase {
         return produtoGateway.atualizarProdutosParcial(produtoAtual);
     }
 
-    private CategoriaResponseDomain converter(CategoriaRequestDomain categoriaRequestDomain){
+    private CategoriaResponseDomain converter(CategoriaRequestDomain categoriaRequestDomain) {
         return CategoriaResponseDomain.builder()
                 .idCategoria(categoriaRequestDomain.getIdCategoria())
                 .nomeCategoria(categoriaRequestDomain.getNomeCategoria())
                 .build();
     }
-
-
-
-    }
+}
 

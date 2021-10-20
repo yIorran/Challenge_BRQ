@@ -15,5 +15,4 @@ public class ExceptionModelResponse {
     private String mensagem;
 
 
-
 }

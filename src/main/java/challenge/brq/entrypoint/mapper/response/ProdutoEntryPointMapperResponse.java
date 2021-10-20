@@ -1,7 +1,7 @@
 package challenge.brq.entrypoint.mapper.response;
 
 import challenge.brq.entrypoint.model.response.ProdutoModelResponse;
-import challenge.brq.usecase.domain.model.response.ProdutoResponseDomain;
+import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,15 +9,16 @@ import java.util.List;
 public class ProdutoEntryPointMapperResponse {
 
     public static List<ProdutoModelResponse> converter
-            (List<ProdutoResponseDomain> produtosResponseDomain){
+            (List<ProdutoResponseDomain> produtosResponseDomain) {
         List<ProdutoModelResponse> produtosModelResponse = new ArrayList<>();
-        produtosResponseDomain.forEach(produtoResponseDomain -> {ProdutoModelResponse produtoModelResponse = converterProduto(produtoResponseDomain);
-        produtosModelResponse.add(produtoModelResponse);
+        produtosResponseDomain.forEach(produtoResponseDomain -> {
+            ProdutoModelResponse produtoModelResponse = converterProduto(produtoResponseDomain);
+            produtosModelResponse.add(produtoModelResponse);
         });
         return produtosModelResponse;
     }
 
-    public static ProdutoModelResponse converterProduto(ProdutoResponseDomain produtoResponseDomain){
+    public static ProdutoModelResponse converterProduto(ProdutoResponseDomain produtoResponseDomain) {
         return ProdutoModelResponse.builder().idProduto(produtoResponseDomain.getCodigoProduto())
                 .nome(produtoResponseDomain.getNomeProduto())
                 .descricao(produtoResponseDomain.getDescricaoProduto())
@@ -32,7 +33,7 @@ public class ProdutoEntryPointMapperResponse {
     }
 
 
-    public static ProdutoModelResponse converterParaAtualizacao(Integer id, ProdutoResponseDomain produtoResponseDomain){
+    public static ProdutoModelResponse converterParaAtualizacao(Integer id, ProdutoResponseDomain produtoResponseDomain) {
         return ProdutoModelResponse.builder()
                 .idProduto(id)
                 .nome(produtoResponseDomain.getNomeProduto())
