@@ -72,6 +72,7 @@ Adding product:
 ``` 
 http://localhost:8079/produtos
 ```
+![Post](https://user-images.githubusercontent.com/76667034/138158137-36b36f5e-7516-4112-b02a-f7b9684b33d3.PNG)
 
 ### PUT
  
@@ -83,6 +84,7 @@ Updating product:
 ``` 
 http://localhost:8079/produtos/{id}
 ```
+![Put](https://user-images.githubusercontent.com/76667034/138157986-1b32fdf1-465a-43bc-bbe9-5d3de6557472.PNG)
 
 ### PATCH
  
@@ -90,5 +92,5 @@ Updating product partially:
 ``` 
 http://localhost:8079/produtos/{id}
 ```
-
+![Patch](https://user-images.githubusercontent.com/76667034/138157840-171b2abc-4481-4ab9-881c-f4f5301e8b67.PNG)
 
