@@ -18,6 +18,6 @@ this is why I am developing this code mentored by: @kevingabrielmelo and @CaioHB
 - A category cannot be excluded if there is a product linked to it.
 - While adding a new category, we must inform only the "nome"
 - While adding a new product, we must inform: "nome", "descricao", "quantidade", "preco" and "categoria"{"id"}.
-- While updating a full procuct using PUT verb, we must inform the procuct ID on PathVariable and in the body inform: "nome", "descricao", "quantidade", "preco", "ofertado", 
-"ativo", "porcentagem" and "categoria"{"id"} (this last one just if necessary).
+- When adding a new product, the attributes "ofertado", "ativo" and "porcentagem" are setted with default values, being: <br>"ativo":true, <br>"ofertado":false <br>and "porcentagem":0
+- While updating a full procuct using PUT verb, we must inform the procuct ID on PathVariable and in the body inform: "nome", "descricao", "quantidade", "preco", "ofertado", "ativo", "porcentagem" and "categoria"{"id"} (this last one just if necessary).
 - You can also update a product partially using the PATCH verb, so you just inform the attributes you are going to change.
