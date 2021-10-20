@@ -1,8 +1,6 @@
 package challenge.brq.dataprovider.mapper.response;
 
 import challenge.brq.dataprovider.entity.ProdutoEntity;
-import challenge.brq.dataprovider.mapper.request.CategoriaRequestMapper;
-import challenge.brq.entrypoint.mapper.response.CategoriaEntryPointMapperResponse;
 import challenge.brq.usecase.domain.model.response.ProdutoResponseDomain;
 
 import java.util.ArrayList;

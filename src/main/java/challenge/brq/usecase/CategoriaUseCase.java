@@ -9,9 +9,6 @@ import challenge.brq.usecase.exception.CategoriaNaoEncontradaException;
 import challenge.brq.usecase.gateway.CategoriaGateway;
 import challenge.brq.usecase.gateway.ProdutoGateway;
 import lombok.AllArgsConstructor;
-import net.bytebuddy.dynamic.DynamicType;
-import org.apache.el.stream.Optional;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
