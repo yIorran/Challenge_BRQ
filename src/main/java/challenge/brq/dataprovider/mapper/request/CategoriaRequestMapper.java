@@ -1,8 +1,8 @@
 package challenge.brq.dataprovider.mapper.request;
 
 import challenge.brq.dataprovider.entity.CategoriaEntity;
-import challenge.brq.usecase.domain.model.request.CategoriaRequestDomain;
-import challenge.brq.usecase.domain.model.response.CategoriaResponseDomain;
+import challenge.brq.usecase.model.request.CategoriaRequestDomain;
+import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 
 import java.util.Objects;
 

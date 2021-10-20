@@ -1,11 +1,11 @@
-package challenge.brq.dataprovider;
+package challenge.brq.dataprovider.service;
 
 import challenge.brq.dataprovider.entity.CategoriaEntity;
 import challenge.brq.dataprovider.mapper.request.CategoriaRequestMapper;
 import challenge.brq.dataprovider.mapper.response.CategoriaResponseMapper;
 import challenge.brq.dataprovider.repository.CategoriaRepository;
-import challenge.brq.usecase.domain.model.request.CategoriaRequestDomain;
-import challenge.brq.usecase.domain.model.response.CategoriaResponseDomain;
+import challenge.brq.usecase.model.request.CategoriaRequestDomain;
+import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.gateway.CategoriaGateway;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -29,10 +29,9 @@ public class CategoriaDataProvider implements CategoriaGateway {
     @Override
     public CategoriaResponseDomain consultarCategoriaPeloId(Integer idCategoria) {
         Optional<CategoriaEntity> categoriaEntity = categoriaRepository.findById(idCategoria);
-        if(categoriaEntity.isPresent()) {
+        if (categoriaEntity.isPresent()) {
             return CategoriaResponseMapper.converterCategoria(categoriaEntity.get());
-        }
-        else
+        } else
             return null;
     }
 
@@ -46,9 +45,9 @@ public class CategoriaDataProvider implements CategoriaGateway {
     @Transactional
     @Override
     public CategoriaResponseDomain adicionaCategoria(CategoriaRequestDomain categoriaRequestDomain) {
-            CategoriaEntity categoriaEntity = CategoriaRequestMapper.converter(categoriaRequestDomain);
-            CategoriaEntity categoriaEntitySalvo = categoriaRepository.save(categoriaEntity);
-            return CategoriaResponseMapper.converterCategoria(categoriaEntitySalvo);
+        CategoriaEntity categoriaEntity = CategoriaRequestMapper.converter(categoriaRequestDomain);
+        CategoriaEntity categoriaEntitySalvo = categoriaRepository.save(categoriaEntity);
+        return CategoriaResponseMapper.converterCategoria(categoriaEntitySalvo);
     }
 
     @Transactional
@@ -62,10 +61,9 @@ public class CategoriaDataProvider implements CategoriaGateway {
     @Override
     public CategoriaResponseDomain consultarCategoriaPeloNome(String nome) {
         CategoriaEntity categoriaEntity = categoriaRepository.findByNomeCategoriaIgnoreCaseLike(nome);
-        if(categoriaEntity != null) {
+        if (categoriaEntity != null) {
             return CategoriaResponseMapper.converterCategoria(categoriaEntity);
-        }
-        else
+        } else
             return null;
     }
 

@@ -4,9 +4,9 @@ import challenge.brq.entrypoint.mapper.request.CategoriaEntryPointMapperRequest;
 import challenge.brq.entrypoint.mapper.response.CategoriaEntryPointMapperResponse;
 import challenge.brq.entrypoint.model.request.CategoriaModelRequest;
 import challenge.brq.entrypoint.model.response.CategoriaModelResponse;
-import challenge.brq.usecase.CategoriaUseCase;
-import challenge.brq.usecase.domain.model.request.CategoriaRequestDomain;
-import challenge.brq.usecase.domain.model.response.CategoriaResponseDomain;
+import challenge.brq.usecase.service.CategoriaUseCase;
+import challenge.brq.usecase.model.request.CategoriaRequestDomain;
+import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,9 +38,9 @@ public class CategoriaController {
      * @return CategoriaModelResponse
      */
     @GetMapping
-    public ResponseEntity<Object> listarCategorias(){
+    public ResponseEntity<?> listarCategorias() {
         List<CategoriaResponseDomain> categoriasModel = categoriaUseCase.consultarCategorias();
-        if(categoriasModel.isEmpty()){
+        if (categoriasModel.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         List<CategoriaModelResponse> dataModelResponse = CategoriaEntryPointMapperResponse.converter(categoriasModel);
@@ -53,11 +53,10 @@ public class CategoriaController {
      * Caso exista, retornara a categoria referente àquele id com HTTPStatus OK
      *
      * @param idCategoria
-     *
      * @return CategoriaModelResponse
      */
     @GetMapping("{idCategoria}")
-    public ResponseEntity<Object> listarCategorias(@PathVariable Integer idCategoria){
+    public ResponseEntity<CategoriaModelResponse> listarCategorias(@PathVariable Integer idCategoria) {
         CategoriaResponseDomain categoriasModel = categoriaUseCase.consultarCategoriasPeloId(idCategoria);
         CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterCategoria(categoriasModel);
         return ResponseEntity.ok(categoriaModelResponse);
@@ -69,11 +68,10 @@ public class CategoriaController {
      * Caso exista, retornara a categoria referente àquele id com HTTPStatus OK
      *
      * @param idCategoria
-     *
      * @return void
      */
     @DeleteMapping("{idCategoria}")
-    public ResponseEntity<Void> excluiCategoriaPeloId(@PathVariable Integer idCategoria){
+    public ResponseEntity<Void> excluiCategoriaPeloId(@PathVariable Integer idCategoria) {
         categoriaUseCase.excluiCategoriaPeloId(idCategoria);
         return ResponseEntity.ok().build();
     }
@@ -81,18 +79,17 @@ public class CategoriaController {
     /**
      * Metodo responsavel por persistir uma nova categoria no banco, recebendo um CategoriaModelRequest
      * e retornando um CategoriaModelResponse.
-     *
+     * <p>
      * Caso a categoria ja esteja persistida em nosso banco num ID diferente sera retornado
      * um HTTPStatus 422 UNPROCESSABLE_ENTITY
-     *
+     * <p>
      * Caso a categoria nao esteja persistida sera retornado um HTTPStatus CREATED 204
      *
      * @param categoriaModelRequest
-     *
      * @return CategoriaModelResponse
      */
     @PostMapping
-    public ResponseEntity<?> adicionaCategoria(@RequestBody CategoriaModelRequest categoriaModelRequest) {
+    public ResponseEntity<CategoriaModelResponse> adicionaCategoria(@RequestBody CategoriaModelRequest categoriaModelRequest) {
         CategoriaRequestDomain categoriaRequestDomain = CategoriaEntryPointMapperRequest.converterNome(categoriaModelRequest);
         CategoriaResponseDomain categoriaResponseDomain = categoriaUseCase.adicionaCategoria(categoriaRequestDomain);
         CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterCategoria(categoriaResponseDomain);
@@ -105,16 +102,14 @@ public class CategoriaController {
      * sempre proibindo a duplicata de objetos no banco
      *
      * @param idCategoria
-     *
      * @param categoriaModelRequest
-     *
      * @return CategoriaModelResponse
      */
     @PutMapping("{idCategoria}")
-    public ResponseEntity<CategoriaModelResponse> atualizaCategoria(@PathVariable Integer idCategoria,@RequestBody CategoriaModelRequest categoriaModelRequest){
+    public ResponseEntity<CategoriaModelResponse> atualizaCategoria(@PathVariable Integer idCategoria, @RequestBody CategoriaModelRequest categoriaModelRequest) {
         CategoriaRequestDomain categoriaIdRequestDomain = CategoriaEntryPointMapperRequest.converterNome(categoriaModelRequest);
-        CategoriaResponseDomain responseDomainId = categoriaUseCase.atualizaCategoria(idCategoria,categoriaIdRequestDomain);
-        CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterParaAtualizacao(idCategoria,responseDomainId);
+        CategoriaResponseDomain responseDomainId = categoriaUseCase.atualizaCategoria(idCategoria, categoriaIdRequestDomain);
+        CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterParaAtualizacao(idCategoria, responseDomainId);
         return new ResponseEntity<>(categoriaModelResponse, HttpStatus.OK);
     }
 

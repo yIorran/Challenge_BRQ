@@ -1,8 +1,8 @@
 package challenge.brq.usecase.exception;
 
-public class CategoriaDuplicadaException extends RuntimeException{
+public class CategoriaDuplicadaException extends RuntimeException {
 
-    public CategoriaDuplicadaException(String mensagem){
+    public CategoriaDuplicadaException(String mensagem) {
         super(mensagem);
     }
 

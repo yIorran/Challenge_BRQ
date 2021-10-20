@@ -48,7 +48,7 @@ public class ProdutoEntity {
     @Column(name = "MARCA_PRODUTO")
     private String marcaProduto;
 
-    @ManyToOne(targetEntity=CategoriaEntity.class)
+    @ManyToOne(targetEntity = CategoriaEntity.class)
     @JoinColumn(nullable = false)
     private CategoriaEntity categoria;
 

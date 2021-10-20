@@ -1,4 +1,4 @@
-package challenge.brq.usecase.domain.model.response;
+package challenge.brq.usecase.model.response;
 
 import lombok.Builder;
 import lombok.Getter;

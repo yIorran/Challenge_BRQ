@@ -1,11 +1,11 @@
 package challenge.brq.entrypoint.mapper.request;
 
 import challenge.brq.entrypoint.model.request.ProdutoModelRequest;
-import challenge.brq.usecase.domain.model.request.ProdutoRequestDomain;
+import challenge.brq.usecase.model.request.ProdutoRequestDomain;
 
 public class ProdutoEntryPointMapperRequest {
 
-    public static ProdutoRequestDomain converter(ProdutoModelRequest produtoModelRequest){
+    public static ProdutoRequestDomain converter(ProdutoModelRequest produtoModelRequest) {
         return ProdutoRequestDomain.builder()
                 .codigoProduto(produtoModelRequest.getIdProduto())
                 .nomeProduto(produtoModelRequest.getNome())
@@ -20,12 +20,13 @@ public class ProdutoEntryPointMapperRequest {
                 .build();
     }
 
-    public static ProdutoRequestDomain converterMarca(String marca){
+    public static ProdutoRequestDomain converterMarca(String marca) {
         return ProdutoRequestDomain.builder().
                 marcaProduto(marca)
                 .build();
     }
-    public static ProdutoRequestDomain converterParaAtualizacaoParcial(ProdutoModelRequest produtoModelRequest){
+
+    public static ProdutoRequestDomain converterParaAtualizacaoParcial(ProdutoModelRequest produtoModelRequest) {
         return ProdutoRequestDomain.builder()
                 .codigoProduto(produtoModelRequest.getIdProduto())
                 .nomeProduto(produtoModelRequest.getNome())
@@ -40,7 +41,7 @@ public class ProdutoEntryPointMapperRequest {
                 .build();
     }
 
-    public static ProdutoRequestDomain converterParaAtualizacao(ProdutoModelRequest produtoModelRequest){
+    public static ProdutoRequestDomain converterParaAtualizacao(ProdutoModelRequest produtoModelRequest) {
         return ProdutoRequestDomain.builder()
                 .codigoProduto(produtoModelRequest.getIdProduto())
                 .nomeProduto(produtoModelRequest.getNome())

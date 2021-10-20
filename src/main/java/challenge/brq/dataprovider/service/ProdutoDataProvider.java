@@ -1,11 +1,11 @@
-package challenge.brq.dataprovider;
+package challenge.brq.dataprovider.service;
 
 import challenge.brq.dataprovider.entity.ProdutoEntity;
 import challenge.brq.dataprovider.mapper.request.ProdutoRequestMapper;
 import challenge.brq.dataprovider.mapper.response.ProdutoResponseMapper;
 import challenge.brq.dataprovider.repository.ProdutoRepository;
-import challenge.brq.usecase.domain.model.request.ProdutoRequestDomain;
-import challenge.brq.usecase.domain.model.response.ProdutoResponseDomain;
+import challenge.brq.usecase.model.request.ProdutoRequestDomain;
+import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import challenge.brq.usecase.gateway.ProdutoGateway;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -50,7 +50,7 @@ public class ProdutoDataProvider implements ProdutoGateway {
     @Override
     public List<ProdutoResponseDomain> consultarProdutosPelaMarcaOuCategoria(String marcaOuCategoria) {
         List<ProdutoEntity> produtoEntityMarcaOuCategoria = produtoRepository.findByMarcaProdutoContaining(marcaOuCategoria);
-        if(produtoEntityMarcaOuCategoria.isEmpty()){
+        if (produtoEntityMarcaOuCategoria.isEmpty()) {
             produtoEntityMarcaOuCategoria = produtoRepository.categoria(marcaOuCategoria);
         }
         return ProdutoResponseMapper.converter(produtoEntityMarcaOuCategoria);

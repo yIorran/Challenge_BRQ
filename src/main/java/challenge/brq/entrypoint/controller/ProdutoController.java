@@ -4,9 +4,9 @@ import challenge.brq.entrypoint.mapper.request.ProdutoEntryPointMapperRequest;
 import challenge.brq.entrypoint.mapper.response.ProdutoEntryPointMapperResponse;
 import challenge.brq.entrypoint.model.request.ProdutoModelRequest;
 import challenge.brq.entrypoint.model.response.ProdutoModelResponse;
-import challenge.brq.usecase.ProdutoUseCase;
-import challenge.brq.usecase.domain.model.request.ProdutoRequestDomain;
-import challenge.brq.usecase.domain.model.response.ProdutoResponseDomain;
+import challenge.brq.usecase.service.ProdutoUseCase;
+import challenge.brq.usecase.model.request.ProdutoRequestDomain;
+import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +40,6 @@ public class ProdutoController {
      *
      * @param ""
      * @param marca
-     *
      * @return Retorna os produtos que contém igualdade nas strings
      * Exemplo
      * Apple
@@ -59,8 +58,10 @@ public class ProdutoController {
         }
         return ResponseEntity.noContent().build();
     }
+
     /**
      * Método responsável por receber um Id, fazer a busca no banco
+     *
      * @param idProduto
      * @return Retorna o item referente ao ID informado
      */
@@ -68,7 +69,7 @@ public class ProdutoController {
     public ResponseEntity<Object> consultarProdutosPeloID(@PathVariable Integer idProduto) {
         ProdutoResponseDomain produtosModel = produtoUseCase.consultarProdutosPeloId(idProduto);
         ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterProduto(produtosModel);
-        if(produtoModelResponse != null) {
+        if (produtoModelResponse != null) {
             return ResponseEntity.ok(produtoModelResponse);
         }
         return ResponseEntity.notFound().build();
@@ -79,7 +80,6 @@ public class ProdutoController {
      * e retornando um ProdutoModelResponse.
      *
      * @param produtoModelRequest
-     *
      * @return produtoModelResponse
      */
     @PostMapping
@@ -94,7 +94,6 @@ public class ProdutoController {
      * Metodo responsavel por excluir um produto pelo Id informado na rota "produtos/{id}"
      *
      * @param idProduto
-     *
      * @return void
      */
     @DeleteMapping("{idProduto}")
@@ -116,41 +115,38 @@ public class ProdutoController {
      * "porcentagem":
      *
      * @param idProduto
-     *
      * @param produtoModelRequest
-     *
      * @return produtoModelResponse
      */
     @PutMapping("{idProduto}")
     public ResponseEntity<ProdutoModelResponse> atualizarProdutos(@PathVariable Integer idProduto,
                                                                   @RequestBody ProdutoModelRequest produtoModelRequest) {
         ProdutoRequestDomain produtoRequestDomain = ProdutoEntryPointMapperRequest.converterParaAtualizacao(produtoModelRequest);
-        ProdutoResponseDomain produtoResponseDomain = produtoUseCase.atualizarProdutos(idProduto,produtoRequestDomain);
-        ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterParaAtualizacao(idProduto,produtoResponseDomain);
+        ProdutoResponseDomain produtoResponseDomain = produtoUseCase.atualizarProdutos(idProduto, produtoRequestDomain);
+        ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterParaAtualizacao(idProduto, produtoResponseDomain);
         return new ResponseEntity<>(produtoModelResponse, HttpStatus.OK);
     }
 
     /**
      * Metodo responsavel por atualizar parcialmente um produto persistido no banco
      * Para a atualizacao parcial pode informar apenas os atributos desejados
-     *
+     * <p>
      * PARA CATEGORIA:
-     *
-     *                             "categoria":{
-     *                               "id":2
-     *                              }
+     * <p>
+     * "categoria":{
+     * "id":2
+     * }
      *
      * @param idProduto
-     *
      * @param produtoModelRequest
-     *
      * @return produtoModelResponse
      */
     @PatchMapping("{idProduto}")
-    public ResponseEntity<ProdutoModelResponse> atualizarProdutosParcial(@PathVariable Integer idProduto,@RequestBody ProdutoModelRequest produtoModelRequest) {
+    public ResponseEntity<ProdutoModelResponse> atualizarProdutosParcial(@PathVariable Integer idProduto,
+                                                                @RequestBody ProdutoModelRequest produtoModelRequest) {
         ProdutoRequestDomain produtoRequestDomain = ProdutoEntryPointMapperRequest.converterParaAtualizacaoParcial(produtoModelRequest);
-        ProdutoResponseDomain produtoResponseDomain = produtoUseCase.atualizarProdutosParcial(idProduto,produtoRequestDomain);
-        ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterParaAtualizacao(idProduto,produtoResponseDomain);
+        ProdutoResponseDomain produtoResponseDomain = produtoUseCase.atualizarProdutosParcial(idProduto, produtoRequestDomain);
+        ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterParaAtualizacao(idProduto, produtoResponseDomain);
         return new ResponseEntity<>(produtoModelResponse, HttpStatus.OK);
     }
 }

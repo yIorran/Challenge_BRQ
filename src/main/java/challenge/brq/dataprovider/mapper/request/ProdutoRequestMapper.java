@@ -1,12 +1,12 @@
 package challenge.brq.dataprovider.mapper.request;
 
 import challenge.brq.dataprovider.entity.ProdutoEntity;
-import challenge.brq.usecase.domain.model.request.ProdutoRequestDomain;
-import challenge.brq.usecase.domain.model.response.ProdutoResponseDomain;
+import challenge.brq.usecase.model.request.ProdutoRequestDomain;
+import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 
 public class ProdutoRequestMapper {
 
-    public static ProdutoEntity converter(ProdutoRequestDomain produtoRequestDomain){
+    public static ProdutoEntity converter(ProdutoRequestDomain produtoRequestDomain) {
         return ProdutoEntity.builder()
                 .nomeProduto(produtoRequestDomain.getNomeProduto())
                 .descricaoProduto(produtoRequestDomain.getDescricaoProduto())
@@ -20,7 +20,7 @@ public class ProdutoRequestMapper {
                 .build();
     }
 
-    public static ProdutoEntity converterParaAtualizacao(ProdutoResponseDomain produtoResponseDomain){
+    public static ProdutoEntity converterParaAtualizacao(ProdutoResponseDomain produtoResponseDomain) {
         return ProdutoEntity.builder()
                 .nomeProduto(produtoResponseDomain.getNomeProduto())
                 .codigoProduto(produtoResponseDomain.getCodigoProduto())

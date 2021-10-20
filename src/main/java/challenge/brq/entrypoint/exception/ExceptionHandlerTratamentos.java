@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class ExceptionHandlerTratamentos  extends ExceptionModelResponse {
+public class ExceptionHandlerTratamentos extends ExceptionModelResponse {
 
 
     @ExceptionHandler(CategoriaNaoEncontradaException.class)
-    public final ResponseEntity<?> categoriaNaoEncontrada(Exception e){
+    public final ResponseEntity<?> categoriaNaoEncontrada(Exception e) {
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
 
         ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, e);
@@ -22,7 +22,7 @@ public class ExceptionHandlerTratamentos  extends ExceptionModelResponse {
     }
 
     @ExceptionHandler(CategoriaDuplicadaException.class)
-    public final ResponseEntity<?> categoriaDuplicada(Exception e){
+    public final ResponseEntity<?> categoriaDuplicada(Exception e) {
         HttpStatus httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
 
         ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, e);
