@@ -11,7 +11,7 @@ And more.. for more information about technologies and dependencies look into po
 <br>
 This project has the objective to pushing my knowledge to the limits, develop my abilities with Clean Architecture and get better on writing clean and easy-changing codes,
 improving and refactoring codes easily are one of the biggest dificulties that developers have today, doing it since the begining of your career must have a long term advantage
-this is why I am developing this code mentored by: @kevingabrielmelo and @CaioHBastos.<br>
+and this is why I am developing this project mentored by: @kevingabrielmelo and @CaioHBastos.<br>
 This project is a model of supermarket website, having the rules and functionalities below:
 <br>
 
