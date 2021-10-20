@@ -49,6 +49,45 @@ this is why I am developing this code mentored by: @kevingabrielmelo and @CaioHB
 ```
  http://localhost:8079/produtos/{id}
 ```
- <br>
+ 
+ ### DELETE
+ 
+ Deleting by category id:
+``` 
+http://localhost:8079/categorias/{id}
+```
+Deleting by product id:
+``` 
+http://localhost:8079/produtos/{id}
+```
+ 
+ ### POST
+ 
+Adding category:
+``` 
+http://localhost:8079/categorias
+```
+Adding product:
+``` 
+http://localhost:8079/produtos
+```
+
+### PUT
+ 
+Updating category:
+``` 
+http://localhost:8079/categorias/{id}
+```
+Updating product:
+``` 
+http://localhost:8079/produtos/{id}
+```
+
+### PATCH
+ 
+Updating product partially:
+``` 
+http://localhost:8079/produtos/{id}
+```
 
 
