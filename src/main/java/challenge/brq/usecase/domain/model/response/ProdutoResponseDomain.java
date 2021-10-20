@@ -1,6 +1,5 @@
 package challenge.brq.usecase.domain.model.response;
 
-import challenge.brq.dataprovider.entity.CategoriaEntity;
 import lombok.Builder;
 import lombok.Getter;
 
