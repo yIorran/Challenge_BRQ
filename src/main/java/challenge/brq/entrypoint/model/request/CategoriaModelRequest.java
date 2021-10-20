@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Classe responsavel por conter os atributos de entryPoint
+ */
 @Getter
 @Builder
 @AllArgsConstructor

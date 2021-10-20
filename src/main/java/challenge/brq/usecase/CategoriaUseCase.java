@@ -105,6 +105,13 @@ public class CategoriaUseCase {
         return categoriaGateway.consultarCategoriaPeloNome(nome);
     }
 
+    /**
+     * Método responsável por verificar se uma categoria está vinculada a um produto antes de sua exclusão
+     *
+     * @param categoriaResponseDomain
+     *
+     * @return produtoResponseDomain
+     */
     private Object consultarSeCategoriaTemProduto(CategoriaResponseDomain categoriaResponseDomain){
         CategoriaResponseDomain categoriaSalva = categoriaGateway.consultarCategoriaPeloNome(categoriaResponseDomain.getNomeCategoria());
         List<ProdutoResponseDomain> produtoResponseDomain = produtoGateway.consultarProdutosPelaMarcaOuCategoria(categoriaSalva.getNomeCategoria());

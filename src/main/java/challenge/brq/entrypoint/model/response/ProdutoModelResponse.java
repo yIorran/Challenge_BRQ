@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+/**
+ * Classe responsavel por conter os atributos de endPoint, esses atributos são mostrados no JSON
+ */
 @Getter
 @Builder
 @EqualsAndHashCode
