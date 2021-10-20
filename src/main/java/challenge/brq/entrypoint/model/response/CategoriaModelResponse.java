@@ -7,6 +7,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+/**
+ * Classe responsavel por conter os atributos de endPoint, esses atributos são mostrados no JSON
+ */
 @Getter
 @Builder
 @EqualsAndHashCode
