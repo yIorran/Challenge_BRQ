@@ -111,7 +111,7 @@ public class CategoriaUseCase {
      */
     private Object consultarSeCategoriaTemProduto(CategoriaResponseDomain categoriaResponseDomain) {
         CategoriaResponseDomain categoriaSalva = categoriaGateway.consultarCategoriaPeloNome(categoriaResponseDomain.getNomeCategoria());
-        List<ProdutoResponseDomain> produtoResponseDomain = produtoGateway.consultarProdutosPelaMarcaOuCategoria(categoriaSalva.getNomeCategoria());
+        List<ProdutoResponseDomain> produtoResponseDomain = produtoGateway.consultarProdutosPelaMarca(categoriaSalva.getNomeCategoria());
         if (!produtoResponseDomain.isEmpty()) {
             throw new CategoriaEmUsoException("Categoria em uso para um produto");
         }
