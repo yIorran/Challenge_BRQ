@@ -50,13 +50,12 @@ public class ProdutoController {
     public ResponseEntity<List<ProdutoModelResponse>> listarProdutosPelaMarca(@RequestParam(required = false) String marca,
                                                                               @RequestParam(required = false) String categoria) {
         List<ProdutoResponseDomain> produtosModelRetornaMarcaOuCategoria = produtoUseCase.consultarProdutosPelaMarcaOuCategoria(marca, categoria);
-        List<ProdutoResponseDomain> produtoModelRetornaTodos = produtoUseCase.consultarProdutos();
-        List<ProdutoModelResponse> dataModelResponse = ProdutoEntryPointMapperResponse.converter(produtoModelRetornaTodos);
-        if (!produtosModelRetornaMarcaOuCategoria.isEmpty()) {
-            dataModelResponse = ProdutoEntryPointMapperResponse.converter(produtosModelRetornaMarcaOuCategoria);
-            return ResponseEntity.ok(dataModelResponse);
+        if (produtosModelRetornaMarcaOuCategoria.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.noContent().build();
+        List<ProdutoModelResponse> dataModelResponse = ProdutoEntryPointMapperResponse.converter(produtosModelRetornaMarcaOuCategoria);
+        return ResponseEntity.ok(dataModelResponse);
+
     }
 
     /**
@@ -69,10 +68,10 @@ public class ProdutoController {
     public ResponseEntity<Object> consultarProdutosPeloID(@PathVariable Integer idProduto) {
         ProdutoResponseDomain produtosModel = produtoUseCase.consultarProdutosPeloId(idProduto);
         ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterProduto(produtosModel);
-        if (produtoModelResponse != null) {
-            return ResponseEntity.ok(produtoModelResponse);
+        if (produtoModelResponse == null) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(produtoModelResponse);
     }
 
     /**

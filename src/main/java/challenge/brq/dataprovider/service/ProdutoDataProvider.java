@@ -48,10 +48,19 @@ public class ProdutoDataProvider implements ProdutoGateway {
     }
 
     @Override
-    public List<ProdutoResponseDomain> consultarProdutosPelaMarcaOuCategoria(String marcaOuCategoria) {
+    public List<ProdutoResponseDomain> consultarProdutosPelaMarca(String marcaOuCategoria) {
         List<ProdutoEntity> produtoEntityMarcaOuCategoria = produtoRepository.findByMarcaProdutoContaining(marcaOuCategoria);
         if (produtoEntityMarcaOuCategoria.isEmpty()) {
-            produtoEntityMarcaOuCategoria = produtoRepository.categoria(marcaOuCategoria);
+            consultarProdutosPelaCategoria(marcaOuCategoria);
+        }
+        return ProdutoResponseMapper.converter(produtoEntityMarcaOuCategoria);
+    }
+
+    @Override
+    public List<ProdutoResponseDomain> consultarProdutosPelaCategoria(String categoriaOuMarca) {
+        List<ProdutoEntity> produtoEntityMarcaOuCategoria = produtoRepository.categoria(categoriaOuMarca);
+        if (produtoEntityMarcaOuCategoria.isEmpty()) {
+            consultarProdutos();
         }
         return ProdutoResponseMapper.converter(produtoEntityMarcaOuCategoria);
     }
