@@ -36,7 +36,7 @@ This project is a model of supermarket website, having the rules and functionali
  ```
  Listing all products:
 ```
- http://localhost:8079/produtos?marca={findAll}
+ http://localhost:8079/produtos
 ```
  Finding by category name:
 ```
