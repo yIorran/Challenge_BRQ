@@ -36,15 +36,11 @@ public class ProdutoController {
 
 
     /**
-     * Método responsável por retornar todos os produtos ou apenas um (filtrado pela marca)
+     * Método responsável por retornar todos os produtos, produtos filtrados pela categoria
+     * e produtos filtrados pela marca
      *
-     * @param ""
-     * @param marca
-     * @return Retorna os produtos que contém igualdade nas strings
-     * Exemplo
-     * Apple
-     * marca= "app"
-     * Então retornará itens da marca
+     * @param marca {String marca}
+     * @param categoria {String categoria}
      */
     @GetMapping
     public ResponseEntity<List<ProdutoModelResponse>> listarProdutosPelaMarca(@RequestParam(required = false) String marca,
@@ -59,7 +55,7 @@ public class ProdutoController {
     }
 
     /**
-     * Método responsável por receber um Id, fazer a busca no banco
+     * Método responsável por receber um Id, fazer a busca no banco do ID informado na rota
      *
      * @param idProduto
      * @return Retorna o item referente ao ID informado
@@ -75,8 +71,7 @@ public class ProdutoController {
     }
 
     /**
-     * Metodo responsavel por persistir um novo produto no banco, recebendo um ProdutoModelRequest
-     * e retornando um ProdutoModelResponse.
+     * Metodo responsavel por persistir um novo produto no banco, recebendo um Produto informado via JSON
      *
      * @param produtoModelRequest
      * @return produtoModelResponse
@@ -90,7 +85,7 @@ public class ProdutoController {
     }
 
     /**
-     * Metodo responsavel por excluir um produto pelo Id informado na rota "produtos/{id}"
+     * Metodo responsavel por excluir um produto pelo Id informado na rota
      *
      * @param idProduto
      * @return void
@@ -104,14 +99,6 @@ public class ProdutoController {
     /**
      * Metodo responsavel por atualizar um produto persistido no banco
      * Para atualizacao precisa informar no JSON
-     * "nome":
-     * "descricao":
-     * "marca":
-     * "quantidade":
-     * "preco":
-     * "ativo":
-     * "ofertado":
-     * "porcentagem":
      *
      * @param idProduto
      * @param produtoModelRequest
@@ -129,12 +116,7 @@ public class ProdutoController {
     /**
      * Metodo responsavel por atualizar parcialmente um produto persistido no banco
      * Para a atualizacao parcial pode informar apenas os atributos desejados
-     * <p>
-     * PARA CATEGORIA:
-     * <p>
-     * "categoria":{
-     * "id":2
-     * }
+     * 
      *
      * @param idProduto
      * @param produtoModelRequest

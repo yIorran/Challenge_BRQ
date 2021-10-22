@@ -1,0 +1,614 @@
+{
+	"info": {
+		"_postman_id": "72166133-d487-4621-a7e5-6c46ef22fae4",
+		"name": "Mercadinho do zé - BATERIA DE TESTES",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Categoria Requests",
+			"item": [
+				{
+					"name": "Get - Categorias",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Status code is 404\", function(){\r",
+									"    pm.sendRequest(\"http://localhost:8079/categorias/5\", function (err, response) {\r",
+									"        pm.expect(err).to.not.be.ok;\r",
+									"        pm.expect(response).to.have.property('code', 404);\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8079/categorias/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"categorias",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete - Categorias",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"    pm.test(\"Status code is 200, passed correct number\", function () {\r",
+									"        pm.sendRequest(\"http://localhost:8079/categorias/2\", function (err, response) {\r",
+									"        pm.expect(err).to.not.be.ok;\r",
+									"        pm.expect(response).to.have.property('code', 200);\r",
+									"    });\r",
+									"});\r",
+									"    pm.test(\"Status code is 404, passed wrong number\", function () {\r",
+									"            pm.sendRequest(\"http://localhost:8079/categorias/100\", function (err, response) {\r",
+									"            pm.expect(err).to.not.be.ok;\r",
+									"            pm.expect(response).to.have.property('code', 404);\r",
+									"        });\r",
+									"    });\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8079/categorias/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"categorias",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post - Categorias - expected 201",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 201, passed unknown value\", function () {\r",
+									"    pm.sendRequest(\"http://localhost:8079/categorias\",function (err, response) {\r",
+									"        console.log(response.json());\r",
+									"    });\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function criarStringAleatoria(length) {\r",
+									"    var result           = '';\r",
+									"    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    var charactersLength = characters.length;\r",
+									"    for ( var i = 0; i < length; i++ ) {\r",
+									"      result += characters.charAt(Math.floor(Math.random() * \r",
+									" charactersLength));\r",
+									"   }\r",
+									"   return result;\r",
+									"}\r",
+									"var valorAleatorio = criarStringAleatoria(5);\r",
+									"let nome = JSON.stringify({nome:valorAleatorio});\r",
+									"pm.variables.set('nome', nome);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{nome}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8079/categorias",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"categorias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post - Categorias - expected 422",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422, passed known value\", function () {\r",
+									"    pm.sendRequest(\"http://localhost:8079/categorias\",function (err, response) {\r",
+									"        console.log(response.json());\r",
+									"    });\r",
+									"    pm.response.to.have.status(422);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"let aa = JSON.stringify({nome:\"abecede\"});\r",
+									"pm.variables.set('nome', aa);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{nome}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8079/categorias",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"categorias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put - Categorias - expected 200",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function criarStringAleatoria(length) {\r",
+									"    var result           = '';\r",
+									"    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    var charactersLength = characters.length;\r",
+									"    for ( var i = 0; i < length; i++ ) {\r",
+									"      result += characters.charAt(Math.floor(Math.random() * \r",
+									" charactersLength));\r",
+									"   }\r",
+									"   return result;\r",
+									"}\r",
+									"var valorAleatorio = criarStringAleatoria(5);\r",
+									"let nome = JSON.stringify({nome:valorAleatorio});\r",
+									"pm.variables.set('nome', nome);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200, passed unknown value\", function () {\r",
+									"pm.sendRequest(\"http://localhost:8079/categorias/2\", function (err, response) {\r",
+									"    console.log(response.json());\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{nome}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8079/categorias/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"categorias",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put - Categorias - expected 422",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"let nome = JSON.stringify({nome:\"abecede\"});\r",
+									"pm.variables.set('nome', nome);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422, passed known value\", function () {\r",
+									"pm.sendRequest(\"http://localhost:8079/categorias/2\", function (err, response) {\r",
+									"console.log(response.json());\r",
+									"pm.response.to.have.status(422);\r",
+									"});\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{nome}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8079/categorias/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"categorias",
+								"8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Produto Requests",
+			"item": [
+				{
+					"name": "Get TODOS - Produtos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8079/produtos?marca=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"produtos"
+							],
+							"query": [
+								{
+									"key": "marca",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get por Categoria- Produtos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var categoria = pm.environment.set(\"categoria\", \"Eletronico\");\r",
+									"    pm.test(\"Status code is 204\", function () {\r",
+									"pm.environment.set(\"variable_key\", \"variable_value\");\r",
+									"        pm.sendRequest(\"http://localhost:8079/produtos?categoria=\" + categoria, function (err, response) {\r",
+									"        pm.expect(err).to.not.be.ok;\r",
+									"        pm.expect(response).to.have.property('code', 204);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8079/produtos?categoria=Eletronico",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"produtos"
+							],
+							"query": [
+								{
+									"key": "categoria",
+									"value": "Eletronico"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get por marca - Produtos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8079/produtos?marca=Dell",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"produtos"
+							],
+							"query": [
+								{
+									"key": "marca",
+									"value": "Dell"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete - Produtos",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8079/produtos/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"produtos",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post - Produtos",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Notebook dell\",\r\n    \"descricao\": \"Notebook dell 16gb ram, SSD 120gb\",\r\n    \"marca\": \"Dell\",\r\n    \"quantidade\": 1000,\r\n    \"preco\": 2500.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8079/produtos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put - produtos",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Notebook dell\",\r\n    \"descricao\": \"Notebook dell 16gb ram, SSD 120gb\",\r\n    \"marca\": \"Dell\",\r\n    \"quantidade\": 1000,\r\n    \"preco\": 2500.0,\r\n    \"ativo\": true,\r\n    \"ofertado\": true,\r\n    \"porcentagem\": 15\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8079/produtos/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"produtos",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch - produtos",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \r\n        \"categoria\":{\r\n        \"id\":2\r\n    }\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8079/produtos/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"produtos",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
