@@ -43,8 +43,8 @@ public class ProdutoController {
      * @param categoria {String categoria}
      */
     @GetMapping
-    public ResponseEntity<List<ProdutoModelResponse>> listarProdutosPelaMarca(@RequestParam(required = false) String marca,
-                                                                              @RequestParam(required = false) String categoria) {
+    public ResponseEntity<List<ProdutoModelResponse>> listarProdutos(@RequestParam(required = false) String marca,
+                                                                     @RequestParam(required = false) String categoria) {
         List<ProdutoResponseDomain> produtosModelRetornaMarcaOuCategoria = produtoUseCase.consultarProdutosPelaMarcaOuCategoria(marca, categoria);
         if (produtosModelRetornaMarcaOuCategoria.isEmpty()) {
             return ResponseEntity.noContent().build();

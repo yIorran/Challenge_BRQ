@@ -21,6 +21,9 @@ public class CategoriaEntryPointMapperRequest {
     }
 
     public static CategoriaRequestDomain converter(CategoriaModelRequest categoriaModelRequest) {
+        if(categoriaModelRequest == null){
+            return CategoriaRequestDomain.builder().build();
+        }
         return CategoriaRequestDomain.builder()
                 .nomeCategoria(categoriaModelRequest.getNome())
                 .idCategoria(categoriaModelRequest.getId())

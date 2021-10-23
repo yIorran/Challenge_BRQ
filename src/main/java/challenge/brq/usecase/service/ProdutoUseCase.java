@@ -1,10 +1,16 @@
 package challenge.brq.usecase.service;
 
+import challenge.brq.usecase.exception.categoria.CategoriaNaoEncontradaException;
+import challenge.brq.usecase.exception.categoria.CategoriaNaoExistenteParaAtualizacaoParcialException;
+import challenge.brq.usecase.exception.produto.AdicionarProdutosIncompletoException;
+import challenge.brq.usecase.exception.produto.ProdutoPorIDNaoEncontrado;
+import challenge.brq.usecase.exception.produto.QuantidadeMenorQueZeroException;
+import challenge.brq.usecase.gateway.CategoriaGateway;
+import challenge.brq.usecase.gateway.ProdutoGateway;
 import challenge.brq.usecase.model.request.CategoriaRequestDomain;
 import challenge.brq.usecase.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
-import challenge.brq.usecase.gateway.ProdutoGateway;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,19 +22,31 @@ public class ProdutoUseCase {
 
     private final ProdutoGateway produtoGateway;
 
+    private final CategoriaGateway categoriaGateway;
+
     public List<ProdutoResponseDomain> consultarProdutos() {
-        return produtoGateway.consultarProdutos();
+       return produtoGateway.consultarProdutos();
     }
 
     public ProdutoResponseDomain adicionaProdutos(ProdutoRequestDomain produtoRequestDomain) {
+        ProdutoRequestDomain produtoResponseDomainPesquisa = produtoRequestDomain;
+        verificarSeCategoriaExisteParaAdicao(produtoResponseDomainPesquisa);
+        Object id = categoriaGateway.consultarCategoriaPeloId(produtoResponseDomainPesquisa.getCategoria().getIdCategoria());
+        verificarSeCategoriaExisteParaAdicionar(id);
+        verificarSeQuantidadeMaiorIgualZero(produtoResponseDomainPesquisa.getQuantidadeProduto());
         return produtoGateway.adicionaProdutos(produtoRequestDomain);
     }
 
     public void excluiProdutoPeloId(Integer idCategoria) {
+        consultarProdutosPeloId(idCategoria);
         produtoGateway.excluirProdutosPeloId(idCategoria);
     }
 
     public ProdutoResponseDomain consultarProdutosPeloId(Integer idProduto) {
+        if(produtoGateway.consultarProdutosPeloId(idProduto) == null){
+            throw new ProdutoPorIDNaoEncontrado("Id não encontrado em nossa base: " + idProduto);
+        }
+        else
         return produtoGateway.consultarProdutosPeloId(idProduto);
     }
 
@@ -41,7 +59,6 @@ public class ProdutoUseCase {
         }
             return consultarProdutos();
     }
-
 
     public List<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca) {
             return produtoGateway.consultarProdutosPelaMarca(marca);
@@ -69,6 +86,9 @@ public class ProdutoUseCase {
     }
 
     public ProdutoResponseDomain atualizarProdutosParcial(Integer id, ProdutoRequestDomain produtoRequestDomain) {
+        consultarProdutosPeloId(id);
+        Object idCategoria = categoriaGateway.consultarCategoriaPeloId(produtoRequestDomain.getCategoria().getIdCategoria());
+        verificarSeCategoriaExisteParaAtualizacaoParcial(idCategoria);
         ProdutoResponseDomain produtoAtual = consultarProdutosPeloId(id);
         produtoAtual = ProdutoResponseDomain.builder()
                 .codigoProduto(produtoAtual.getCodigoProduto())
@@ -85,11 +105,38 @@ public class ProdutoUseCase {
         return produtoGateway.atualizarProdutosParcial(produtoAtual);
     }
 
+    // métodos auxiliares:
+
+    public void verificarSeCategoriaExisteParaAtualizacaoParcial(Object id){
+        if(id == null){
+            throw new CategoriaNaoExistenteParaAtualizacaoParcialException("Categoria informada inexistente para atualização");
+        }
+    }
+
+    public void verificarSeCategoriaExisteParaAdicionar(Object id){
+        if(id == null){
+            throw new CategoriaNaoEncontradaException("Categoria não encontrada para fazer adição");
+        }
+    }
+
+    public void verificarSeCategoriaExisteParaAdicao(ProdutoRequestDomain produtoRequestDomain){
+        if(produtoRequestDomain.getCategoria().getIdCategoria() == null){
+            throw new AdicionarProdutosIncompletoException("Categoria informada inexistente ou não informada.");
+        }
+    }
+
+    public void verificarSeQuantidadeMaiorIgualZero(Integer numero){
+        if(numero <= 0){
+            throw new QuantidadeMenorQueZeroException("Quantiade menor ou igual a 0.");
+        }
+    }
+
     private CategoriaResponseDomain converter(CategoriaRequestDomain categoriaRequestDomain) {
         return CategoriaResponseDomain.builder()
                 .idCategoria(categoriaRequestDomain.getIdCategoria())
                 .nomeCategoria(categoriaRequestDomain.getNomeCategoria())
                 .build();
     }
+
 }
 

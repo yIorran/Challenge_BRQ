@@ -4,9 +4,9 @@ import challenge.brq.dataprovider.entity.ProdutoEntity;
 import challenge.brq.dataprovider.mapper.request.ProdutoRequestMapper;
 import challenge.brq.dataprovider.mapper.response.ProdutoResponseMapper;
 import challenge.brq.dataprovider.repository.ProdutoRepository;
+import challenge.brq.usecase.gateway.ProdutoGateway;
 import challenge.brq.usecase.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
-import challenge.brq.usecase.gateway.ProdutoGateway;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,15 +30,23 @@ public class ProdutoDataProvider implements ProdutoGateway {
     @Override
     public ProdutoResponseDomain consultarProdutosPeloId(Integer idProduto) {
         Optional<ProdutoEntity> produtoEntity = produtoRepository.findById(idProduto);
+        if(produtoEntity.isEmpty()){
+            return null;
+        }
         return ProdutoResponseMapper.converterProduto(produtoEntity.get());
     }
 
     @Transactional
     @Override
     public ProdutoResponseDomain adicionaProdutos(ProdutoRequestDomain produtoRequestDomain) {
-        ProdutoEntity produtoEntity = ProdutoRequestMapper.converter(produtoRequestDomain);
-        ProdutoEntity produtoEntitySalvo = produtoRepository.save(produtoEntity);
-        return ProdutoResponseMapper.converterProduto(produtoEntitySalvo);
+        if(produtoRequestDomain.getCategoria().getIdCategoria() == null){
+            return null;
+        }
+        else {
+            ProdutoEntity produtoEntity = ProdutoRequestMapper.converter(produtoRequestDomain);
+            ProdutoEntity produtoEntitySalvo = produtoRepository.save(produtoEntity);
+            return ProdutoResponseMapper.converterProduto(produtoEntitySalvo);
+        }
     }
 
     @Transactional
@@ -79,5 +87,15 @@ public class ProdutoDataProvider implements ProdutoGateway {
         ProdutoEntity produtoEntitySalvo = produtoRepository.save(produtoEntity);
         return ProdutoResponseMapper.converterProdutoParaAtualizacao(produtoEntitySalvo);
     }
+
+    @Override
+    public List<ProdutoResponseDomain> consultarProdutosParaExclusaoDeCategorias(String marcaOuCategoria) {
+        List<ProdutoEntity> produtoEntityMarcaOuCategoria = produtoRepository.findByMarcaProdutoContaining(marcaOuCategoria);
+        if (produtoEntityMarcaOuCategoria.isEmpty()) {
+            produtoEntityMarcaOuCategoria = produtoRepository.categoria(marcaOuCategoria);
+        }
+        return ProdutoResponseMapper.converter(produtoEntityMarcaOuCategoria);
+    }
+
 
 }

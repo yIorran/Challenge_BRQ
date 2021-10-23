@@ -1,20 +1,29 @@
 package challenge.brq.entrypoint.exception;
 
-import challenge.brq.usecase.exception.categoria.CategoriaDuplicadaException;
-import challenge.brq.usecase.exception.categoria.CategoriaEmUsoException;
-import challenge.brq.usecase.exception.categoria.CategoriaNaoEncontradaException;
-import challenge.brq.usecase.exception.categoria.CategoriaNaoExistenteParaAtualizacaoParcialException;
+import challenge.brq.usecase.exception.produto.AdicionarProdutosIncompletoException;
+import challenge.brq.usecase.exception.produto.NenhumProdutoException;
+import challenge.brq.usecase.exception.produto.ProdutoPorIDNaoEncontrado;
+import challenge.brq.usecase.exception.produto.QuantidadeMenorQueZeroException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class CategoriaExceptionHandlerTratamentos extends ExceptionModelResponse {
+public class ProdutoExceptionHandlerTratamentos extends ExceptionModelResponse {
 
 
-    @ExceptionHandler(CategoriaNaoEncontradaException.class)
-    public final ResponseEntity<?> categoriaNaoEncontrada(Exception e) {
+    @ExceptionHandler(NenhumProdutoException.class)
+    public final ResponseEntity<?> nenhumProdutoException(Exception e) {
+        HttpStatus httpStatus = HttpStatus.NO_CONTENT;
+
+        ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, e);
+
+        return ResponseEntity.status(httpStatus).body(exceptionModelResponse);
+    }
+
+    @ExceptionHandler(ProdutoPorIDNaoEncontrado.class)
+    public final ResponseEntity<?> produtoPorIDNaoEncontrado(Exception e) {
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
 
         ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, e);
@@ -22,27 +31,18 @@ public class CategoriaExceptionHandlerTratamentos extends ExceptionModelResponse
         return ResponseEntity.status(httpStatus).body(exceptionModelResponse);
     }
 
-    @ExceptionHandler(CategoriaDuplicadaException.class)
-    public final ResponseEntity<?> categoriaDuplicada(Exception e) {
-        HttpStatus httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-
-        ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, e);
-
-        return ResponseEntity.status(httpStatus).body(exceptionModelResponse);
-    }
-
-    @ExceptionHandler(CategoriaEmUsoException.class)
-    public final ResponseEntity<?> handlerEntidadeEmUso(Exception exception) {
-        HttpStatus httpStatus = HttpStatus.CONFLICT;
+    @ExceptionHandler(AdicionarProdutosIncompletoException.class)
+    public final ResponseEntity<?> adicionarProdutosIncompleto(Exception exception) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
         ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, exception);
 
         return ResponseEntity.status(httpStatus).body(exceptionModelResponse);
     }
 
-    @ExceptionHandler(CategoriaNaoExistenteParaAtualizacaoParcialException.class)
-    public final ResponseEntity<?> categoriaNaoExistenteParaAtualizacaoParcialException(Exception exception) {
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+    @ExceptionHandler(QuantidadeMenorQueZeroException.class)
+    public final ResponseEntity<?> quantidadeInvalida(Exception exception) {
+        HttpStatus httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
 
         ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, exception);
 

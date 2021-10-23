@@ -1,4 +1,4 @@
-package challenge.brq.usecase.exception;
+package challenge.brq.usecase.exception.categoria;
 
 public class CategoriaEmUsoException extends RuntimeException {
 

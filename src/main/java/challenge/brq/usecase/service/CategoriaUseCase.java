@@ -3,9 +3,9 @@ package challenge.brq.usecase.service;
 import challenge.brq.usecase.model.request.CategoriaRequestDomain;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
-import challenge.brq.usecase.exception.CategoriaDuplicadaException;
-import challenge.brq.usecase.exception.CategoriaEmUsoException;
-import challenge.brq.usecase.exception.CategoriaNaoEncontradaException;
+import challenge.brq.usecase.exception.categoria.CategoriaDuplicadaException;
+import challenge.brq.usecase.exception.categoria.CategoriaEmUsoException;
+import challenge.brq.usecase.exception.categoria.CategoriaNaoEncontradaException;
 import challenge.brq.usecase.gateway.CategoriaGateway;
 import challenge.brq.usecase.gateway.ProdutoGateway;
 import lombok.AllArgsConstructor;
@@ -111,8 +111,8 @@ public class CategoriaUseCase {
      */
     private Object consultarSeCategoriaTemProduto(CategoriaResponseDomain categoriaResponseDomain) {
         CategoriaResponseDomain categoriaSalva = categoriaGateway.consultarCategoriaPeloNome(categoriaResponseDomain.getNomeCategoria());
-        List<ProdutoResponseDomain> produtoResponseDomain = produtoGateway.consultarProdutosPelaMarca(categoriaSalva.getNomeCategoria());
-        if (!produtoResponseDomain.isEmpty()) {
+        List<ProdutoResponseDomain> produtoResponseDomain = produtoGateway.consultarProdutosParaExclusaoDeCategorias(categoriaSalva.getNomeCategoria());
+        if(!produtoResponseDomain.isEmpty()) {
             throw new CategoriaEmUsoException("Categoria em uso para um produto");
         }
         return produtoResponseDomain;
