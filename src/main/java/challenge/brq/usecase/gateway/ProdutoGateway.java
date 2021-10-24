@@ -1,7 +1,6 @@
 package challenge.brq.usecase.gateway;
 
 import challenge.brq.usecase.model.request.ProdutoRequestDomain;
-import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 
 import java.util.List;
@@ -20,9 +19,11 @@ public interface ProdutoGateway {
 
     List<ProdutoResponseDomain> consultarProdutosPelaCategoria(String categoria);
 
-    ProdutoResponseDomain atualizaProdutos(ProdutoResponseDomain produtoResponseDomain);
-
     ProdutoResponseDomain atualizarProdutosParcial(ProdutoResponseDomain produtoResponseDomain);
 
     List<ProdutoResponseDomain> consultarProdutosParaExclusaoDeCategorias(String nomeOuCategoria);
+
+    ProdutoResponseDomain consultarProdutoPosStatus(Boolean status);
+
+
 }

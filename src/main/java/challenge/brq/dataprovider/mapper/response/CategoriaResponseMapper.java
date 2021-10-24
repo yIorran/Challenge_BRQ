@@ -5,6 +5,7 @@ import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CategoriaResponseMapper {
 
@@ -30,6 +31,16 @@ public class CategoriaResponseMapper {
     public static CategoriaResponseDomain converterCategoriaParaAtualizacao(Integer id, CategoriaEntity categoriaEntity) {
         return CategoriaResponseDomain.builder()
                 .idCategoria(id)
+                .nomeCategoria(categoriaEntity.getNomeCategoria())
+                .build();
+    }
+
+    public static CategoriaResponseDomain converterCategoriaParaAtualizacaoParcial(CategoriaEntity categoriaEntity) {
+        if(Objects.isNull(categoriaEntity)){
+            return CategoriaResponseDomain.builder().build();
+        }
+        return CategoriaResponseDomain.builder()
+                .idCategoria(categoriaEntity.getId())
                 .nomeCategoria(categoriaEntity.getNomeCategoria())
                 .build();
     }

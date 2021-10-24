@@ -4,9 +4,9 @@ import challenge.brq.entrypoint.mapper.request.ProdutoEntryPointMapperRequest;
 import challenge.brq.entrypoint.mapper.response.ProdutoEntryPointMapperResponse;
 import challenge.brq.entrypoint.model.request.ProdutoModelRequest;
 import challenge.brq.entrypoint.model.response.ProdutoModelResponse;
-import challenge.brq.usecase.service.ProdutoUseCase;
 import challenge.brq.usecase.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
+import challenge.brq.usecase.service.ProdutoUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +39,7 @@ public class ProdutoController {
      * Método responsável por retornar todos os produtos, produtos filtrados pela categoria
      * e produtos filtrados pela marca
      *
-     * @param marca {String marca}
+     * @param marca     {String marca}
      * @param categoria {String categoria}
      */
     @GetMapping
@@ -97,26 +97,8 @@ public class ProdutoController {
     }
 
     /**
-     * Metodo responsavel por atualizar um produto persistido no banco
-     * Para atualizacao precisa informar no JSON
-     *
-     * @param idProduto
-     * @param produtoModelRequest
-     * @return produtoModelResponse
-     */
-    @PutMapping("{idProduto}")
-    public ResponseEntity<ProdutoModelResponse> atualizarProdutos(@PathVariable Integer idProduto,
-                                                                  @RequestBody ProdutoModelRequest produtoModelRequest) {
-        ProdutoRequestDomain produtoRequestDomain = ProdutoEntryPointMapperRequest.converterParaAtualizacao(produtoModelRequest);
-        ProdutoResponseDomain produtoResponseDomain = produtoUseCase.atualizarProdutos(idProduto, produtoRequestDomain);
-        ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterParaAtualizacao(idProduto, produtoResponseDomain);
-        return new ResponseEntity<>(produtoModelResponse, HttpStatus.OK);
-    }
-
-    /**
      * Metodo responsavel por atualizar parcialmente um produto persistido no banco
      * Para a atualizacao parcial pode informar apenas os atributos desejados
-     * 
      *
      * @param idProduto
      * @param produtoModelRequest
@@ -124,7 +106,7 @@ public class ProdutoController {
      */
     @PatchMapping("{idProduto}")
     public ResponseEntity<ProdutoModelResponse> atualizarProdutosParcial(@PathVariable Integer idProduto,
-                                                                @RequestBody ProdutoModelRequest produtoModelRequest) {
+                                                                         @RequestBody ProdutoModelRequest produtoModelRequest) {
         ProdutoRequestDomain produtoRequestDomain = ProdutoEntryPointMapperRequest.converterParaAtualizacaoParcial(produtoModelRequest);
         ProdutoResponseDomain produtoResponseDomain = produtoUseCase.atualizarProdutosParcial(idProduto, produtoRequestDomain);
         ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterParaAtualizacao(idProduto, produtoResponseDomain);

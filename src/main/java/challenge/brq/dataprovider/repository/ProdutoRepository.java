@@ -16,6 +16,8 @@ public interface ProdutoRepository extends JpaRepository<ProdutoEntity, Integer>
     List<ProdutoEntity> findByNomeProduto(String nome);
 
     @Query("select p from ProdutoEntity p join p.categoria categoria where categoria.nomeCategoria=:nome")
-    List<ProdutoEntity> categoria(@Param("nome") String nome);
+    List<ProdutoEntity> pesquisarPorNomeCategoria(@Param("nome") String nome);
+
+    ProdutoEntity findByProdutoAtivo(Boolean status);
 
 }

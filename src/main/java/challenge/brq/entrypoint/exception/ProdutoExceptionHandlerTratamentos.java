@@ -1,9 +1,6 @@
 package challenge.brq.entrypoint.exception;
 
-import challenge.brq.usecase.exception.produto.AdicionarProdutosIncompletoException;
-import challenge.brq.usecase.exception.produto.NenhumProdutoException;
-import challenge.brq.usecase.exception.produto.ProdutoPorIDNaoEncontrado;
-import challenge.brq.usecase.exception.produto.QuantidadeMenorQueZeroException;
+import challenge.brq.usecase.exception.produto.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -42,6 +39,15 @@ public class ProdutoExceptionHandlerTratamentos extends ExceptionModelResponse {
 
     @ExceptionHandler(QuantidadeMenorQueZeroException.class)
     public final ResponseEntity<?> quantidadeInvalida(Exception exception) {
+        HttpStatus httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+
+        ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, exception);
+
+        return ResponseEntity.status(httpStatus).body(exceptionModelResponse);
+    }
+
+    @ExceptionHandler(QuantidadeZeroEProdutoAtivo.class)
+    public final ResponseEntity<?> quantidadeZeroEProdutoAtivo(Exception exception) {
         HttpStatus httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
 
         ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, exception);

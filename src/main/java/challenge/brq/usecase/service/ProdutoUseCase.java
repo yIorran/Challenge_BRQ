@@ -5,6 +5,7 @@ import challenge.brq.usecase.exception.categoria.CategoriaNaoExistenteParaAtuali
 import challenge.brq.usecase.exception.produto.AdicionarProdutosIncompletoException;
 import challenge.brq.usecase.exception.produto.ProdutoPorIDNaoEncontrado;
 import challenge.brq.usecase.exception.produto.QuantidadeMenorQueZeroException;
+import challenge.brq.usecase.exception.produto.QuantidadeZeroEProdutoAtivo;
 import challenge.brq.usecase.gateway.CategoriaGateway;
 import challenge.brq.usecase.gateway.ProdutoGateway;
 import challenge.brq.usecase.model.request.CategoriaRequestDomain;
@@ -25,7 +26,7 @@ public class ProdutoUseCase {
     private final CategoriaGateway categoriaGateway;
 
     public List<ProdutoResponseDomain> consultarProdutos() {
-       return produtoGateway.consultarProdutos();
+        return produtoGateway.consultarProdutos();
     }
 
     public ProdutoResponseDomain adicionaProdutos(ProdutoRequestDomain produtoRequestDomain) {
@@ -43,53 +44,40 @@ public class ProdutoUseCase {
     }
 
     public ProdutoResponseDomain consultarProdutosPeloId(Integer idProduto) {
-        if(produtoGateway.consultarProdutosPeloId(idProduto) == null){
+        if (produtoGateway.consultarProdutosPeloId(idProduto) == null) {
             throw new ProdutoPorIDNaoEncontrado("Id não encontrado em nossa base: " + idProduto);
-        }
-        else
-        return produtoGateway.consultarProdutosPeloId(idProduto);
+        } else
+            return produtoGateway.consultarProdutosPeloId(idProduto);
     }
 
-    public List<ProdutoResponseDomain> consultarProdutosPelaMarcaOuCategoria(String marca, String categoria){
-        if(categoria != null){
-           return consultarProdutosPelaCategoria(categoria);
-        }
-        else if(marca != null){
+    public List<ProdutoResponseDomain> consultarProdutosPelaMarcaOuCategoria(String marca, String categoria) {
+        if (categoria != null) {
+            return consultarProdutosPelaCategoria(categoria);
+        } else if (marca != null) {
             return consultarProdutosPelaMarca(marca);
         }
-            return consultarProdutos();
+        return consultarProdutos();
     }
 
     public List<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca) {
-            return produtoGateway.consultarProdutosPelaMarca(marca);
+        return produtoGateway.consultarProdutosPelaMarca(marca);
     }
 
     public List<ProdutoResponseDomain> consultarProdutosPelaCategoria(String categoria) {
-            return produtoGateway.consultarProdutosPelaCategoria(categoria);
+        return produtoGateway.consultarProdutosPelaCategoria(categoria);
     }
 
-    public ProdutoResponseDomain atualizarProdutos(Integer id, ProdutoRequestDomain produtoRequestDomain) {
-        ProdutoResponseDomain produtoAtual = consultarProdutosPeloId(id);
-        produtoAtual = ProdutoResponseDomain.builder()
-                .codigoProduto(produtoAtual.getCodigoProduto())
-                .nomeProduto(produtoRequestDomain.getNomeProduto())
-                .descricaoProduto(produtoRequestDomain.getDescricaoProduto())
-                .marcaProduto(produtoRequestDomain.getMarcaProduto())
-                .quantidadeProduto(produtoRequestDomain.getQuantidadeProduto())
-                .precoProduto(produtoRequestDomain.getPrecoProduto())
-                .produtoAtivo(produtoRequestDomain.getProdutoAtivo())
-                .produtoOfertado(produtoRequestDomain.getProdutoOfertado())
-                .porcentagem(produtoRequestDomain.getPorcentagem())
-                .categoria(produtoAtual.getCategoria())
-                .build();
-        return produtoGateway.atualizaProdutos(produtoAtual);
-    }
 
+    /*
+    TODO
+    Preciso verificar o motivo de não conseguir atualizar se não informar a categoria no body
+     */
     public ProdutoResponseDomain atualizarProdutosParcial(Integer id, ProdutoRequestDomain produtoRequestDomain) {
         consultarProdutosPeloId(id);
         Object idCategoria = categoriaGateway.consultarCategoriaPeloId(produtoRequestDomain.getCategoria().getIdCategoria());
         verificarSeCategoriaExisteParaAtualizacaoParcial(idCategoria);
         ProdutoResponseDomain produtoAtual = consultarProdutosPeloId(id);
+        verificarSeStatusDoProdutoEAtivo(produtoRequestDomain);
         produtoAtual = ProdutoResponseDomain.builder()
                 .codigoProduto(produtoAtual.getCodigoProduto())
                 .nomeProduto(produtoRequestDomain.getNomeProduto() == null ? produtoAtual.getNomeProduto() : produtoRequestDomain.getNomeProduto())
@@ -107,26 +95,32 @@ public class ProdutoUseCase {
 
     // métodos auxiliares:
 
-    public void verificarSeCategoriaExisteParaAtualizacaoParcial(Object id){
-        if(id == null){
+    public void verificarSeStatusDoProdutoEAtivo(ProdutoRequestDomain produtoRequestDomain){
+        if(produtoRequestDomain.getQuantidadeProduto() == 0 && produtoRequestDomain.getProdutoAtivo() == true){
+            throw new QuantidadeZeroEProdutoAtivo("Produto não pode ser ativo se a quantidade for igual a 0");
+        }
+    }
+
+    public void verificarSeCategoriaExisteParaAtualizacaoParcial(Object id) {
+        if (id == null) {
             throw new CategoriaNaoExistenteParaAtualizacaoParcialException("Categoria informada inexistente para atualização");
         }
     }
 
-    public void verificarSeCategoriaExisteParaAdicionar(Object id){
-        if(id == null){
+    public void verificarSeCategoriaExisteParaAdicionar(Object id) {
+        if (id == null) {
             throw new CategoriaNaoEncontradaException("Categoria não encontrada para fazer adição");
         }
     }
 
-    public void verificarSeCategoriaExisteParaAdicao(ProdutoRequestDomain produtoRequestDomain){
-        if(produtoRequestDomain.getCategoria().getIdCategoria() == null){
+    public void verificarSeCategoriaExisteParaAdicao(ProdutoRequestDomain produtoRequestDomain) {
+        if (produtoRequestDomain.getCategoria().getIdCategoria() == null) {
             throw new AdicionarProdutosIncompletoException("Categoria informada inexistente ou não informada.");
         }
     }
 
-    public void verificarSeQuantidadeMaiorIgualZero(Integer numero){
-        if(numero <= 0){
+    public void verificarSeQuantidadeMaiorIgualZero(Integer numero) {
+        if (numero <= 0) {
             throw new QuantidadeMenorQueZeroException("Quantiade menor ou igual a 0.");
         }
     }
@@ -137,6 +131,4 @@ public class ProdutoUseCase {
                 .nomeCategoria(categoriaRequestDomain.getNomeCategoria())
                 .build();
     }
-
 }
-
