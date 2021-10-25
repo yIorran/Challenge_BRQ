@@ -28,11 +28,10 @@ public class ProdutoUseCase {
     }
 
     public ProdutoResponseDomain adicionaProdutos(ProdutoRequestDomain produtoRequestDomain) {
-        ProdutoRequestDomain produtoResponseDomainPesquisa = produtoRequestDomain;
-        verificarSeCategoriaExisteParaAdicao(produtoResponseDomainPesquisa);
-        Object id = categoriaGateway.consultarCategoriaPeloId(produtoResponseDomainPesquisa.getCategoria().getIdCategoria());
+        verificarSeCategoriaExisteParaAdicao(produtoRequestDomain);
+        Object id = categoriaGateway.consultarCategoriaPeloId(produtoRequestDomain.getCategoria().getIdCategoria());
         verificarSeCategoriaExisteParaAdicionar(id);
-        verificarSeQuantidadeMaiorIgualZero(produtoResponseDomainPesquisa.getQuantidadeProduto());
+        verificarSeQuantidadeMaiorIgualZero(produtoRequestDomain.getQuantidadeProduto());
         return produtoGateway.adicionaProdutos(produtoRequestDomain);
     }
 
@@ -66,16 +65,13 @@ public class ProdutoUseCase {
     }
 
 
-    /*
-    TODO
-    Preciso verificar o motivo de não conseguir atualizar se não informar a categoria no body
-     */
     public ProdutoResponseDomain atualizarProdutosParcial(Integer id, ProdutoRequestDomain produtoRequestDomain) {
         ProdutoResponseDomain produtoAtual = consultarProdutosPeloId(id);
         CategoriaResponseDomain idCategoria = categoriaGateway.consultarCategoriaPeloId(produtoRequestDomain.getCategoria().getIdCategoria());
         verificarSeCategoriaExisteParaAtualizacaoParcial(idCategoria);
         verificarSeStatusDoProdutoEAtivo(produtoRequestDomain);
         verificarSePorcentagemMaiorQueZero(produtoRequestDomain);
+        verificarSeOfertadoAtivoEStatusAtivo(produtoRequestDomain);
         produtoAtual = ProdutoResponseDomain.builder()
                 .codigoProduto(produtoAtual.getCodigoProduto())
                 .nomeProduto(produtoRequestDomain.getNomeProduto() == null ? produtoAtual.getNomeProduto() : produtoRequestDomain.getNomeProduto())
@@ -92,11 +88,6 @@ public class ProdutoUseCase {
     }
 
     // métodos auxiliares:
-
-    /*
-    TODO
-    Colocar condição SE VALOR FOR *NULO*, pular para o próximo método
-     */
 
     public ProdutoResponseDomain verificarSePorcentagemMaiorQueZero(ProdutoRequestDomain produtoRequestDomain){
         if(produtoRequestDomain.getPorcentagem() == null && produtoRequestDomain.getProdutoOfertado() == null){
@@ -145,6 +136,19 @@ public class ProdutoUseCase {
         if (produtoRequestDomain.getCategoria().getIdCategoria() == null) {
             throw new AdicionarProdutosIncompletoException("Categoria informada inexistente ou não informada.");
         }
+    }
+
+    public ProdutoResponseDomain verificarSeOfertadoAtivoEStatusAtivo(ProdutoRequestDomain produtoRequestDomain) {
+        if(produtoRequestDomain.getProdutoAtivo() == null && produtoRequestDomain.getProdutoOfertado() == null){
+            return ProdutoResponseDomain.builder().build();
+        }
+        if(produtoRequestDomain.getProdutoAtivo() == null || produtoRequestDomain.getProdutoOfertado() == null){
+            return ProdutoResponseDomain.builder().build();
+        }
+        if (produtoRequestDomain.getProdutoAtivo() == false && produtoRequestDomain.getProdutoOfertado() == true) {
+            throw new VerificarSeStatusInativoEOfertadoAtivoException("O produto não pode ser ofertado se o mesmo estiver inativo.");
+        }
+        return null;
     }
 
     public void verificarSeQuantidadeMaiorIgualZero(Integer numero) {
