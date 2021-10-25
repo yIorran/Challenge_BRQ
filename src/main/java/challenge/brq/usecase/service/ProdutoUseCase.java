@@ -2,10 +2,7 @@ package challenge.brq.usecase.service;
 
 import challenge.brq.usecase.exception.categoria.CategoriaNaoEncontradaException;
 import challenge.brq.usecase.exception.categoria.CategoriaNaoExistenteParaAtualizacaoParcialException;
-import challenge.brq.usecase.exception.produto.AdicionarProdutosIncompletoException;
-import challenge.brq.usecase.exception.produto.ProdutoPorIDNaoEncontrado;
-import challenge.brq.usecase.exception.produto.QuantidadeMenorQueZeroException;
-import challenge.brq.usecase.exception.produto.QuantidadeZeroEProdutoAtivo;
+import challenge.brq.usecase.exception.produto.*;
 import challenge.brq.usecase.gateway.CategoriaGateway;
 import challenge.brq.usecase.gateway.ProdutoGateway;
 import challenge.brq.usecase.model.request.CategoriaRequestDomain;
@@ -16,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -73,11 +71,11 @@ public class ProdutoUseCase {
     Preciso verificar o motivo de não conseguir atualizar se não informar a categoria no body
      */
     public ProdutoResponseDomain atualizarProdutosParcial(Integer id, ProdutoRequestDomain produtoRequestDomain) {
-        consultarProdutosPeloId(id);
-        Object idCategoria = categoriaGateway.consultarCategoriaPeloId(produtoRequestDomain.getCategoria().getIdCategoria());
-        verificarSeCategoriaExisteParaAtualizacaoParcial(idCategoria);
         ProdutoResponseDomain produtoAtual = consultarProdutosPeloId(id);
+        CategoriaResponseDomain idCategoria = categoriaGateway.consultarCategoriaPeloId(produtoRequestDomain.getCategoria().getIdCategoria());
+        verificarSeCategoriaExisteParaAtualizacaoParcial(idCategoria);
         verificarSeStatusDoProdutoEAtivo(produtoRequestDomain);
+        verificarSePorcentagemMaiorQueZero(produtoRequestDomain);
         produtoAtual = ProdutoResponseDomain.builder()
                 .codigoProduto(produtoAtual.getCodigoProduto())
                 .nomeProduto(produtoRequestDomain.getNomeProduto() == null ? produtoAtual.getNomeProduto() : produtoRequestDomain.getNomeProduto())
@@ -88,23 +86,53 @@ public class ProdutoUseCase {
                 .produtoAtivo(produtoRequestDomain.getProdutoAtivo() == null ? produtoAtual.getProdutoAtivo() : produtoRequestDomain.getProdutoAtivo())
                 .produtoOfertado(produtoRequestDomain.getProdutoOfertado() == null ? produtoAtual.getProdutoOfertado() : produtoRequestDomain.getProdutoOfertado())
                 .porcentagem(produtoRequestDomain.getPorcentagem() == null ? produtoAtual.getPorcentagem() : produtoRequestDomain.getPorcentagem())
-                .categoria(produtoRequestDomain.getCategoria() == null ? produtoAtual.getCategoria() : converter(produtoRequestDomain.getCategoria()))
+                .categoria(produtoRequestDomain.getCategoria() == null ? produtoAtual.getCategoria() : converter(produtoRequestDomain.getCategoria(), produtoAtual.getCategoria()))
                 .build();
         return produtoGateway.atualizarProdutosParcial(produtoAtual);
     }
 
     // métodos auxiliares:
 
-    public void verificarSeStatusDoProdutoEAtivo(ProdutoRequestDomain produtoRequestDomain){
+    /*
+    TODO
+    Colocar condição SE VALOR FOR *NULO*, pular para o próximo método
+     */
+
+    public ProdutoResponseDomain verificarSePorcentagemMaiorQueZero(ProdutoRequestDomain produtoRequestDomain){
+        if(produtoRequestDomain.getPorcentagem() == null && produtoRequestDomain.getProdutoOfertado() == null){
+            return ProdutoResponseDomain.builder().build();
+        }
+        if(produtoRequestDomain.getPorcentagem() == null || produtoRequestDomain.getProdutoOfertado() == null){
+            return ProdutoResponseDomain.builder().build();
+        }
+        if(produtoRequestDomain.getPorcentagem() <= 0 && produtoRequestDomain.getProdutoOfertado() == true){
+            throw new PorcentagemMaiorQueZeroException("O produto não pode ser ofertado se a porcentage for menor ou igual a 0 "
+            + "porcentagem atual: " + produtoRequestDomain.getPorcentagem());
+        }
+        return null;
+    }
+
+    public ProdutoResponseDomain verificarSeStatusDoProdutoEAtivo(ProdutoRequestDomain produtoRequestDomain){
+        if(produtoRequestDomain.getQuantidadeProduto() == null && produtoRequestDomain.getProdutoAtivo() == null){
+            return ProdutoResponseDomain.builder().build();
+        }
+        if(produtoRequestDomain.getQuantidadeProduto() == null || produtoRequestDomain.getProdutoAtivo() == null){
+            return ProdutoResponseDomain.builder().build();
+        }
         if(produtoRequestDomain.getQuantidadeProduto() == 0 && produtoRequestDomain.getProdutoAtivo() == true){
             throw new QuantidadeZeroEProdutoAtivo("Produto não pode ser ativo se a quantidade for igual a 0");
         }
+        return null;
     }
 
-    public void verificarSeCategoriaExisteParaAtualizacaoParcial(Object id) {
-        if (id == null) {
+    public CategoriaResponseDomain verificarSeCategoriaExisteParaAtualizacaoParcial(CategoriaResponseDomain categoriaResponseDomain) {
+        if (categoriaResponseDomain== null) {
+            return CategoriaResponseDomain.builder().build();
+        }
+        if (categoriaResponseDomain.getIdCategoria() == null) {
             throw new CategoriaNaoExistenteParaAtualizacaoParcialException("Categoria informada inexistente para atualização");
         }
+        return null;
     }
 
     public void verificarSeCategoriaExisteParaAdicionar(Object id) {
@@ -125,7 +153,13 @@ public class ProdutoUseCase {
         }
     }
 
-    private CategoriaResponseDomain converter(CategoriaRequestDomain categoriaRequestDomain) {
+    private CategoriaResponseDomain converter(CategoriaRequestDomain categoriaRequestDomain, CategoriaResponseDomain produtoRequestDomain) {
+        if(Objects.isNull(categoriaRequestDomain.getIdCategoria())){
+            return CategoriaResponseDomain.builder()
+                    .idCategoria(produtoRequestDomain.getIdCategoria())
+                    .nomeCategoria(produtoRequestDomain.getNomeCategoria())
+                    .build();
+        }
         return CategoriaResponseDomain.builder()
                 .idCategoria(categoriaRequestDomain.getIdCategoria())
                 .nomeCategoria(categoriaRequestDomain.getNomeCategoria())

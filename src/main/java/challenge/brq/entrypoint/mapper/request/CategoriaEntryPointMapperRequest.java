@@ -13,7 +13,7 @@ public class CategoriaEntryPointMapperRequest {
 
     public static CategoriaRequestDomain converterId(CategoriaModelRequest categoriaModelRequest) {
         if (Objects.isNull(categoriaModelRequest)) {
-            return null;
+            return CategoriaRequestDomain.builder().build();
         }
         return CategoriaRequestDomain.builder()
                 .idCategoria(categoriaModelRequest.getId())

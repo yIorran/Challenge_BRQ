@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
@@ -28,10 +29,14 @@ public class CategoriaDataProvider implements CategoriaGateway {
 
     @Override
     public CategoriaResponseDomain consultarCategoriaPeloId(Integer idCategoria) {
+        if(Objects.isNull(idCategoria)){
+            return null;
+        }
         Optional<CategoriaEntity> categoriaEntity = categoriaRepository.findById(idCategoria);
         if (categoriaEntity.isPresent()) {
             return CategoriaResponseMapper.converterCategoria(categoriaEntity.get());
-        } else
+        }
+        else
             return null;
     }
 
