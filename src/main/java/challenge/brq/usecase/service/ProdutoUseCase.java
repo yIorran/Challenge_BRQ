@@ -29,7 +29,7 @@ public class ProdutoUseCase {
 
     public ProdutoResponseDomain adicionaProdutos(ProdutoRequestDomain produtoRequestDomain) {
         verificarSeCategoriaExisteParaAdicao(produtoRequestDomain);
-        Object id = categoriaGateway.consultarCategoriaPeloId(produtoRequestDomain.getCategoria().getIdCategoria());
+        Object id = consultarProdutosPeloIdParaAtualizarParcial(produtoRequestDomain.getCategoria().getIdCategoria());
         verificarSeCategoriaExisteParaAdicionar(id);
         verificarSeQuantidadeMaiorIgualZero(produtoRequestDomain.getQuantidadeProduto());
         return produtoGateway.adicionaProdutos(produtoRequestDomain);
@@ -43,6 +43,16 @@ public class ProdutoUseCase {
     public ProdutoResponseDomain consultarProdutosPeloId(Integer idProduto) {
         if (produtoGateway.consultarProdutosPeloId(idProduto) == null) {
             throw new ProdutoPorIDNaoEncontrado("Id não encontrado em nossa base: " + idProduto);
+        } else
+            return produtoGateway.consultarProdutosPeloId(idProduto);
+    }
+
+    public ProdutoResponseDomain consultarProdutosPeloIdParaAtualizarParcial(Integer idProduto) {
+        if (idProduto == null) {
+            return ProdutoResponseDomain.builder().build();
+        }
+        if (produtoGateway.consultarProdutosPeloId(idProduto) == null) {
+            throw new CategoriaNaoExistenteParaAtualizacaoParcialException("Categoria informada inexistente para atualização");
         } else
             return produtoGateway.consultarProdutosPeloId(idProduto);
     }
@@ -66,9 +76,8 @@ public class ProdutoUseCase {
 
 
     public ProdutoResponseDomain atualizarProdutosParcial(Integer id, ProdutoRequestDomain produtoRequestDomain) {
+        consultarProdutosPeloIdParaAtualizarParcial(produtoRequestDomain.getCategoria().getIdCategoria());
         ProdutoResponseDomain produtoAtual = consultarProdutosPeloId(id);
-        CategoriaResponseDomain idCategoria = categoriaGateway.consultarCategoriaPeloId(produtoRequestDomain.getCategoria().getIdCategoria());
-        verificarSeCategoriaExisteParaAtualizacaoParcial(idCategoria);
         verificarSeStatusDoProdutoEAtivo(produtoRequestDomain);
         verificarSePorcentagemMaiorQueZero(produtoRequestDomain);
         verificarSeOfertadoAtivoEStatusAtivo(produtoRequestDomain);
@@ -112,16 +121,6 @@ public class ProdutoUseCase {
         }
         if(produtoRequestDomain.getQuantidadeProduto() == 0 && produtoRequestDomain.getProdutoAtivo() == true){
             throw new QuantidadeZeroEProdutoAtivo("Produto não pode ser ativo se a quantidade for igual a 0");
-        }
-        return null;
-    }
-
-    public CategoriaResponseDomain verificarSeCategoriaExisteParaAtualizacaoParcial(CategoriaResponseDomain categoriaResponseDomain) {
-        if (categoriaResponseDomain== null) {
-            return CategoriaResponseDomain.builder().build();
-        }
-        if (categoriaResponseDomain.getIdCategoria() == null) {
-            throw new CategoriaNaoExistenteParaAtualizacaoParcialException("Categoria informada inexistente para atualização");
         }
         return null;
     }
