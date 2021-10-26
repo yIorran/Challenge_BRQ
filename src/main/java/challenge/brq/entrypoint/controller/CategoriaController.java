@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -89,7 +90,7 @@ public class CategoriaController {
      * @return CategoriaModelResponse
      */
     @PostMapping
-    public ResponseEntity<CategoriaModelResponse> adicionaCategoria(@RequestBody CategoriaModelRequest categoriaModelRequest) {
+    public ResponseEntity<CategoriaModelResponse> adicionaCategoria(@RequestBody @Valid CategoriaModelRequest categoriaModelRequest) {
         CategoriaRequestDomain categoriaRequestDomain = CategoriaEntryPointMapperRequest.converterNome(categoriaModelRequest);
         CategoriaResponseDomain categoriaResponseDomain = categoriaUseCase.adicionaCategoria(categoriaRequestDomain);
         CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterCategoria(categoriaResponseDomain);
@@ -106,7 +107,7 @@ public class CategoriaController {
      * @return CategoriaModelResponse
      */
     @PutMapping("{idCategoria}")
-    public ResponseEntity<CategoriaModelResponse> atualizaCategoria(@PathVariable Integer idCategoria, @RequestBody CategoriaModelRequest categoriaModelRequest) {
+    public ResponseEntity<CategoriaModelResponse> atualizaCategoria(@PathVariable Integer idCategoria, @RequestBody @Valid CategoriaModelRequest categoriaModelRequest) {
         CategoriaRequestDomain categoriaIdRequestDomain = CategoriaEntryPointMapperRequest.converterNome(categoriaModelRequest);
         CategoriaResponseDomain responseDomainId = categoriaUseCase.atualizaCategoria(idCategoria, categoriaIdRequestDomain);
         CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterParaAtualizacao(idCategoria, responseDomainId);

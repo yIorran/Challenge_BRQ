@@ -1,5 +1,6 @@
 package challenge.brq.usecase.service;
 
+import challenge.brq.usecase.exception.categoria.CamposFaltantesException;
 import challenge.brq.usecase.exception.categoria.CategoriaDuplicadaException;
 import challenge.brq.usecase.exception.categoria.CategoriaEmUsoException;
 import challenge.brq.usecase.exception.categoria.CategoriaNaoEncontradaException;
@@ -64,8 +65,7 @@ public class CategoriaUseCase {
      * @return CategoriaResponseDomain
      */
     public CategoriaResponseDomain adicionaCategoria(CategoriaRequestDomain categoriaRequestDomain) {
-        String nome = categoriaRequestDomain.getNomeCategoria();
-        consultarCategoriaPeloNome(nome);
+        consultarCategoriaPeloNome(categoriaRequestDomain.getNomeCategoria());
         return categoriaGateway.adicionaCategoria(categoriaRequestDomain);
     }
 

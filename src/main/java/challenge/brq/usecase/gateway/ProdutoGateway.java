@@ -23,7 +23,6 @@ public interface ProdutoGateway {
 
     List<ProdutoResponseDomain> consultarProdutosParaExclusaoDeCategorias(String nomeOuCategoria);
 
-    ProdutoResponseDomain consultarProdutoPosStatus(Boolean status);
-
+    List<ProdutoResponseDomain> consultarProdutoPorStatus(Boolean status);
 
 }

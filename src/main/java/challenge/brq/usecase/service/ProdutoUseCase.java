@@ -1,6 +1,6 @@
 package challenge.brq.usecase.service;
 
-import challenge.brq.usecase.exception.categoria.CategoriaNaoEncontradaException;
+import challenge.brq.usecase.utils.Utils;
 import challenge.brq.usecase.exception.categoria.CategoriaNaoExistenteParaAtualizacaoParcialException;
 import challenge.brq.usecase.exception.produto.*;
 import challenge.brq.usecase.gateway.CategoriaGateway;
@@ -11,7 +11,6 @@ import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -23,15 +22,18 @@ public class ProdutoUseCase {
 
     private final CategoriaGateway categoriaGateway;
 
+    public List<ProdutoResponseDomain> consultarProdutosPeloStatus(Boolean status){
+        return produtoGateway.consultarProdutoPorStatus(true);
+    }
+
     public List<ProdutoResponseDomain> consultarProdutos() {
         return produtoGateway.consultarProdutos();
     }
 
     public ProdutoResponseDomain adicionaProdutos(ProdutoRequestDomain produtoRequestDomain) {
-        verificarSeCategoriaExisteParaAdicao(produtoRequestDomain);
-        Object id = consultarProdutosPeloIdParaAtualizarParcial(produtoRequestDomain.getCategoria().getIdCategoria());
-        verificarSeCategoriaExisteParaAdicionar(id);
-        verificarSeQuantidadeMaiorIgualZero(produtoRequestDomain.getQuantidadeProduto());
+        CategoriaResponseDomain categoriaResponseDomain = categoriaGateway.consultarCategoriaPeloId(produtoRequestDomain.getCategoria().getIdCategoria());
+        Utils.verificarSeCategoriaExisteParaAdicionar(categoriaResponseDomain);
+        Utils.verificarSeQuantidadeMaiorIgualZero(produtoRequestDomain.getQuantidadeProduto());
         return produtoGateway.adicionaProdutos(produtoRequestDomain);
     }
 
@@ -47,7 +49,7 @@ public class ProdutoUseCase {
             return produtoGateway.consultarProdutosPeloId(idProduto);
     }
 
-    public ProdutoResponseDomain consultarProdutosPeloIdParaAtualizarParcial(Integer idProduto) {
+    public ProdutoResponseDomain consultarCategoriaPeloIdParaAtualizarParcial(Integer idProduto) {
         if (idProduto == null) {
             return ProdutoResponseDomain.builder().build();
         }
@@ -74,13 +76,18 @@ public class ProdutoUseCase {
         return produtoGateway.consultarProdutosPelaCategoria(categoria);
     }
 
-
+    /*
+    TODO
+    Verificar motivo de não lançar excessão mandando campos separadamente
+     */
     public ProdutoResponseDomain atualizarProdutosParcial(Integer id, ProdutoRequestDomain produtoRequestDomain) {
-        consultarProdutosPeloIdParaAtualizarParcial(produtoRequestDomain.getCategoria().getIdCategoria());
+        consultarCategoriaPeloIdParaAtualizarParcial(produtoRequestDomain.getCategoria().getIdCategoria());
         ProdutoResponseDomain produtoAtual = consultarProdutosPeloId(id);
-        verificarSeStatusDoProdutoEAtivo(produtoRequestDomain);
-        verificarSePorcentagemMaiorQueZero(produtoRequestDomain);
-        verificarSeOfertadoAtivoEStatusAtivo(produtoRequestDomain);
+        CategoriaResponseDomain categoriaResponseDomain = categoriaGateway.consultarCategoriaPeloId(produtoRequestDomain.getCategoria().getIdCategoria());
+        Utils.verificarSeCategoriaExisteParaAtualizarParcial(categoriaResponseDomain);
+        Utils.verificarSeStatusDoProdutoEAtivo(produtoRequestDomain);
+        Utils.verificarSePorcentagemMaiorQueZero(produtoRequestDomain);
+        Utils.verificarSeOfertadoAtivoEStatusAtivo(produtoRequestDomain);
         produtoAtual = ProdutoResponseDomain.builder()
                 .codigoProduto(produtoAtual.getCodigoProduto())
                 .nomeProduto(produtoRequestDomain.getNomeProduto() == null ? produtoAtual.getNomeProduto() : produtoRequestDomain.getNomeProduto())
@@ -94,66 +101,6 @@ public class ProdutoUseCase {
                 .categoria(produtoRequestDomain.getCategoria() == null ? produtoAtual.getCategoria() : converter(produtoRequestDomain.getCategoria(), produtoAtual.getCategoria()))
                 .build();
         return produtoGateway.atualizarProdutosParcial(produtoAtual);
-    }
-
-    // métodos auxiliares:
-
-    public ProdutoResponseDomain verificarSePorcentagemMaiorQueZero(ProdutoRequestDomain produtoRequestDomain){
-        if(produtoRequestDomain.getPorcentagem() == null && produtoRequestDomain.getProdutoOfertado() == null){
-            return ProdutoResponseDomain.builder().build();
-        }
-        if(produtoRequestDomain.getPorcentagem() == null || produtoRequestDomain.getProdutoOfertado() == null){
-            return ProdutoResponseDomain.builder().build();
-        }
-        if(produtoRequestDomain.getPorcentagem() <= 0 && produtoRequestDomain.getProdutoOfertado() == true){
-            throw new PorcentagemMaiorQueZeroException("O produto não pode ser ofertado se a porcentage for menor ou igual a 0 "
-            + "porcentagem atual: " + produtoRequestDomain.getPorcentagem());
-        }
-        return null;
-    }
-
-    public ProdutoResponseDomain verificarSeStatusDoProdutoEAtivo(ProdutoRequestDomain produtoRequestDomain){
-        if(produtoRequestDomain.getQuantidadeProduto() == null && produtoRequestDomain.getProdutoAtivo() == null){
-            return ProdutoResponseDomain.builder().build();
-        }
-        if(produtoRequestDomain.getQuantidadeProduto() == null || produtoRequestDomain.getProdutoAtivo() == null){
-            return ProdutoResponseDomain.builder().build();
-        }
-        if(produtoRequestDomain.getQuantidadeProduto() == 0 && produtoRequestDomain.getProdutoAtivo() == true){
-            throw new QuantidadeZeroEProdutoAtivo("Produto não pode ser ativo se a quantidade for igual a 0");
-        }
-        return null;
-    }
-
-    public void verificarSeCategoriaExisteParaAdicionar(Object id) {
-        if (id == null) {
-            throw new CategoriaNaoEncontradaException("Categoria não encontrada para fazer adição");
-        }
-    }
-
-    public void verificarSeCategoriaExisteParaAdicao(ProdutoRequestDomain produtoRequestDomain) {
-        if (produtoRequestDomain.getCategoria().getIdCategoria() == null) {
-            throw new AdicionarProdutosIncompletoException("Categoria informada inexistente ou não informada.");
-        }
-    }
-
-    public ProdutoResponseDomain verificarSeOfertadoAtivoEStatusAtivo(ProdutoRequestDomain produtoRequestDomain) {
-        if(produtoRequestDomain.getProdutoAtivo() == null && produtoRequestDomain.getProdutoOfertado() == null){
-            return ProdutoResponseDomain.builder().build();
-        }
-        if(produtoRequestDomain.getProdutoAtivo() == null || produtoRequestDomain.getProdutoOfertado() == null){
-            return ProdutoResponseDomain.builder().build();
-        }
-        if (produtoRequestDomain.getProdutoAtivo() == false && produtoRequestDomain.getProdutoOfertado() == true) {
-            throw new VerificarSeStatusInativoEOfertadoAtivoException("O produto não pode ser ofertado se o mesmo estiver inativo.");
-        }
-        return null;
-    }
-
-    public void verificarSeQuantidadeMaiorIgualZero(Integer numero) {
-        if (numero <= 0) {
-            throw new QuantidadeMenorQueZeroException("Quantiade menor ou igual a 0.");
-        }
     }
 
     private CategoriaResponseDomain converter(CategoriaRequestDomain categoriaRequestDomain, CategoriaResponseDomain produtoRequestDomain) {

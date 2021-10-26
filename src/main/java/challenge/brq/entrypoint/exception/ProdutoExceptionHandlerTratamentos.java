@@ -73,6 +73,15 @@ public class ProdutoExceptionHandlerTratamentos extends ExceptionModelResponse {
         return ResponseEntity.status(httpStatus).body(exceptionModelResponse);
     }
 
+    @ExceptionHandler(CategoriaNaoEncontradaParaAdicionarOuAtualizarProduto.class)
+    public final ResponseEntity<?> categoriaNaoEncontradaParaAdicionarOuAtualizarProduto(Exception exception) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, exception);
+
+        return ResponseEntity.status(httpStatus).body(exceptionModelResponse);
+    }
+
 
     private ExceptionModelResponse montarRespostaExcecao(HttpStatus httpStatus, Exception exception) {
         return ExceptionModelResponse.builder()

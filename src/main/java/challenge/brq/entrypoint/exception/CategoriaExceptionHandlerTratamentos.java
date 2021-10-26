@@ -1,9 +1,6 @@
 package challenge.brq.entrypoint.exception;
 
-import challenge.brq.usecase.exception.categoria.CategoriaDuplicadaException;
-import challenge.brq.usecase.exception.categoria.CategoriaEmUsoException;
-import challenge.brq.usecase.exception.categoria.CategoriaNaoEncontradaException;
-import challenge.brq.usecase.exception.categoria.CategoriaNaoExistenteParaAtualizacaoParcialException;
+import challenge.brq.usecase.exception.categoria.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -42,6 +39,15 @@ public class CategoriaExceptionHandlerTratamentos extends ExceptionModelResponse
 
     @ExceptionHandler(CategoriaNaoExistenteParaAtualizacaoParcialException.class)
     public final ResponseEntity<?> categoriaNaoExistenteParaAtualizacaoParcialException(Exception exception) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, exception);
+
+        return ResponseEntity.status(httpStatus).body(exceptionModelResponse);
+    }
+
+    @ExceptionHandler(CamposFaltantesException.class)
+    public final ResponseEntity<?> camposFaltantesException(Exception exception) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
         ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, exception);

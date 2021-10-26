@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 /**
  * Classe responsavel por conter os atributos de entryPoint
  */
@@ -15,6 +18,8 @@ import lombok.NoArgsConstructor;
 public class CategoriaModelRequest {
 
     private Integer id;
+    @NotNull
+    @NotBlank
     private String nome;
 
 }

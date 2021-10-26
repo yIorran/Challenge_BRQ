@@ -89,10 +89,9 @@ public class ProdutoDataProvider implements ProdutoGateway {
     }
 
     @Override
-    public ProdutoResponseDomain consultarProdutoPosStatus(Boolean status) {
-        ProdutoEntity produtoEntity = produtoRepository.findByProdutoAtivo(status);
-        return ProdutoResponseMapper.converterProdutoParaAtualizacao(produtoEntity);
+    public List<ProdutoResponseDomain> consultarProdutoPorStatus(Boolean status) {
+        List<ProdutoEntity> produtoEntity = produtoRepository.findByProdutoAtivo(status);
+        return ProdutoResponseMapper.converter(produtoEntity);
     }
-
 
 }
