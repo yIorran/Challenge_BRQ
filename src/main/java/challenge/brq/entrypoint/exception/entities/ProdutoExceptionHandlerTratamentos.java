@@ -1,13 +1,14 @@
-package challenge.brq.entrypoint.exception;
+package challenge.brq.entrypoint.exception.entities;
 
 import challenge.brq.usecase.exception.produto.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class ProdutoExceptionHandlerTratamentos extends ExceptionModelResponse {
+public class ProdutoExceptionHandlerTratamentos extends ResponseEntityExceptionHandler {
 
 
     @ExceptionHandler(NenhumProdutoException.class)
@@ -82,12 +83,10 @@ public class ProdutoExceptionHandlerTratamentos extends ExceptionModelResponse {
         return ResponseEntity.status(httpStatus).body(exceptionModelResponse);
     }
 
-
     private ExceptionModelResponse montarRespostaExcecao(HttpStatus httpStatus, Exception exception) {
         return ExceptionModelResponse.builder()
                 .codigo(String.valueOf(httpStatus.value()))
                 .mensagem(exception.getMessage())
                 .build();
     }
-
 }

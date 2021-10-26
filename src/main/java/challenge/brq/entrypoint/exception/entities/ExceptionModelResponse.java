@@ -1,4 +1,4 @@
-package challenge.brq.entrypoint.exception;
+package challenge.brq.entrypoint.exception.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

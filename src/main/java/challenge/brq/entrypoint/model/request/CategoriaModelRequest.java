@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -18,8 +19,8 @@ import javax.validation.constraints.NotNull;
 public class CategoriaModelRequest {
 
     private Integer id;
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Nome não pode ser nulo")
+    @NotEmpty(message = "Nome não pode ser vazio")
     private String nome;
 
 }

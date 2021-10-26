@@ -1,13 +1,17 @@
-package challenge.brq.entrypoint.exception;
+package challenge.brq.entrypoint.exception.entities;
 
 import challenge.brq.usecase.exception.categoria.*;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class CategoriaExceptionHandlerTratamentos extends ExceptionModelResponse {
+public class CategoriaExceptionHandlerTratamentos extends ResponseEntityExceptionHandler {
 
 
     @ExceptionHandler(CategoriaNaoEncontradaException.class)
@@ -61,6 +65,11 @@ public class CategoriaExceptionHandlerTratamentos extends ExceptionModelResponse
                 .codigo(String.valueOf(httpStatus.value()))
                 .mensagem(exception.getMessage())
                 .build();
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return super.handleMethodArgumentNotValid(ex, headers, status, request);
     }
 
 }
