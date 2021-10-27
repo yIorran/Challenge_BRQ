@@ -76,18 +76,11 @@ public class ProdutoUseCase {
         return produtoGateway.consultarProdutosPelaCategoria(categoria);
     }
 
-    /*
-    TODO
-    Verificar motivo de não lançar excessão mandando campos separadamente
-     */
     public ProdutoResponseDomain atualizarProdutosParcial(Integer id, ProdutoRequestDomain produtoRequestDomain) {
         consultarCategoriaPeloIdParaAtualizarParcial(produtoRequestDomain.getCategoria().getIdCategoria());
         ProdutoResponseDomain produtoAtual = consultarProdutosPeloId(id);
         CategoriaResponseDomain categoriaResponseDomain = categoriaGateway.consultarCategoriaPeloId(produtoRequestDomain.getCategoria().getIdCategoria());
         Utils.verificarSeCategoriaExisteParaAtualizarParcial(categoriaResponseDomain);
-        Utils.verificarSeStatusDoProdutoEAtivo(produtoRequestDomain);
-        Utils.verificarSePorcentagemMaiorQueZero(produtoRequestDomain);
-        Utils.verificarSeOfertadoAtivoEStatusAtivo(produtoRequestDomain);
         produtoAtual = ProdutoResponseDomain.builder()
                 .codigoProduto(produtoAtual.getCodigoProduto())
                 .nomeProduto(produtoRequestDomain.getNomeProduto() == null ? produtoAtual.getNomeProduto() : produtoRequestDomain.getNomeProduto())
@@ -100,6 +93,9 @@ public class ProdutoUseCase {
                 .porcentagem(produtoRequestDomain.getPorcentagem() == null ? produtoAtual.getPorcentagem() : produtoRequestDomain.getPorcentagem())
                 .categoria(produtoRequestDomain.getCategoria() == null ? produtoAtual.getCategoria() : converter(produtoRequestDomain.getCategoria(), produtoAtual.getCategoria()))
                 .build();
+        Utils.verificarSeStatusDoProdutoEAtivoAposModificacoes(produtoAtual);
+        Utils.verificarSePorcentagemMaiorQueZeroAposModificacoes(produtoAtual);
+        Utils.verificarSeOfertadoAtivoEStatusAtivoAposModificacoes(produtoAtual);
         return produtoGateway.atualizarProdutosParcial(produtoAtual);
     }
 
