@@ -12,9 +12,7 @@ import java.util.List;
 public class Problem {
 
     private Integer status;
-    private String tipo;
     private String problema;
-    private String detalhes;
     private String mensagem;
     private List<CamposNaoPreenchidos> campos;
 

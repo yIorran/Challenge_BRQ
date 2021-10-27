@@ -1,6 +1,5 @@
 package challenge.brq.usecase.service;
 
-import challenge.brq.usecase.exception.categoria.CamposFaltantesException;
 import challenge.brq.usecase.exception.categoria.CategoriaDuplicadaException;
 import challenge.brq.usecase.exception.categoria.CategoriaEmUsoException;
 import challenge.brq.usecase.exception.categoria.CategoriaNaoEncontradaException;

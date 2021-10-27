@@ -1,16 +1,17 @@
 package challenge.brq.usecase.service;
 
-import challenge.brq.usecase.utils.Utils;
 import challenge.brq.usecase.exception.categoria.CategoriaNaoExistenteParaAtualizacaoParcialException;
-import challenge.brq.usecase.exception.produto.*;
+import challenge.brq.usecase.exception.produto.ProdutoPorIDNaoEncontrado;
 import challenge.brq.usecase.gateway.CategoriaGateway;
 import challenge.brq.usecase.gateway.ProdutoGateway;
 import challenge.brq.usecase.model.request.CategoriaRequestDomain;
 import challenge.brq.usecase.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
+import challenge.brq.usecase.utils.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Objects;
 

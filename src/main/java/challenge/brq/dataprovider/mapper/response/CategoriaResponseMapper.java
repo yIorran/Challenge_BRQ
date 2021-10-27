@@ -30,22 +30,4 @@ public class CategoriaResponseMapper {
                 .nomeCategoria(categoriaEntity.getNomeCategoria())
                 .build();
     }
-
-    public static CategoriaResponseDomain converterCategoriaParaAtualizacao(Integer id, CategoriaEntity categoriaEntity) {
-        return CategoriaResponseDomain.builder()
-                .idCategoria(id)
-                .nomeCategoria(categoriaEntity.getNomeCategoria())
-                .build();
-    }
-
-    public static CategoriaResponseDomain converterCategoriaParaAtualizacaoParcial(CategoriaEntity categoriaEntity) {
-        if(Objects.isNull(categoriaEntity)){
-            return CategoriaResponseDomain.builder().build();
-        }
-        return CategoriaResponseDomain.builder()
-                .idCategoria(categoriaEntity.getId())
-                .nomeCategoria(categoriaEntity.getNomeCategoria())
-                .build();
-    }
-
 }

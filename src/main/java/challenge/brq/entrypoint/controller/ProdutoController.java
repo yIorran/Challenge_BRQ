@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -77,7 +78,7 @@ public class ProdutoController {
      * @return produtoModelResponse
      */
     @PostMapping
-    public ResponseEntity<ProdutoModelResponse> adicionaProduto(@RequestBody ProdutoModelRequest produtoModelRequest) {
+    public ResponseEntity<ProdutoModelResponse> adicionaProduto(@RequestBody @Valid ProdutoModelRequest produtoModelRequest) {
         ProdutoRequestDomain produtoRequestDomain = ProdutoEntryPointMapperRequest.converter(produtoModelRequest);
         ProdutoResponseDomain produtoResponseDomain = produtoUseCase.adicionaProdutos(produtoRequestDomain);
         ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterProduto(produtoResponseDomain);

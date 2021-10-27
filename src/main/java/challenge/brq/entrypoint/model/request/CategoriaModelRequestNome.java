@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 /**
  * Classe responsavel por conter os atributos de entryPoint
@@ -16,11 +14,10 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoriaModelRequest {
+public class CategoriaModelRequestNome {
 
     private Integer id;
-    @NotNull(message = "Nome não pode ser nulo")
-    @NotEmpty(message = "Nome não pode ser vazio")
+    @NotBlank(message = "Nome não pode ser nulo ou estar em branco.")
     private String nome;
 
 }

@@ -8,17 +8,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
-
-    public static final String MSG_ERRO_GENERICA_USUARIO_FINAL
-            = "Ocorreu um erro interno inesperado no sistema. Tente novamente e se "
-            + "o problema persistir, entre em contato com o administrador do sistema.";
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
@@ -48,14 +43,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                                                         ProblemType problemType, String detail) {
         return Problem.builder()
                 .status(status.value())
-                .tipo(problemType.getUri())
-                .problema(problemType.getTitle())
-                .detalhes(detail);
+                .problema(problemType.getTitle());
     }
-    private String joinPath(List<Reference> references) {
-        return references.stream()
-                .map(ref -> ref.getFieldName())
-                .collect(Collectors.joining("."));
-    }
-
 }

@@ -2,7 +2,7 @@ package challenge.brq.entrypoint.controller;
 
 import challenge.brq.entrypoint.mapper.request.CategoriaEntryPointMapperRequest;
 import challenge.brq.entrypoint.mapper.response.CategoriaEntryPointMapperResponse;
-import challenge.brq.entrypoint.model.request.CategoriaModelRequest;
+import challenge.brq.entrypoint.model.request.CategoriaModelRequestNome;
 import challenge.brq.entrypoint.model.response.CategoriaModelResponse;
 import challenge.brq.usecase.model.request.CategoriaRequestDomain;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
@@ -86,12 +86,12 @@ public class CategoriaController {
      * <p>
      * Caso a categoria nao esteja persistida sera retornado um HTTPStatus CREATED 204
      *
-     * @param categoriaModelRequest
+     * @param categoriaModelRequestNome
      * @return CategoriaModelResponse
      */
     @PostMapping
-    public ResponseEntity<CategoriaModelResponse> adicionaCategoria(@RequestBody @Valid CategoriaModelRequest categoriaModelRequest) {
-        CategoriaRequestDomain categoriaRequestDomain = CategoriaEntryPointMapperRequest.converterNome(categoriaModelRequest);
+    public ResponseEntity<CategoriaModelResponse> adicionaCategoria(@RequestBody @Valid CategoriaModelRequestNome categoriaModelRequestNome) {
+        CategoriaRequestDomain categoriaRequestDomain = CategoriaEntryPointMapperRequest.converterNome(categoriaModelRequestNome);
         CategoriaResponseDomain categoriaResponseDomain = categoriaUseCase.adicionaCategoria(categoriaRequestDomain);
         CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterCategoria(categoriaResponseDomain);
         return new ResponseEntity<>(categoriaModelResponse, HttpStatus.CREATED);
@@ -103,12 +103,12 @@ public class CategoriaController {
      * sempre proibindo a duplicata de objetos no banco
      *
      * @param idCategoria
-     * @param categoriaModelRequest
+     * @param categoriaModelRequestNome
      * @return CategoriaModelResponse
      */
     @PutMapping("{idCategoria}")
-    public ResponseEntity<CategoriaModelResponse> atualizaCategoria(@PathVariable Integer idCategoria, @RequestBody @Valid CategoriaModelRequest categoriaModelRequest) {
-        CategoriaRequestDomain categoriaIdRequestDomain = CategoriaEntryPointMapperRequest.converterNome(categoriaModelRequest);
+    public ResponseEntity<CategoriaModelResponse> atualizaCategoria(@PathVariable Integer idCategoria, @RequestBody @Valid CategoriaModelRequestNome categoriaModelRequestNome) {
+        CategoriaRequestDomain categoriaIdRequestDomain = CategoriaEntryPointMapperRequest.converterNome(categoriaModelRequestNome);
         CategoriaResponseDomain responseDomainId = categoriaUseCase.atualizaCategoria(idCategoria, categoriaIdRequestDomain);
         CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterParaAtualizacao(idCategoria, responseDomainId);
         return new ResponseEntity<>(categoriaModelResponse, HttpStatus.OK);

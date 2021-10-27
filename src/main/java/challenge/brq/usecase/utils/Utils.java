@@ -1,7 +1,6 @@
 package challenge.brq.usecase.utils;
 
 import challenge.brq.usecase.exception.produto.*;
-import challenge.brq.usecase.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import lombok.experimental.UtilityClass;
@@ -54,7 +53,7 @@ public class Utils {
             produtoResponseDomain.builder().build();
             return;
         }
-        if(produtoResponseDomain.getQuantidadeProduto() == 0 && produtoResponseDomain.getProdutoAtivo() == true){
+        if(produtoResponseDomain.getQuantidadeProduto() <= 0 && produtoResponseDomain.getProdutoAtivo() == true){
             throw new QuantidadeZeroEProdutoAtivo("Produto não pode ser ativo se a quantidade for igual a 0");
         }
     }
