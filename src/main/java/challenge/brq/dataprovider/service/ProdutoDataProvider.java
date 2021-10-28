@@ -8,6 +8,8 @@ import challenge.brq.usecase.gateway.ProdutoGateway;
 import challenge.brq.usecase.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,9 +24,9 @@ public class ProdutoDataProvider implements ProdutoGateway {
     private ProdutoRepository produtoRepository;
 
     @Override
-    public List<ProdutoResponseDomain> consultarProdutos() {
-        List<ProdutoEntity> produtoEntity = produtoRepository.findAll();
-        return ProdutoResponseMapper.converter(produtoEntity);
+    public Page<ProdutoResponseDomain> consultarProdutos(Pageable pageable) {
+        Page<ProdutoEntity> produtoEntity = produtoRepository.findAll(pageable);
+        return ProdutoResponseMapper.converterPagina(produtoEntity);
     }
 
     @Override
@@ -55,21 +57,21 @@ public class ProdutoDataProvider implements ProdutoGateway {
     }
 
     @Override
-    public List<ProdutoResponseDomain> consultarProdutosPelaMarca(String marcaOuCategoria) {
-        List<ProdutoEntity> produtoEntityMarcaOuCategoria = produtoRepository.findByMarcaProdutoContaining(marcaOuCategoria);
+    public Page<ProdutoResponseDomain> consultarProdutosPelaMarca(String marcaOuCategoria, Pageable pageable) {
+        Page<ProdutoEntity> produtoEntityMarcaOuCategoria = produtoRepository.findByMarcaProdutoContaining(marcaOuCategoria, pageable);
         if (produtoEntityMarcaOuCategoria.isEmpty()) {
-            consultarProdutosPelaCategoria(marcaOuCategoria);
+            consultarProdutosPelaCategoria(marcaOuCategoria, pageable);
         }
-        return ProdutoResponseMapper.converter(produtoEntityMarcaOuCategoria);
+        return ProdutoResponseMapper.converterPagina(produtoEntityMarcaOuCategoria);
     }
 
     @Override
-    public List<ProdutoResponseDomain> consultarProdutosPelaCategoria(String categoriaOuMarca) {
-        List<ProdutoEntity> produtoEntityMarcaOuCategoria = produtoRepository.pesquisarPorNomeCategoria(categoriaOuMarca);
+    public Page<ProdutoResponseDomain> consultarProdutosPelaCategoria(String categoriaOuMarca, Pageable pageable) {
+        Page<ProdutoEntity> produtoEntityMarcaOuCategoria = produtoRepository.pesquisarPorNomeCategoria(categoriaOuMarca, pageable);
         if (produtoEntityMarcaOuCategoria.isEmpty()) {
-            consultarProdutos();
+            consultarProdutos(pageable);
         }
-        return ProdutoResponseMapper.converter(produtoEntityMarcaOuCategoria);
+        return ProdutoResponseMapper.converterPagina(produtoEntityMarcaOuCategoria);
     }
 
     @Override
@@ -80,18 +82,18 @@ public class ProdutoDataProvider implements ProdutoGateway {
     }
 
     @Override
-    public List<ProdutoResponseDomain> consultarProdutosParaExclusaoDeCategorias(String marcaOuCategoria) {
-        List<ProdutoEntity> produtoEntityMarcaOuCategoria = produtoRepository.findByMarcaProdutoContaining(marcaOuCategoria);
+    public Page<ProdutoResponseDomain> consultarProdutosParaExclusaoDeCategorias(String marcaOuCategoria, Pageable pageable) {
+        Page<ProdutoEntity> produtoEntityMarcaOuCategoria = produtoRepository.findByMarcaProdutoContaining(marcaOuCategoria, pageable);
         if (produtoEntityMarcaOuCategoria.isEmpty()) {
-            produtoEntityMarcaOuCategoria = produtoRepository.pesquisarPorNomeCategoria(marcaOuCategoria);
+            produtoEntityMarcaOuCategoria = produtoRepository.pesquisarPorNomeCategoria(marcaOuCategoria, pageable);
         }
-        return ProdutoResponseMapper.converter(produtoEntityMarcaOuCategoria);
+        return ProdutoResponseMapper.converterPagina(produtoEntityMarcaOuCategoria);
     }
 
     @Override
-    public List<ProdutoResponseDomain> consultarProdutoPorStatus(Boolean status) {
-        List<ProdutoEntity> produtoEntity = produtoRepository.findByProdutoAtivo(status);
-        return ProdutoResponseMapper.converter(produtoEntity);
+    public Page<ProdutoResponseDomain> consultarProdutoPorStatus(Boolean status, Pageable pageable) {
+        Page<ProdutoEntity> produtoEntity = produtoRepository.findByProdutoAtivo(status, pageable);
+        return ProdutoResponseMapper.converterPagina(produtoEntity);
     }
 
 }

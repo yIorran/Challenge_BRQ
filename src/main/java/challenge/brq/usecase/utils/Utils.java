@@ -76,7 +76,7 @@ public class Utils {
         }
     }
 
-    public static ProdutoResponseDomain converterProduto(ProdutoRequestDomain produtoRequestDomain, ProdutoResponseDomain produtoAtual){
+    public static ProdutoResponseDomain converterProdutoComValoresValidos(ProdutoRequestDomain produtoRequestDomain, ProdutoResponseDomain produtoAtual){
         return ProdutoResponseDomain.builder()
                 .codigoProduto(produtoAtual.getCodigoProduto())
                 .nomeProduto(produtoRequestDomain.getNomeProduto() == null ? produtoAtual.getNomeProduto() : produtoRequestDomain.getNomeProduto())

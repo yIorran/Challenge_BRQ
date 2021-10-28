@@ -8,6 +8,7 @@ import challenge.brq.usecase.model.request.CategoriaRequestDomain;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.service.CategoriaUseCase;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -72,8 +73,8 @@ public class CategoriaController {
      * @return void
      */
     @DeleteMapping("{idCategoria}")
-    public ResponseEntity<Void> excluiCategoriaPeloId(@PathVariable Integer idCategoria) {
-        categoriaUseCase.excluiCategoriaPeloId(idCategoria);
+    public ResponseEntity<Void> excluiCategoriaPeloId(@PathVariable Integer idCategoria, Pageable pageable) {
+        categoriaUseCase.excluiCategoriaPeloId(idCategoria, pageable);
         return ResponseEntity.ok().build();
     }
 

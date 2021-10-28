@@ -9,6 +9,8 @@ import challenge.brq.usecase.model.request.CategoriaRequestDomain;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,8 +53,8 @@ public class CategoriaUseCase {
      *
      * @param idCategoria return void
      */
-    public void excluiCategoriaPeloId(Integer idCategoria) {
-        consultarSeCategoriaTemProduto(consultarCategoriasPeloId(idCategoria));
+    public void excluiCategoriaPeloId(Integer idCategoria, Pageable pageable) {
+        consultarSeCategoriaTemProduto(consultarCategoriasPeloId(idCategoria), pageable);
         categoriaGateway.excluiCategoriaPeloId(idCategoria);
     }
 
@@ -108,9 +110,9 @@ public class CategoriaUseCase {
      * @param categoriaResponseDomain
      * @return produtoResponseDomain
      */
-    private Object consultarSeCategoriaTemProduto(CategoriaResponseDomain categoriaResponseDomain) {
+    private Object consultarSeCategoriaTemProduto(CategoriaResponseDomain categoriaResponseDomain, Pageable pageable) {
         CategoriaResponseDomain categoriaSalva = categoriaGateway.consultarCategoriaPeloNome(categoriaResponseDomain.getNomeCategoria());
-        List<ProdutoResponseDomain> produtoResponseDomain = produtoGateway.consultarProdutosParaExclusaoDeCategorias(categoriaSalva.getNomeCategoria());
+        Page<ProdutoResponseDomain> produtoResponseDomain = produtoGateway.consultarProdutosParaExclusaoDeCategorias(categoriaSalva.getNomeCategoria(), pageable);
         if (!produtoResponseDomain.isEmpty()) {
             throw new CategoriaEmUsoException("Categoria em uso para um produto");
         }

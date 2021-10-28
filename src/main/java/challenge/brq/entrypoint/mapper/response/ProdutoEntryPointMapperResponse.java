@@ -1,7 +1,10 @@
 package challenge.brq.entrypoint.mapper.response;
 
+import challenge.brq.dataprovider.entity.ProdutoEntity;
+import challenge.brq.dataprovider.mapper.response.ProdutoResponseMapper;
 import challenge.brq.entrypoint.model.response.ProdutoModelResponse;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +19,10 @@ public class ProdutoEntryPointMapperResponse {
             produtosModelResponse.add(produtoModelResponse);
         });
         return produtosModelResponse;
+    }
+
+    public static Page<ProdutoModelResponse> converterPagina(final Page<ProdutoResponseDomain> produtoResponseDomain) {
+        return produtoResponseDomain.map(ProdutoEntryPointMapperResponse::converterProduto);
     }
 
     public static ProdutoModelResponse converterProduto(ProdutoResponseDomain produtoResponseDomain) {

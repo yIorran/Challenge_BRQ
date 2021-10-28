@@ -8,7 +8,10 @@ import challenge.brq.usecase.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import challenge.brq.usecase.utils.Utils;
+import org.apache.commons.lang3.StringUtils;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,12 +24,12 @@ public class ProdutoUseCase {
 
     private final CategoriaGateway categoriaGateway;
 
-    public List<ProdutoResponseDomain> consultarProdutosPeloStatus(Boolean status){
-        return produtoGateway.consultarProdutoPorStatus(true);
+    public Page<ProdutoResponseDomain> consultarProdutosPeloStatus(Boolean status, Pageable pageable){
+        return produtoGateway.consultarProdutoPorStatus(true, pageable);
     }
 
-    public List<ProdutoResponseDomain> consultarProdutos() {
-        return produtoGateway.consultarProdutos();
+    public Page<ProdutoResponseDomain> consultarProdutos(Pageable pageable) {
+        return produtoGateway.consultarProdutos(pageable);
     }
 
     public ProdutoResponseDomain adicionaProdutos(ProdutoRequestDomain produtoRequestDomain) {
@@ -58,21 +61,13 @@ public class ProdutoUseCase {
             return produtoGateway.consultarProdutosPeloId(idProduto);
     }
 
-    public List<ProdutoResponseDomain> consultarProdutosPelaMarcaOuCategoria(String marca, String categoria) {
-        if (categoria != null) {
-            return consultarProdutosPelaCategoria(categoria);
-        } else if (marca != null) {
-            return consultarProdutosPelaMarca(marca);
+    public Page<ProdutoResponseDomain> consultarProdutosPelaMarcaOuCategoria(String marca, String categoria, Pageable pageable) {
+        if (StringUtils.isNotBlank(categoria)) {
+            return produtoGateway.consultarProdutosPelaCategoria(categoria, pageable);
+        } else if (StringUtils.isNotBlank(marca)) {
+            return produtoGateway.consultarProdutosPelaMarca(marca, pageable);
         }
-        return consultarProdutos();
-    }
-
-    public List<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca) {
-        return produtoGateway.consultarProdutosPelaMarca(marca);
-    }
-
-    public List<ProdutoResponseDomain> consultarProdutosPelaCategoria(String categoria) {
-        return produtoGateway.consultarProdutosPelaCategoria(categoria);
+        return consultarProdutos(pageable);
     }
 
     public ProdutoResponseDomain atualizarProdutosParcial(Integer id, ProdutoRequestDomain produtoRequestDomain) {
@@ -80,7 +75,7 @@ public class ProdutoUseCase {
         ProdutoResponseDomain produtoAtual = consultarProdutosPeloId(id);
         CategoriaResponseDomain categoriaResponseDomain = categoriaGateway.consultarCategoriaPeloId(produtoRequestDomain.getCategoria().getIdCategoria());
         Utils.verificarSeCategoriaExisteParaAtualizarParcial(categoriaResponseDomain);
-        produtoAtual = Utils.converterProduto(produtoRequestDomain, produtoAtual);
+        produtoAtual = Utils.converterProdutoComValoresValidos(produtoRequestDomain, produtoAtual);
         Utils.verificarSeStatusDoProdutoEAtivoAposModificacoes(produtoAtual);
         Utils.verificarSePorcentagemMaiorQueZeroAposModificacoes(produtoAtual);
         Utils.verificarSeOfertadoAtivoEStatusAtivoAposModificacoes(produtoAtual);

@@ -5,6 +5,8 @@ import challenge.brq.entrypoint.model.response.ProdutoModelResponse;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import challenge.brq.usecase.service.ProdutoUseCase;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +23,14 @@ public class OfertaController {
     private ProdutoUseCase produtoUseCase;
 
     @GetMapping
-    public ResponseEntity<List<ProdutoModelResponse>> listarProdutos(@RequestParam(required = false) Boolean status) {
-        List<ProdutoResponseDomain> produtosModelRetornaStatus = produtoUseCase.consultarProdutosPeloStatus(status);
+    public ResponseEntity<List<ProdutoModelResponse>> listarProdutos(Pageable pageable,
+                                                                     @RequestParam(required = false) Boolean status) {
+        Page<ProdutoResponseDomain> produtosModelRetornaStatus = produtoUseCase.consultarProdutosPeloStatus(status, pageable);
         if (produtosModelRetornaStatus.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        List<ProdutoModelResponse> dataModelResponse = ProdutoEntryPointMapperResponse.converter(produtosModelRetornaStatus);
-        return ResponseEntity.ok(dataModelResponse);
+        Page<ProdutoModelResponse> dataModelResponse = ProdutoEntryPointMapperResponse.converterPagina(produtosModelRetornaStatus);
+        return ResponseEntity.ok(dataModelResponse.getContent());
     }
 
 }

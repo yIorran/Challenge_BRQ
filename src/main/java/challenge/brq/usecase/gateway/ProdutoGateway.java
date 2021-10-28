@@ -2,12 +2,14 @@ package challenge.brq.usecase.gateway;
 
 import challenge.brq.usecase.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface ProdutoGateway {
 
-    List<ProdutoResponseDomain> consultarProdutos();
+    Page<ProdutoResponseDomain> consultarProdutos(Pageable pageable);
 
     ProdutoResponseDomain consultarProdutosPeloId(Integer idProduto);
 
@@ -15,14 +17,14 @@ public interface ProdutoGateway {
 
     void excluirProdutosPeloId(Integer idProduto);
 
-    List<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca);
+    Page<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca, Pageable pageable);
 
-    List<ProdutoResponseDomain> consultarProdutosPelaCategoria(String categoria);
+    Page<ProdutoResponseDomain> consultarProdutosPelaCategoria(String categoria, Pageable pageable);
 
     ProdutoResponseDomain atualizarProdutosParcial(ProdutoResponseDomain produtoResponseDomain);
 
-    List<ProdutoResponseDomain> consultarProdutosParaExclusaoDeCategorias(String nomeOuCategoria);
+    Page<ProdutoResponseDomain> consultarProdutosParaExclusaoDeCategorias(String nomeOuCategoria, Pageable pageable);
 
-    List<ProdutoResponseDomain> consultarProdutoPorStatus(Boolean status);
+    Page<ProdutoResponseDomain> consultarProdutoPorStatus(Boolean status, Pageable pageable);
 
 }
