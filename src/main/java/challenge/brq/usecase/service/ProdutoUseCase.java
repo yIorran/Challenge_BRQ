@@ -8,13 +8,11 @@ import challenge.brq.usecase.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import challenge.brq.usecase.utils.Utils;
-import org.apache.commons.lang3.StringUtils;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor
