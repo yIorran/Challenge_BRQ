@@ -108,14 +108,6 @@ Updating category:
 http://localhost:8079/categorias/{id}
 ```
 
-Updating product:
-
-``` 
-http://localhost:8079/produtos/{id}
-```
-
-![Put](https://user-images.githubusercontent.com/76667034/138157986-1b32fdf1-465a-43bc-bbe9-5d3de6557472.PNG)
-
 ### PATCH
 
 Updating product partially:
