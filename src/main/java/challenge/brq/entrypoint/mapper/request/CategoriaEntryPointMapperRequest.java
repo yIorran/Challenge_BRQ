@@ -1,5 +1,6 @@
 package challenge.brq.entrypoint.mapper.request;
 
+import challenge.brq.entrypoint.model.request.CategoriaModelRequestID;
 import challenge.brq.entrypoint.model.request.CategoriaModelRequestNome;
 import challenge.brq.usecase.model.request.CategoriaRequestDomain;
 
@@ -11,12 +12,12 @@ public class CategoriaEntryPointMapperRequest {
         return CategoriaRequestDomain.builder().nomeCategoria(categoriaModelRequestNome.getNome()).build();
     }
 
-    public static CategoriaRequestDomain converterId(CategoriaModelRequestNome categoriaModelRequestNome) {
-        if (Objects.isNull(categoriaModelRequestNome)) {
+    public static CategoriaRequestDomain converterId(CategoriaModelRequestID categoriaModelRequestID) {
+        if (Objects.isNull(categoriaModelRequestID)) {
             return CategoriaRequestDomain.builder().build();
         }
         return CategoriaRequestDomain.builder()
-                .idCategoria(categoriaModelRequestNome.getId())
+                .idCategoria(categoriaModelRequestID.getId())
                 .build();
     }
 
@@ -26,8 +27,6 @@ public class CategoriaEntryPointMapperRequest {
         }
         return CategoriaRequestDomain.builder()
                 .nomeCategoria(categoriaModelRequestNome.getNome())
-                .idCategoria(categoriaModelRequestNome.getId())
                 .build();
     }
-
 }

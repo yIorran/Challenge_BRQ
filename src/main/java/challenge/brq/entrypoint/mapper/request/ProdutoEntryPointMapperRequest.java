@@ -16,7 +16,7 @@ public class ProdutoEntryPointMapperRequest {
                 .produtoAtivo(true)
                 .produtoOfertado(false)
                 .porcentagem(0)
-                .categoria(CategoriaEntryPointMapperRequest.converter(produtoModelRequest.getCategoria()))
+                .categoria(CategoriaEntryPointMapperRequest.converterId(produtoModelRequest.getCategoria()))
                 .build();
     }
 
