@@ -4,7 +4,6 @@ import challenge.brq.usecase.exception.categoria.CategoriaNaoExistenteParaAtuali
 import challenge.brq.usecase.exception.produto.ProdutoPorIDNaoEncontrado;
 import challenge.brq.usecase.gateway.CategoriaGateway;
 import challenge.brq.usecase.gateway.ProdutoGateway;
-import challenge.brq.usecase.model.request.CategoriaRequestDomain;
 import challenge.brq.usecase.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
@@ -13,7 +12,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -82,34 +80,10 @@ public class ProdutoUseCase {
         ProdutoResponseDomain produtoAtual = consultarProdutosPeloId(id);
         CategoriaResponseDomain categoriaResponseDomain = categoriaGateway.consultarCategoriaPeloId(produtoRequestDomain.getCategoria().getIdCategoria());
         Utils.verificarSeCategoriaExisteParaAtualizarParcial(categoriaResponseDomain);
-        produtoAtual = ProdutoResponseDomain.builder()
-                .codigoProduto(produtoAtual.getCodigoProduto())
-                .nomeProduto(produtoRequestDomain.getNomeProduto() == null ? produtoAtual.getNomeProduto() : produtoRequestDomain.getNomeProduto())
-                .descricaoProduto(produtoRequestDomain.getDescricaoProduto() == null ? produtoAtual.getDescricaoProduto() : produtoRequestDomain.getDescricaoProduto())
-                .marcaProduto(produtoRequestDomain.getMarcaProduto() == null ? produtoAtual.getMarcaProduto() : produtoRequestDomain.getMarcaProduto())
-                .quantidadeProduto(produtoRequestDomain.getQuantidadeProduto() == null ? produtoAtual.getQuantidadeProduto() : produtoRequestDomain.getQuantidadeProduto())
-                .precoProduto(produtoRequestDomain.getPrecoProduto() == null ? produtoAtual.getPrecoProduto() : produtoRequestDomain.getPrecoProduto())
-                .produtoAtivo(produtoRequestDomain.getProdutoAtivo() == null ? produtoAtual.getProdutoAtivo() : produtoRequestDomain.getProdutoAtivo())
-                .produtoOfertado(produtoRequestDomain.getProdutoOfertado() == null ? produtoAtual.getProdutoOfertado() : produtoRequestDomain.getProdutoOfertado())
-                .porcentagem(produtoRequestDomain.getPorcentagem() == null ? produtoAtual.getPorcentagem() : produtoRequestDomain.getPorcentagem())
-                .categoria(produtoRequestDomain.getCategoria() == null ? produtoAtual.getCategoria() : converter(produtoRequestDomain.getCategoria(), produtoAtual.getCategoria()))
-                .build();
+        produtoAtual = Utils.converterProduto(produtoRequestDomain, produtoAtual);
         Utils.verificarSeStatusDoProdutoEAtivoAposModificacoes(produtoAtual);
         Utils.verificarSePorcentagemMaiorQueZeroAposModificacoes(produtoAtual);
         Utils.verificarSeOfertadoAtivoEStatusAtivoAposModificacoes(produtoAtual);
         return produtoGateway.atualizarProdutosParcial(produtoAtual);
-    }
-
-    private CategoriaResponseDomain converter(CategoriaRequestDomain categoriaRequestDomain, CategoriaResponseDomain produtoRequestDomain) {
-        if(Objects.isNull(categoriaRequestDomain.getIdCategoria())){
-            return CategoriaResponseDomain.builder()
-                    .idCategoria(produtoRequestDomain.getIdCategoria())
-                    .nomeCategoria(produtoRequestDomain.getNomeCategoria())
-                    .build();
-        }
-        return CategoriaResponseDomain.builder()
-                .idCategoria(categoriaRequestDomain.getIdCategoria())
-                .nomeCategoria(categoriaRequestDomain.getNomeCategoria())
-                .build();
     }
 }

@@ -1,9 +1,13 @@
 package challenge.brq.usecase.utils;
 
 import challenge.brq.usecase.exception.produto.*;
+import challenge.brq.usecase.model.request.CategoriaRequestDomain;
+import challenge.brq.usecase.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import lombok.experimental.UtilityClass;
+
+import java.util.Objects;
 
 @UtilityClass
 public class Utils {
@@ -72,4 +76,31 @@ public class Utils {
         }
     }
 
+    public static ProdutoResponseDomain converterProduto(ProdutoRequestDomain produtoRequestDomain, ProdutoResponseDomain produtoAtual){
+        return ProdutoResponseDomain.builder()
+                .codigoProduto(produtoAtual.getCodigoProduto())
+                .nomeProduto(produtoRequestDomain.getNomeProduto() == null ? produtoAtual.getNomeProduto() : produtoRequestDomain.getNomeProduto())
+                .descricaoProduto(produtoRequestDomain.getDescricaoProduto() == null ? produtoAtual.getDescricaoProduto() : produtoRequestDomain.getDescricaoProduto())
+                .marcaProduto(produtoRequestDomain.getMarcaProduto() == null ? produtoAtual.getMarcaProduto() : produtoRequestDomain.getMarcaProduto())
+                .quantidadeProduto(produtoRequestDomain.getQuantidadeProduto() == null ? produtoAtual.getQuantidadeProduto() : produtoRequestDomain.getQuantidadeProduto())
+                .precoProduto(produtoRequestDomain.getPrecoProduto() == null ? produtoAtual.getPrecoProduto() : produtoRequestDomain.getPrecoProduto())
+                .produtoAtivo(produtoRequestDomain.getProdutoAtivo() == null ? produtoAtual.getProdutoAtivo() : produtoRequestDomain.getProdutoAtivo())
+                .produtoOfertado(produtoRequestDomain.getProdutoOfertado() == null ? produtoAtual.getProdutoOfertado() : produtoRequestDomain.getProdutoOfertado())
+                .porcentagem(produtoRequestDomain.getPorcentagem() == null ? produtoAtual.getPorcentagem() : produtoRequestDomain.getPorcentagem())
+                .categoria(produtoRequestDomain.getCategoria() == null ? produtoAtual.getCategoria() : converter(produtoRequestDomain.getCategoria(), produtoAtual.getCategoria()))
+                .build();
+    }
+
+    public static CategoriaResponseDomain converter(CategoriaRequestDomain categoriaRequestDomain, CategoriaResponseDomain produtoRequestDomain) {
+        if(Objects.isNull(categoriaRequestDomain.getIdCategoria())){
+            return CategoriaResponseDomain.builder()
+                    .idCategoria(produtoRequestDomain.getIdCategoria())
+                    .nomeCategoria(produtoRequestDomain.getNomeCategoria())
+                    .build();
+        }
+        return CategoriaResponseDomain.builder()
+                .idCategoria(categoriaRequestDomain.getIdCategoria())
+                .nomeCategoria(categoriaRequestDomain.getNomeCategoria())
+                .build();
+    }
 }
