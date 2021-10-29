@@ -25,7 +25,16 @@ public class ProdutoDataProvider implements ProdutoGateway {
     @Override
     public Page<ProdutoResponseDomain> consultarProdutos(Pageable pageable) {
         Page<ProdutoEntity> produtoEntity = produtoRepository.findAll(pageable);
-        return ProdutoResponseMapper.converterPagina(produtoEntity);
+        return ProdutoResponseMapper.converterPaginaPadrao(produtoEntity);
+    }
+
+    @Override
+    public ProdutoResponseDomain consultarProdutosPeloIdExpandirTabelaNutri(Integer idProduto, String expand) {
+        Optional<ProdutoEntity> produtoEntity = produtoRepository.findById(idProduto);
+        if (produtoEntity.isEmpty()) {
+            return null;
+        }
+        return ProdutoResponseMapper.converterProdutoComTodosAtributosExpand(produtoEntity.get(), expand);
     }
 
     @Override
@@ -34,7 +43,7 @@ public class ProdutoDataProvider implements ProdutoGateway {
         if (produtoEntity.isEmpty()) {
             return null;
         }
-        return ProdutoResponseMapper.converterProduto(produtoEntity.get());
+        return ProdutoResponseMapper.converterProdutoComTodosAtributos(produtoEntity.get());
     }
 
     @Transactional
@@ -45,7 +54,7 @@ public class ProdutoDataProvider implements ProdutoGateway {
         } else {
             ProdutoEntity produtoEntity = ProdutoRequestMapper.converter(produtoRequestDomain);
             ProdutoEntity produtoEntitySalvo = produtoRepository.save(produtoEntity);
-            return ProdutoResponseMapper.converterProduto(produtoEntitySalvo);
+            return ProdutoResponseMapper.converterProdutoComTodosAtributos(produtoEntitySalvo);
         }
     }
 
@@ -61,7 +70,7 @@ public class ProdutoDataProvider implements ProdutoGateway {
         if (produtoEntityMarcaOuCategoria.isEmpty()) {
             consultarProdutosPelaCategoria(marcaOuCategoria, pageable);
         }
-        return ProdutoResponseMapper.converterPagina(produtoEntityMarcaOuCategoria);
+        return ProdutoResponseMapper.converterPaginaComTodosAtributos(produtoEntityMarcaOuCategoria);
     }
 
     @Override
@@ -70,7 +79,7 @@ public class ProdutoDataProvider implements ProdutoGateway {
         if (produtoEntityMarcaOuCategoria.isEmpty()) {
             consultarProdutos(pageable);
         }
-        return ProdutoResponseMapper.converterPagina(produtoEntityMarcaOuCategoria);
+        return ProdutoResponseMapper.converterPaginaComTodosAtributos(produtoEntityMarcaOuCategoria);
     }
 
     @Override
@@ -86,13 +95,13 @@ public class ProdutoDataProvider implements ProdutoGateway {
         if (produtoEntityMarcaOuCategoria.isEmpty()) {
             produtoEntityMarcaOuCategoria = produtoRepository.pesquisarPorNomeCategoria(marcaOuCategoria, pageable);
         }
-        return ProdutoResponseMapper.converterPagina(produtoEntityMarcaOuCategoria);
+        return ProdutoResponseMapper.converterPaginaComTodosAtributos(produtoEntityMarcaOuCategoria);
     }
 
     @Override
-    public Page<ProdutoResponseDomain> consultarProdutoPorStatus(Boolean status, Pageable pageable) {
-        Page<ProdutoEntity> produtoEntity = produtoRepository.findByProdutoAtivo(status, pageable);
-        return ProdutoResponseMapper.converterPagina(produtoEntity);
+    public Page<ProdutoResponseDomain> consultarProdutoPorStatus(Pageable pageable) {
+        Page<ProdutoEntity> produtoEntity = produtoRepository.findByProdutoOfertadoTrue(pageable);
+        return ProdutoResponseMapper.converterPaginaComTodosAtributos(produtoEntity);
     }
 
 }

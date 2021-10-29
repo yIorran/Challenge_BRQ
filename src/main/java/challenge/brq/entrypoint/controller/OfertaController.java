@@ -23,14 +23,14 @@ public class OfertaController {
     private ProdutoUseCase produtoUseCase;
 
     @GetMapping
-    public ResponseEntity<List<ProdutoModelResponse>> listarProdutos(Pageable pageable,
+    public ResponseEntity<Page<ProdutoModelResponse>> listarProdutos(Pageable pageable,
                                                                      @RequestParam(required = false) Boolean status) {
-        Page<ProdutoResponseDomain> produtosModelRetornaStatus = produtoUseCase.consultarProdutosPeloStatus(status, pageable);
+        Page<ProdutoResponseDomain> produtosModelRetornaStatus = produtoUseCase.consultarProdutosPeloStatus(pageable);
         if (produtosModelRetornaStatus.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        Page<ProdutoModelResponse> dataModelResponse = ProdutoEntryPointMapperResponse.converterPagina(produtosModelRetornaStatus);
-        return ResponseEntity.ok(dataModelResponse.getContent());
+        Page<ProdutoModelResponse> dataModelResponse = ProdutoEntryPointMapperResponse.converterPaginaComTodosOsAtributos(produtosModelRetornaStatus);
+        return ResponseEntity.ok(dataModelResponse);
     }
 
 }

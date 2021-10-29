@@ -36,5 +36,7 @@ public class ProdutoModelResponse {
     private Integer porcentagem;
     @JsonProperty(value = "categoria")
     private CategoriaModelResponse categoria;
+    @JsonProperty(value = "tabelaNutricional")
+    private TabelaNutricionalModelResponse tabelaNutricionalModelResponse;
 
 }

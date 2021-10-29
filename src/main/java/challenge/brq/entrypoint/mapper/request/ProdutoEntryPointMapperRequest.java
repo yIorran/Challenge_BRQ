@@ -17,6 +17,7 @@ public class ProdutoEntryPointMapperRequest {
                 .produtoOfertado(false)
                 .porcentagem(0)
                 .categoria(CategoriaEntryPointMapperRequest.converterId(produtoModelRequest.getCategoria()))
+                .tabelaNutricionalRequestDomain(TabelaNutricionalEntryPointMapperRequest.converter(produtoModelRequest.getTabelaNutricional()))
                 .build();
     }
 
@@ -32,6 +33,7 @@ public class ProdutoEntryPointMapperRequest {
                 .produtoOfertado(produtoModelRequest.getOfertado())
                 .porcentagem(produtoModelRequest.getPorcentagem())
                 .categoria(CategoriaEntryPointMapperRequest.converterId(produtoModelRequest.getCategoria()))
+                .tabelaNutricionalRequestDomain(TabelaNutricionalEntryPointMapperRequest.converter(produtoModelRequest.getTabelaNutricional()))
                 .build();
     }
 }

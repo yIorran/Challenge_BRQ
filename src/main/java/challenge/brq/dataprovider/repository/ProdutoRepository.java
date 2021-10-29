@@ -20,6 +20,6 @@ public interface ProdutoRepository extends JpaRepository<ProdutoEntity, Integer>
     @Query("select p from ProdutoEntity p join p.categoria categoria where categoria.nomeCategoria=:nome")
     Page<ProdutoEntity> pesquisarPorNomeCategoria(@Param("nome") String nome, Pageable pageable);
 
-    Page<ProdutoEntity> findByProdutoAtivo(Boolean status, Pageable pageable);
+    Page<ProdutoEntity> findByProdutoOfertadoTrue(Pageable pageable);
 
 }

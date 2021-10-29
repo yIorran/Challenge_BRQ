@@ -22,7 +22,7 @@ public class CategoriaResponseMapper {
     }
 
     public static CategoriaResponseDomain converterCategoria(CategoriaEntity categoriaEntity) {
-        if(Objects.isNull(categoriaEntity)){
+        if (Objects.isNull(categoriaEntity)) {
             return CategoriaResponseDomain.builder().build();
         }
         return CategoriaResponseDomain.builder()

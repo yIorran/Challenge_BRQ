@@ -3,8 +3,10 @@ package challenge.brq.usecase.utils;
 import challenge.brq.usecase.exception.produto.*;
 import challenge.brq.usecase.model.request.CategoriaRequestDomain;
 import challenge.brq.usecase.model.request.ProdutoRequestDomain;
+import challenge.brq.usecase.model.request.TabelaNutricionalRequestDomain;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
+import challenge.brq.usecase.model.response.TabelaNutricionalResponseDomain;
 import lombok.experimental.UtilityClass;
 
 import java.util.Objects;
@@ -17,6 +19,7 @@ public class Utils {
             throw new CategoriaNaoEncontradaParaAdicionarOuAtualizarProduto("Categoria não encontrada para fazer adição");
         }
     }
+
     public static void verificarSeCategoriaExisteParaAtualizarParcial(CategoriaResponseDomain categoriaResponseDomain) {
         if (categoriaResponseDomain == null) {
             ProdutoResponseDomain.builder().build();
@@ -33,41 +36,41 @@ public class Utils {
         }
     }
 
-    public static void verificarSePorcentagemMaiorQueZeroAposModificacoes(ProdutoResponseDomain produtoResponseDomain){
-        if(produtoResponseDomain.getPorcentagem() == null && produtoResponseDomain.getProdutoOfertado() == null){
+    public static void verificarSePorcentagemMaiorQueZeroAposModificacoes(ProdutoResponseDomain produtoResponseDomain) {
+        if (produtoResponseDomain.getPorcentagem() == null && produtoResponseDomain.getProdutoOfertado() == null) {
             ProdutoResponseDomain.builder().build();
             return;
         }
-        if(produtoResponseDomain.getPorcentagem() == null || produtoResponseDomain.getProdutoOfertado() == null){
+        if (produtoResponseDomain.getPorcentagem() == null || produtoResponseDomain.getProdutoOfertado() == null) {
             ProdutoResponseDomain.builder().build();
             return;
         }
-        if(produtoResponseDomain.getPorcentagem() <= 0 && produtoResponseDomain.getProdutoOfertado() == true){
+        if (produtoResponseDomain.getPorcentagem() <= 0 && produtoResponseDomain.getProdutoOfertado() == true) {
             throw new PorcentagemMaiorQueZeroException("O produto não pode ser ofertado se a porcentage for menor ou igual a 0 "
                     + "porcentagem atual: " + produtoResponseDomain.getPorcentagem());
         }
     }
 
-    public static void verificarSeStatusDoProdutoEAtivoAposModificacoes(ProdutoResponseDomain produtoResponseDomain){
-        if(produtoResponseDomain.getQuantidadeProduto() == null && produtoResponseDomain.getProdutoAtivo() == null){
+    public static void verificarSeStatusDoProdutoEAtivoAposModificacoes(ProdutoResponseDomain produtoResponseDomain) {
+        if (produtoResponseDomain.getQuantidadeProduto() == null && produtoResponseDomain.getProdutoAtivo() == null) {
             ProdutoResponseDomain.builder().build();
             return;
         }
-        if(produtoResponseDomain.getQuantidadeProduto() == null || produtoResponseDomain.getProdutoAtivo() == null){
+        if (produtoResponseDomain.getQuantidadeProduto() == null || produtoResponseDomain.getProdutoAtivo() == null) {
             produtoResponseDomain.builder().build();
             return;
         }
-        if(produtoResponseDomain.getQuantidadeProduto() <= 0 && produtoResponseDomain.getProdutoAtivo() == true){
+        if (produtoResponseDomain.getQuantidadeProduto() <= 0 && produtoResponseDomain.getProdutoAtivo() == true) {
             throw new QuantidadeZeroEProdutoAtivo("Produto não pode ser ativo se a quantidade for igual a 0");
         }
     }
 
     public static void verificarSeOfertadoAtivoEStatusAtivoAposModificacoes(ProdutoResponseDomain produtoResponseDomain) {
-        if(produtoResponseDomain.getProdutoAtivo() == null && produtoResponseDomain.getProdutoOfertado() == null){
+        if (produtoResponseDomain.getProdutoAtivo() == null && produtoResponseDomain.getProdutoOfertado() == null) {
             ProdutoResponseDomain.builder().build();
             return;
         }
-        if(produtoResponseDomain.getProdutoAtivo() == null || produtoResponseDomain.getProdutoOfertado() == null){
+        if (produtoResponseDomain.getProdutoAtivo() == null || produtoResponseDomain.getProdutoOfertado() == null) {
             ProdutoResponseDomain.builder().build();
             return;
         }
@@ -76,7 +79,7 @@ public class Utils {
         }
     }
 
-    public static ProdutoResponseDomain converterProdutoComValoresValidos(ProdutoRequestDomain produtoRequestDomain, ProdutoResponseDomain produtoAtual){
+    public static ProdutoResponseDomain converterProdutoComValoresValidos(ProdutoRequestDomain produtoRequestDomain, ProdutoResponseDomain produtoAtual) {
         return ProdutoResponseDomain.builder()
                 .codigoProduto(produtoAtual.getCodigoProduto())
                 .nomeProduto(produtoRequestDomain.getNomeProduto() == null ? produtoAtual.getNomeProduto() : produtoRequestDomain.getNomeProduto())
@@ -88,14 +91,38 @@ public class Utils {
                 .produtoOfertado(produtoRequestDomain.getProdutoOfertado() == null ? produtoAtual.getProdutoOfertado() : produtoRequestDomain.getProdutoOfertado())
                 .porcentagem(produtoRequestDomain.getPorcentagem() == null ? produtoAtual.getPorcentagem() : produtoRequestDomain.getPorcentagem())
                 .categoria(produtoRequestDomain.getCategoria() == null ? produtoAtual.getCategoria() : converter(produtoRequestDomain.getCategoria(), produtoAtual.getCategoria()))
+                .tabelaNutricionalResponseDomain(produtoRequestDomain.getTabelaNutricionalRequestDomain() == null ? produtoAtual.getTabelaNutricionalResponseDomain() : converterTabela(produtoRequestDomain.getTabelaNutricionalRequestDomain(), produtoAtual.getTabelaNutricionalResponseDomain()))
                 .build();
     }
 
-    public static CategoriaResponseDomain converter(CategoriaRequestDomain categoriaRequestDomain, CategoriaResponseDomain produtoRequestDomain) {
-        if(Objects.isNull(categoriaRequestDomain.getIdCategoria())){
+    public static TabelaNutricionalResponseDomain converterTabela(TabelaNutricionalRequestDomain tabelaNutricionalRequestDomain, TabelaNutricionalResponseDomain tabelaNutricionalResponseDomain){
+        if(Objects.isNull(tabelaNutricionalRequestDomain)){
+            return TabelaNutricionalResponseDomain.builder()
+                    .tabelaNutricional(tabelaNutricionalResponseDomain.getTabelaNutricional() == null ? tabelaNutricionalResponseDomain.getTabelaNutricional() : tabelaNutricionalRequestDomain.getTabelaNutricional())
+                    .gorduraSaturada(tabelaNutricionalResponseDomain.getGorduraSaturada() == null ? tabelaNutricionalResponseDomain.getGorduraSaturada() : tabelaNutricionalRequestDomain.getGorduraSaturada())
+                    .valorEnergetico(tabelaNutricionalResponseDomain.getValorEnergetico() == null ? tabelaNutricionalResponseDomain.getValorEnergetico() : tabelaNutricionalRequestDomain.getValorEnergetico())
+                    .acucar(tabelaNutricionalResponseDomain.getAcucar() == null ? tabelaNutricionalResponseDomain.getAcucar() : tabelaNutricionalRequestDomain.getAcucar())
+                    .fibras(tabelaNutricionalResponseDomain.getFibras() == null ? tabelaNutricionalResponseDomain.getFibras() : tabelaNutricionalRequestDomain.getFibras())
+                    .proteinas(tabelaNutricionalResponseDomain.getProteinas() == null ? tabelaNutricionalResponseDomain.getProteinas() : tabelaNutricionalRequestDomain.getProteinas())
+                    .sodio(tabelaNutricionalResponseDomain.getSodio() == null ? tabelaNutricionalResponseDomain.getSodio() : tabelaNutricionalRequestDomain.getSodio())
+                    .build();
+        }
+        return TabelaNutricionalResponseDomain.builder()
+                .tabelaNutricional(tabelaNutricionalRequestDomain.getTabelaNutricional() == null ? tabelaNutricionalResponseDomain.getTabelaNutricional() : tabelaNutricionalRequestDomain.getTabelaNutricional())
+                .gorduraSaturada(tabelaNutricionalRequestDomain.getGorduraSaturada() == null ? tabelaNutricionalResponseDomain.getGorduraSaturada() : tabelaNutricionalRequestDomain.getGorduraSaturada())
+                .valorEnergetico(tabelaNutricionalRequestDomain.getValorEnergetico() == null ? tabelaNutricionalResponseDomain.getValorEnergetico() : tabelaNutricionalRequestDomain.getValorEnergetico())
+                .acucar(tabelaNutricionalRequestDomain.getAcucar() == null ? tabelaNutricionalResponseDomain.getAcucar() : tabelaNutricionalRequestDomain.getAcucar())
+                .fibras(tabelaNutricionalRequestDomain.getFibras() == null ? tabelaNutricionalResponseDomain.getFibras() : tabelaNutricionalRequestDomain.getFibras())
+                .proteinas(tabelaNutricionalRequestDomain.getProteinas() == null ? tabelaNutricionalResponseDomain.getProteinas() : tabelaNutricionalRequestDomain.getProteinas())
+                .sodio(tabelaNutricionalRequestDomain.getSodio() == null ? tabelaNutricionalResponseDomain.getSodio() : tabelaNutricionalRequestDomain.getSodio())
+                .build();
+    }
+
+    public static CategoriaResponseDomain converter(CategoriaRequestDomain categoriaRequestDomain, CategoriaResponseDomain categoriaResponseDomain) {
+        if (Objects.isNull(categoriaRequestDomain.getIdCategoria())) {
             return CategoriaResponseDomain.builder()
-                    .idCategoria(produtoRequestDomain.getIdCategoria())
-                    .nomeCategoria(produtoRequestDomain.getNomeCategoria())
+                    .idCategoria(categoriaResponseDomain.getIdCategoria())
+                    .nomeCategoria(categoriaResponseDomain.getNomeCategoria())
                     .build();
         }
         return CategoriaResponseDomain.builder()

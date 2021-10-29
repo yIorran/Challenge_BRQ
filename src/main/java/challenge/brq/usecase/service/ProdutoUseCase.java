@@ -22,8 +22,8 @@ public class ProdutoUseCase {
 
     private final CategoriaGateway categoriaGateway;
 
-    public Page<ProdutoResponseDomain> consultarProdutosPeloStatus(Boolean status, Pageable pageable){
-        return produtoGateway.consultarProdutoPorStatus(true, pageable);
+    public Page<ProdutoResponseDomain> consultarProdutosPeloStatus(Pageable pageable) {
+        return produtoGateway.consultarProdutoPorStatus(pageable);
     }
 
     public Page<ProdutoResponseDomain> consultarProdutos(Pageable pageable) {
@@ -47,6 +47,13 @@ public class ProdutoUseCase {
             throw new ProdutoPorIDNaoEncontrado("Id não encontrado em nossa base: " + idProduto);
         } else
             return produtoGateway.consultarProdutosPeloId(idProduto);
+    }
+
+    public ProdutoResponseDomain consultarProdutosPeloIdExpandirTabelaNutri(Integer idProduto, String expand) {
+        if (produtoGateway.consultarProdutosPeloIdExpandirTabelaNutri(idProduto, expand) == null) {
+            throw new ProdutoPorIDNaoEncontrado("Id não encontrado em nossa base: " + idProduto);
+        } else
+            return produtoGateway.consultarProdutosPeloIdExpandirTabelaNutri(idProduto, expand);
     }
 
     public ProdutoResponseDomain consultarCategoriaPeloIdParaAtualizarParcial(Integer idProduto) {

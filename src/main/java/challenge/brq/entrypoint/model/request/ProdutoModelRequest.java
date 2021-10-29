@@ -38,5 +38,8 @@ public class ProdutoModelRequest {
     @Valid
     private CategoriaModelRequestID categoria;
 
+    @Valid
+    private TabelaNutricionalModelRequest tabelaNutricional;
+
 
 }

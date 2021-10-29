@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 
 /**
@@ -46,15 +45,15 @@ public class ProdutoController {
      * @param categoria {String categoria}
      */
     @GetMapping
-    public ResponseEntity<List<ProdutoModelResponse>> listarProdutos(Pageable pageable,
+    public ResponseEntity<Page<ProdutoModelResponse>> listarProdutos(Pageable pageable,
                                                                      @RequestParam(required = false) String marca,
                                                                      @RequestParam(required = false) String categoria) {
         Page<ProdutoResponseDomain> produtosModelRetornaMarcaOuCategoria = produtoUseCase.consultarProdutosPelaMarcaOuCategoria(marca, categoria, pageable);
         if (produtosModelRetornaMarcaOuCategoria.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        Page<ProdutoModelResponse> dataModelResponse = ProdutoEntryPointMapperResponse.converterPagina(produtosModelRetornaMarcaOuCategoria);
-        return ResponseEntity.ok(dataModelResponse.getContent());
+        Page<ProdutoModelResponse> dataModelResponse = ProdutoEntryPointMapperResponse.converterPaginaPadrao(produtosModelRetornaMarcaOuCategoria);
+        return ResponseEntity.ok(dataModelResponse);
 
     }
 
@@ -65,8 +64,9 @@ public class ProdutoController {
      * @return Retorna o item referente ao ID informado
      */
     @GetMapping("{idProduto}")
-    public ResponseEntity<Object> consultarProdutosPeloID(@PathVariable Integer idProduto) {
-        ProdutoResponseDomain produtosModel = produtoUseCase.consultarProdutosPeloId(idProduto);
+    public ResponseEntity<Object> consultarProdutosPeloID(@PathVariable Integer idProduto,
+                                                          @RequestParam(required = false) String expand) {
+        ProdutoResponseDomain produtosModel = produtoUseCase.consultarProdutosPeloIdExpandirTabelaNutri(idProduto, expand);
         ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterProduto(produtosModel);
         if (produtoModelResponse == null) {
             return ResponseEntity.notFound().build();

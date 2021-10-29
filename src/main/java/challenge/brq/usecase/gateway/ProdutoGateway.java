@@ -9,6 +9,8 @@ public interface ProdutoGateway {
 
     Page<ProdutoResponseDomain> consultarProdutos(Pageable pageable);
 
+    ProdutoResponseDomain consultarProdutosPeloIdExpandirTabelaNutri(Integer idProduto, String exapnd);
+
     ProdutoResponseDomain consultarProdutosPeloId(Integer idProduto);
 
     ProdutoResponseDomain adicionaProdutos(ProdutoRequestDomain produtoRequestDomain);
@@ -23,6 +25,6 @@ public interface ProdutoGateway {
 
     Page<ProdutoResponseDomain> consultarProdutosParaExclusaoDeCategorias(String nomeOuCategoria, Pageable pageable);
 
-    Page<ProdutoResponseDomain> consultarProdutoPorStatus(Boolean status, Pageable pageable);
+    Page<ProdutoResponseDomain> consultarProdutoPorStatus(Pageable pageable);
 
 }

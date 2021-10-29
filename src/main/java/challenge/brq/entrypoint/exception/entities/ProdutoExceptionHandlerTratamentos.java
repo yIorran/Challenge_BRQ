@@ -92,6 +92,7 @@ public class ProdutoExceptionHandlerTratamentos extends ResponseEntityExceptionH
                 .mensagem(exception.getMessage())
                 .build();
     }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return super.handleMethodArgumentNotValid(ex, headers, status, request);

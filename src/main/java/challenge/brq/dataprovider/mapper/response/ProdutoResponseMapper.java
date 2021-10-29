@@ -16,17 +16,21 @@ public class ProdutoResponseMapper {
         List<ProdutoResponseDomain> produtosResponseDomain = new ArrayList<>();
 
         produtoEntity.forEach(produto -> {
-            ProdutoResponseDomain produtoDomainModel = converterProduto(produto);
+            ProdutoResponseDomain produtoDomainModel = converterProdutoComTodosAtributos(produto);
             produtosResponseDomain.add(produtoDomainModel);
         });
         return produtosResponseDomain;
     }
 
-    public static Page<ProdutoResponseDomain> converterPagina(Page<ProdutoEntity> produtoEntity) {
-        return produtoEntity.map(ProdutoResponseMapper::converterProduto);
+    public static Page<ProdutoResponseDomain> converterPaginaComTodosAtributos(Page<ProdutoEntity> produtoEntity) {
+        return produtoEntity.map(ProdutoResponseMapper::converterProdutoComTodosAtributos);
     }
 
-    public static ProdutoResponseDomain converterProduto(ProdutoEntity produtoEntity) {
+    public static Page<ProdutoResponseDomain> converterPaginaPadrao(Page<ProdutoEntity> produtoEntity) {
+        return produtoEntity.map(ProdutoResponseMapper::converterProdutoPadrao);
+    }
+
+    public static ProdutoResponseDomain converterProdutoComTodosAtributos(ProdutoEntity produtoEntity) {
         return ProdutoResponseDomain.builder()
                 .codigoProduto(produtoEntity.getCodigoProduto())
                 .nomeProduto(produtoEntity.getNomeProduto())
@@ -38,8 +42,41 @@ public class ProdutoResponseMapper {
                 .produtoOfertado(produtoEntity.getProdutoOfertado())
                 .porcentagem(produtoEntity.getPorcentagemoferta())
                 .categoria(CategoriaResponseMapper.converterCategoria(produtoEntity.getCategoria()))
+                .tabelaNutricionalResponseDomain(TabelaNutricionalResponseMapper.converter(produtoEntity.getTabelaNutricionalEntity()))
                 .build();
     }
+
+    public static ProdutoResponseDomain converterProdutoComTodosAtributosExpand(ProdutoEntity produtoEntity, String expand) {
+        return ProdutoResponseDomain.builder()
+                .codigoProduto(produtoEntity.getCodigoProduto())
+                .nomeProduto(produtoEntity.getNomeProduto())
+                .descricaoProduto(produtoEntity.getDescricaoProduto())
+                .marcaProduto(produtoEntity.getMarcaProduto())
+                .quantidadeProduto(produtoEntity.getQuantidadeProduto())
+                .precoProduto(produtoEntity.getPrecoProduto())
+                .produtoAtivo(produtoEntity.getProdutoAtivo())
+                .produtoOfertado(produtoEntity.getProdutoOfertado())
+                .porcentagem(produtoEntity.getPorcentagemoferta())
+                .categoria(CategoriaResponseMapper.converterCategoria(produtoEntity.getCategoria()))
+                .tabelaNutricionalResponseDomain(TabelaNutricionalResponseMapper.converterExpand(produtoEntity.getTabelaNutricionalEntity(), expand))
+                .build();
+    }
+
+
+    public static ProdutoResponseDomain converterProdutoPadrao(ProdutoEntity produtoEntity) {
+        return ProdutoResponseDomain.builder()
+                .codigoProduto(produtoEntity.getCodigoProduto())
+                .nomeProduto(produtoEntity.getNomeProduto())
+                .descricaoProduto(produtoEntity.getDescricaoProduto())
+                .marcaProduto(produtoEntity.getMarcaProduto())
+                .quantidadeProduto(produtoEntity.getQuantidadeProduto())
+                .precoProduto(produtoEntity.getPrecoProduto())
+                .produtoAtivo(produtoEntity.getProdutoAtivo())
+                .produtoOfertado(produtoEntity.getProdutoOfertado())
+                .porcentagem(produtoEntity.getPorcentagemoferta())
+                .build();
+    }
+
 
 
     public static ProdutoResponseDomain converterProdutoParaAtualizacao(ProdutoEntity produtoEntity) {
@@ -54,6 +91,7 @@ public class ProdutoResponseMapper {
                 .produtoOfertado(produtoEntity.getProdutoOfertado())
                 .porcentagem(produtoEntity.getPorcentagemoferta())
                 .categoria(CategoriaResponseMapper.converterCategoria(produtoEntity.getCategoria()))
+                .tabelaNutricionalResponseDomain(TabelaNutricionalResponseMapper.converter(produtoEntity.getTabelaNutricionalEntity()))
                 .build();
     }
 
