@@ -86,6 +86,24 @@ public class ProdutoExceptionHandlerTratamentos extends ResponseEntityExceptionH
         return ResponseEntity.status(httpStatus).body(exceptionModelResponse);
     }
 
+    @ExceptionHandler(TabelaNutricionalValorDiferenteException.class)
+    public final ResponseEntity<?> tabelaNutricionalValorDiferenteException(Exception exception) {
+        HttpStatus httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+
+        ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, exception);
+
+        return ResponseEntity.status(httpStatus).body(exceptionModelResponse);
+    }
+
+    @ExceptionHandler(PrecoMenorOuIgualAZeroException.class)
+    public final ResponseEntity<?> valorMenorOuIgualAZero(Exception exception) {
+        HttpStatus httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+
+        ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, exception);
+
+        return ResponseEntity.status(httpStatus).body(exceptionModelResponse);
+    }
+
     private ExceptionModelResponse montarRespostaExcecao(HttpStatus httpStatus, Exception exception) {
         return ExceptionModelResponse.builder()
                 .codigo(String.valueOf(httpStatus.value()))

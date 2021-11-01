@@ -14,6 +14,12 @@ import java.util.Objects;
 @UtilityClass
 public class Utils {
 
+    public static void verificarSePrecoMenorOuIgualAZero(Double preco) {
+        if(preco <= 0) {
+            throw new PrecoMenorOuIgualAZeroException("Preço não pode ser menor ou igual a zero");
+        }
+    }
+
     public static void verificarSeCategoriaExisteParaAdicionar(Object id) {
         if (id == null) {
             throw new CategoriaNaoEncontradaParaAdicionarOuAtualizarProduto("Categoria não encontrada para fazer adição");

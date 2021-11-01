@@ -2,6 +2,7 @@ package challenge.brq.usecase.service;
 
 import challenge.brq.usecase.exception.categoria.CategoriaNaoExistenteParaAtualizacaoParcialException;
 import challenge.brq.usecase.exception.produto.ProdutoPorIDNaoEncontrado;
+import challenge.brq.usecase.exception.produto.TabelaNutricionalValorDiferenteException;
 import challenge.brq.usecase.gateway.CategoriaGateway;
 import challenge.brq.usecase.gateway.ProdutoGateway;
 import challenge.brq.usecase.model.request.ProdutoRequestDomain;
@@ -13,6 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -34,6 +37,7 @@ public class ProdutoUseCase {
         CategoriaResponseDomain categoriaResponseDomain = categoriaGateway.consultarCategoriaPeloId(produtoRequestDomain.getCategoria().getIdCategoria());
         Utils.verificarSeCategoriaExisteParaAdicionar(categoriaResponseDomain);
         Utils.verificarSeQuantidadeMaiorIgualZero(produtoRequestDomain.getQuantidadeProduto());
+        Utils.verificarSePrecoMenorOuIgualAZero(produtoRequestDomain.getPrecoProduto());
         return produtoGateway.adicionaProdutos(produtoRequestDomain);
     }
 
@@ -50,6 +54,9 @@ public class ProdutoUseCase {
     }
 
     public ProdutoResponseDomain consultarProdutosPeloIdExpandirTabelaNutri(Integer idProduto, String expand) {
+        if(!Objects.equals(expand, "tabela_nutricional")){
+            throw new TabelaNutricionalValorDiferenteException("Valor não reconhecido: " + expand);
+        }
         if (produtoGateway.consultarProdutosPeloIdExpandirTabelaNutri(idProduto, expand) == null) {
             throw new ProdutoPorIDNaoEncontrado("Id não encontrado em nossa base: " + idProduto);
         } else
@@ -84,6 +91,7 @@ public class ProdutoUseCase {
         Utils.verificarSeStatusDoProdutoEAtivoAposModificacoes(produtoAtual);
         Utils.verificarSePorcentagemMaiorQueZeroAposModificacoes(produtoAtual);
         Utils.verificarSeOfertadoAtivoEStatusAtivoAposModificacoes(produtoAtual);
+        Utils.verificarSePrecoMenorOuIgualAZero(produtoAtual.getPrecoProduto());
         return produtoGateway.atualizarProdutosParcial(produtoAtual);
     }
 }
