@@ -12,7 +12,10 @@ import challenge.brq.usecase.model.request.TabelaNutricionalRequestDomain;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import challenge.brq.usecase.model.response.TabelaNutricionalResponseDomain;
+import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,57 +74,70 @@ public class ProdutoResponseMapperTest {
     }
 
     @Test
-    public void testeConverterList(){
-        List<ProdutoEntity> produto = getListProdutoEntity();
-        List<ProdutoResponseDomain>produtoResponseDomain = ProdutoResponseMapper.converter(produto);
+    public void testeConverterPageTodosAtributos(){
+        Page<ProdutoEntity> produtoEntity = new PageImpl<>(getListProdutoEntity());
+        Page<ProdutoResponseDomain>produtoResponseDomain = ProdutoResponseMapper.converterPaginaComTodosAtributos(produtoEntity);
         assertAll(() -> {
-        assertEquals(produto.get(0).getNomeProduto(), produtoResponseDomain.get(0).getNomeProduto());
-        assertEquals(produto.get(0).getDescricaoProduto(), produtoResponseDomain.get(0).getDescricaoProduto());
-        assertEquals(produto.get(0).getMarcaProduto(), produtoResponseDomain.get(0).getMarcaProduto());
-        assertEquals(produto.get(0).getQuantidadeProduto(), produtoResponseDomain.get(0).getQuantidadeProduto());
-        assertEquals(produto.get(0).getPrecoProduto(), produtoResponseDomain.get(0).getPrecoProduto());
-        assertEquals(produto.get(0).getProdutoAtivo(), produtoResponseDomain.get(0).getProdutoAtivo());
-        assertEquals(produto.get(0).getProdutoOfertado(), produtoResponseDomain.get(0).getProdutoOfertado());
-        assertEquals(produto.get(0).getPorcentagemoferta(), produtoResponseDomain.get(0).getPorcentagem());
-        assertEquals(produto.get(0).getTabelaNutricionalEntity().getTabelaNutricional(), produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getTabelaNutricional());
-        assertEquals(produto.get(0).getTabelaNutricionalEntity().getGorduraSaturada(), produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getGorduraSaturada());
-        assertEquals(produto.get(0).getTabelaNutricionalEntity().getValorEnergetico(), produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getValorEnergetico());
-        assertEquals(produto.get(0).getTabelaNutricionalEntity().getAcucar(), produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getAcucar());
-        assertEquals(produto.get(0).getTabelaNutricionalEntity().getFibras(), produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getFibras());
-        assertEquals(produto.get(0).getTabelaNutricionalEntity().getProteinas(), produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getProteinas());
-        assertEquals(produto.get(0).getTabelaNutricionalEntity().getSodio(), produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getSodio());
-        assertEquals(produto.get(0).getCategoria().getId(), produtoResponseDomain.get(0).getCategoria().getIdCategoria());
+            assertEquals("Arroz", produtoResponseDomain.getContent().get(0).getNomeProduto());
+            assertEquals("Arroz branco", produtoResponseDomain.getContent().get(0).getDescricaoProduto());
+            assertEquals("Arrozx", produtoResponseDomain.getContent().get(0).getMarcaProduto());
+            assertEquals(1, produtoResponseDomain.getContent().get(0).getQuantidadeProduto());
+            assertEquals(2.0, produtoResponseDomain.getContent().get(0).getPrecoProduto());
+            assertEquals(true, produtoResponseDomain.getContent().get(0).getProdutoAtivo());
+            assertEquals(false, produtoResponseDomain.getContent().get(0).getProdutoOfertado());
+            assertEquals(0, produtoResponseDomain.getContent().get(0).getPorcentagem());
+            assertEquals("1", produtoResponseDomain.getContent().get(0).getTabelaNutricionalResponseDomain().getTabelaNutricional());
+            assertEquals("2", produtoResponseDomain.getContent().get(0).getTabelaNutricionalResponseDomain().getGorduraSaturada());
+            assertEquals("3", produtoResponseDomain.getContent().get(0).getTabelaNutricionalResponseDomain().getValorEnergetico());
+            assertEquals("4", produtoResponseDomain.getContent().get(0).getTabelaNutricionalResponseDomain().getAcucar());
+            assertEquals("5", produtoResponseDomain.getContent().get(0).getTabelaNutricionalResponseDomain().getFibras());
+            assertEquals("6", produtoResponseDomain.getContent().get(0).getTabelaNutricionalResponseDomain().getProteinas());
+            assertEquals("7", produtoResponseDomain.getContent().get(0).getTabelaNutricionalResponseDomain().getSodio());
+            assertEquals(1, produtoResponseDomain.getContent().get(0).getCategoria().getIdCategoria());
+        });
+    }
+
+    @Test
+    public void testeConverterPagePadrao(){
+        Page<ProdutoEntity> produtoEntity = new PageImpl<>(getListProdutoEntity());
+        Page<ProdutoResponseDomain>produtoResponseDomain = ProdutoResponseMapper.converterPaginaPadrao(produtoEntity);
+        assertAll(() -> {
+            assertEquals("Arroz", produtoResponseDomain.getContent().get(0).getNomeProduto());
+            assertEquals("Arroz branco", produtoResponseDomain.getContent().get(0).getDescricaoProduto());
+            assertEquals("Arrozx", produtoResponseDomain.getContent().get(0).getMarcaProduto());
+            assertEquals(1, produtoResponseDomain.getContent().get(0).getQuantidadeProduto());
+            assertEquals(2.0, produtoResponseDomain.getContent().get(0).getPrecoProduto());
+            assertEquals(true, produtoResponseDomain.getContent().get(0).getProdutoAtivo());
+            assertEquals(false, produtoResponseDomain.getContent().get(0).getProdutoOfertado());
+            assertEquals(0, produtoResponseDomain.getContent().get(0).getPorcentagem());
         });
     }
 
 
+    @Test
+    public void testeConverterList(){
+        List<ProdutoEntity> produto = getListProdutoEntity();
+        List<ProdutoResponseDomain>produtoResponseDomain = ProdutoResponseMapper.converter(produto);
+        assertAll(() -> {
+        assertEquals("Arroz", produtoResponseDomain.get(0).getNomeProduto());
+        assertEquals("Arroz branco", produtoResponseDomain.get(0).getDescricaoProduto());
+        assertEquals("Arrozx", produtoResponseDomain.get(0).getMarcaProduto());
+        assertEquals(1, produtoResponseDomain.get(0).getQuantidadeProduto());
+        assertEquals(2.0, produtoResponseDomain.get(0).getPrecoProduto());
+        assertEquals(true, produtoResponseDomain.get(0).getProdutoAtivo());
+        assertEquals(false, produtoResponseDomain.get(0).getProdutoOfertado());
+        assertEquals(0, produtoResponseDomain.get(0).getPorcentagem());
+        assertEquals("1", produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getTabelaNutricional());
+        assertEquals("2", produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getGorduraSaturada());
+        assertEquals("3", produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getValorEnergetico());
+        assertEquals("4", produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getAcucar());
+        assertEquals("5", produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getFibras());
+        assertEquals("6", produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getProteinas());
+        assertEquals("7", produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getSodio());
+        assertEquals(1, produtoResponseDomain.get(0).getCategoria().getIdCategoria());
+        });
+    }
 
-        public List<ProdutoResponseDomain> getListProdutoResponseDomain(){
-            List<ProdutoResponseDomain> produtoResponseDomain = new ArrayList<>();
-            produtoResponseDomain.add(ProdutoResponseDomain.builder()
-                    .nomeProduto("Arroz")
-                    .descricaoProduto("Arroz branco")
-                    .marcaProduto("Arrozx")
-                    .quantidadeProduto(1)
-                    .precoProduto(2.0)
-                    .produtoAtivo(true)
-                    .produtoOfertado(false)
-                    .porcentagem(0)
-                    .categoria(CategoriaResponseDomain.builder()
-                            .idCategoria(1)
-                            .build())
-                    .tabelaNutricionalResponseDomain(TabelaNutricionalResponseDomain.builder()
-                            .tabelaNutricional("1")
-                            .gorduraSaturada("2")
-                            .valorEnergetico("3")
-                            .acucar("4")
-                            .fibras("5")
-                            .proteinas("6")
-                            .sodio("7")
-                            .build())
-                    .build());
-            return produtoResponseDomain;
-        }
 
     public List<ProdutoEntity> getListProdutoEntity(){
         List<ProdutoEntity> produtoEntity = new ArrayList<>();

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 public class CategoriaRequestMapperTest {
 
     @Test
@@ -66,10 +67,10 @@ public class CategoriaRequestMapperTest {
         //condicao
         CategoriaEntity categoria = CategoriaRequestMapper.converterParaAtualizacao(categoriaResponseDomain);
         //validacao
-        assertAll(() -> {
-            assertEquals(1, categoria.getId());
-            assertEquals("Alimento",categoria.getNomeCategoria());
-        });
+        assertAll(
+                () -> assertEquals(1, categoria.getId()),
+                () -> assertEquals("Alimento", categoria.getNomeCategoria())
+        );
     }
 
     /**

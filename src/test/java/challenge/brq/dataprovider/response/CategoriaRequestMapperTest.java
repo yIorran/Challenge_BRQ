@@ -1,89 +1,62 @@
 package challenge.brq.dataprovider.response;
 
 
-import challenge.brq.dataprovider.entity.CategoriaEntity;
-import challenge.brq.dataprovider.mapper.request.CategoriaRequestMapper;
-import challenge.brq.usecase.model.request.CategoriaRequestDomain;
+import challenge.brq.entrypoint.mapper.response.CategoriaEntryPointMapperResponse;
+import challenge.brq.entrypoint.model.response.CategoriaModelResponse;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class CategoriaRequestMapperTest {
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class CategoriaResponseMapperTest {
 
     @Test
     public void testeConverterCategoriaRequestSucessoNome(){
         //cenario
-        CategoriaRequestDomain categoriaRequestDomain = CategoriaRequestDomain.builder()
+        CategoriaResponseDomain categoriaResponseDomain = CategoriaResponseDomain.builder()
                 .nomeCategoria("Alimento")
                 .build();
         //condicao
-        CategoriaEntity categoria = CategoriaRequestMapper.converter(categoriaRequestDomain);
+        CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterCategoria(categoriaResponseDomain);
         //validacao
-        assertEquals("Alimento", categoria.getNomeCategoria());
+        assertEquals("Alimento", categoriaModelResponse.getNomeCategoria());
     }
 
-    /**
-     * Teste para checar se o Id da categoria é nulo
-     */
     @Test
-    public void testeConverterCategoriaRequestSucessoIdNulo(){
-        //cenario
-        CategoriaRequestDomain categoriaRequestDomain = CategoriaRequestDomain.builder()
-                .idCategoria(null)
-                .build();
-        //condicao
-        CategoriaEntity categoria = CategoriaRequestMapper.converterId(categoriaRequestDomain);
-        //validacao
-        assertNull(categoria.getId());
-    }
-
-    /**
-     * Teste para checar se o ID da categoria é válido e diferente de nulo
-     */
-    @Test
-    public void testeConverterCategoriaRequestSucessoId(){
-        //cenario
-        CategoriaRequestDomain categoriaRequestDomain = CategoriaRequestDomain.builder()
-                .idCategoria(1)
-                .build();
-        //condicao
-        CategoriaEntity categoria = CategoriaRequestMapper.converterId(categoriaRequestDomain);
-        //validacao
-        assertEquals(1, categoria.getId());
-    }
-
-    /**
-     * Teste para checar se o objeto entity da categoria é válido
-     */
-    @Test
-    public void testeConverterCategoriaResponseSucesso(){
+    public void testeConverterCategoriaParaAttRequestSucessoNome(){
         //cenario
         CategoriaResponseDomain categoriaResponseDomain = CategoriaResponseDomain.builder()
                 .nomeCategoria("Alimento")
                 .idCategoria(1)
                 .build();
         //condicao
-        CategoriaEntity categoria = CategoriaRequestMapper.converterParaAtualizacao(categoriaResponseDomain);
+        CategoriaModelResponse categoriaModelResponse = CategoriaEntryPointMapperResponse.converterParaAtualizacao(1,categoriaResponseDomain);
         //validacao
+        assertEquals("Alimento", categoriaModelResponse.getNomeCategoria());
+        assertEquals(1, categoriaModelResponse.getIdCategoria());
+    }
+
+    @Test
+    public void testeConverterList(){
+        List<CategoriaResponseDomain> produto = getListCategoriaModelResponse();
+        List<CategoriaModelResponse> categoriaResponseDomain = CategoriaEntryPointMapperResponse.converter(produto);
         assertAll(() -> {
-            assertEquals(1, categoria.getId());
-            assertEquals("Alimento",categoria.getNomeCategoria());
+            assertEquals("Alimento", categoriaResponseDomain.get(0).getNomeCategoria());
+            assertEquals(1, categoriaResponseDomain.get(0).getIdCategoria());
         });
     }
 
-    /**
-     * Teste para checar se o Id da categoria é válido e não nulo
-     */
-    @Test
-    public void testeConverterIdCategoriaResponseSucesso(){
-        //cenario
-        CategoriaResponseDomain categoriaResponseDomain = CategoriaResponseDomain.builder()
+    public List<CategoriaResponseDomain> getListCategoriaModelResponse(){
+        List<CategoriaResponseDomain> categoriaModelResponses = new ArrayList<>();
+        categoriaModelResponses.add(CategoriaResponseDomain.builder()
+                .nomeCategoria("Alimento")
                 .idCategoria(1)
-                .build();
-        //condicao
-        CategoriaEntity categoria = CategoriaRequestMapper.converterParaAtualizacao(categoriaResponseDomain);
-        //validacao
-        assertEquals(1, categoria.getId());
+                .build());
+        return categoriaModelResponses;
     }
+
 }
