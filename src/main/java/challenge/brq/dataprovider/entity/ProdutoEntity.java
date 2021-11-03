@@ -52,6 +52,9 @@ public class ProdutoEntity {
     @JoinColumn(nullable = false)
     private CategoriaEntity categoria;
 
+    @Embedded
+    private TabelaNutricionalEntity tabelaNutricionalEntity;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

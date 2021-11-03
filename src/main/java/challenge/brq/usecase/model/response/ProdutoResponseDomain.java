@@ -18,5 +18,6 @@ public class ProdutoResponseDomain {
     private Boolean produtoOfertado;
     private Integer porcentagem;
     private CategoriaResponseDomain categoria;
+    private TabelaNutricionalResponseDomain tabelaNutricionalResponseDomain;
 
 }

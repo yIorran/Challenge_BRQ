@@ -4,14 +4,15 @@ import challenge.brq.dataprovider.entity.CategoriaEntity;
 import challenge.brq.dataprovider.mapper.request.CategoriaRequestMapper;
 import challenge.brq.dataprovider.mapper.response.CategoriaResponseMapper;
 import challenge.brq.dataprovider.repository.CategoriaRepository;
+import challenge.brq.usecase.gateway.CategoriaGateway;
 import challenge.brq.usecase.model.request.CategoriaRequestDomain;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
-import challenge.brq.usecase.gateway.CategoriaGateway;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
@@ -28,6 +29,9 @@ public class CategoriaDataProvider implements CategoriaGateway {
 
     @Override
     public CategoriaResponseDomain consultarCategoriaPeloId(Integer idCategoria) {
+        if (Objects.isNull(idCategoria)) {
+            return null;
+        }
         Optional<CategoriaEntity> categoriaEntity = categoriaRepository.findById(idCategoria);
         if (categoriaEntity.isPresent()) {
             return CategoriaResponseMapper.converterCategoria(categoriaEntity.get());

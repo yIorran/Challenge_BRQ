@@ -34,8 +34,8 @@ public class CategoriaRequestMapper {
     }
 
     public static CategoriaEntity converterIdResponse(CategoriaResponseDomain categoriaResponseDomain) {
-        if (Objects.isNull(categoriaResponseDomain)) {
-            return null;
+        if (Objects.isNull(categoriaResponseDomain.getIdCategoria())) {
+            return CategoriaEntity.builder().build();
         }
         return CategoriaEntity.builder()
                 .id(categoriaResponseDomain.getIdCategoria())

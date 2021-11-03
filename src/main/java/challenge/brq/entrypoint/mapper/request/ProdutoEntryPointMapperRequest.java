@@ -16,13 +16,8 @@ public class ProdutoEntryPointMapperRequest {
                 .produtoAtivo(true)
                 .produtoOfertado(false)
                 .porcentagem(0)
-                .categoria(CategoriaEntryPointMapperRequest.converter(produtoModelRequest.getCategoria()))
-                .build();
-    }
-
-    public static ProdutoRequestDomain converterMarca(String marca) {
-        return ProdutoRequestDomain.builder().
-                marcaProduto(marca)
+                .categoria(CategoriaEntryPointMapperRequest.converterId(produtoModelRequest.getCategoria()))
+                .tabelaNutricionalRequestDomain(TabelaNutricionalEntryPointMapperRequest.converter(produtoModelRequest.getTabelaNutricional()))
                 .build();
     }
 
@@ -38,22 +33,7 @@ public class ProdutoEntryPointMapperRequest {
                 .produtoOfertado(produtoModelRequest.getOfertado())
                 .porcentagem(produtoModelRequest.getPorcentagem())
                 .categoria(CategoriaEntryPointMapperRequest.converterId(produtoModelRequest.getCategoria()))
+                .tabelaNutricionalRequestDomain(TabelaNutricionalEntryPointMapperRequest.converter(produtoModelRequest.getTabelaNutricional()))
                 .build();
     }
-
-    public static ProdutoRequestDomain converterParaAtualizacao(ProdutoModelRequest produtoModelRequest) {
-        return ProdutoRequestDomain.builder()
-                .codigoProduto(produtoModelRequest.getIdProduto())
-                .nomeProduto(produtoModelRequest.getNome())
-                .descricaoProduto(produtoModelRequest.getDescricao())
-                .marcaProduto(produtoModelRequest.getMarca())
-                .quantidadeProduto(produtoModelRequest.getQuantidade())
-                .precoProduto(produtoModelRequest.getPreco())
-                .produtoAtivo(produtoModelRequest.getAtivo())
-                .produtoOfertado(produtoModelRequest.getOfertado())
-                .porcentagem(produtoModelRequest.getPorcentagem())
-                .build();
-    }
-
-
 }

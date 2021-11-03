@@ -1,14 +1,16 @@
 package challenge.brq.usecase.service;
 
+import challenge.brq.usecase.exception.categoria.CategoriaDuplicadaException;
+import challenge.brq.usecase.exception.categoria.CategoriaEmUsoException;
+import challenge.brq.usecase.exception.categoria.CategoriaNaoEncontradaException;
+import challenge.brq.usecase.gateway.CategoriaGateway;
+import challenge.brq.usecase.gateway.ProdutoGateway;
 import challenge.brq.usecase.model.request.CategoriaRequestDomain;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
-import challenge.brq.usecase.exception.CategoriaDuplicadaException;
-import challenge.brq.usecase.exception.CategoriaEmUsoException;
-import challenge.brq.usecase.exception.CategoriaNaoEncontradaException;
-import challenge.brq.usecase.gateway.CategoriaGateway;
-import challenge.brq.usecase.gateway.ProdutoGateway;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,8 +53,8 @@ public class CategoriaUseCase {
      *
      * @param idCategoria return void
      */
-    public void excluiCategoriaPeloId(Integer idCategoria) {
-        consultarSeCategoriaTemProduto(consultarCategoriasPeloId(idCategoria));
+    public void excluiCategoriaPeloId(Integer idCategoria, Pageable pageable) {
+        consultarSeCategoriaTemProduto(consultarCategoriasPeloId(idCategoria), pageable);
         categoriaGateway.excluiCategoriaPeloId(idCategoria);
     }
 
@@ -64,8 +66,7 @@ public class CategoriaUseCase {
      * @return CategoriaResponseDomain
      */
     public CategoriaResponseDomain adicionaCategoria(CategoriaRequestDomain categoriaRequestDomain) {
-        String nome = categoriaRequestDomain.getNomeCategoria();
-        consultarCategoriaPeloNome(nome);
+        consultarCategoriaPeloNome(categoriaRequestDomain.getNomeCategoria());
         return categoriaGateway.adicionaCategoria(categoriaRequestDomain);
     }
 
@@ -109,9 +110,9 @@ public class CategoriaUseCase {
      * @param categoriaResponseDomain
      * @return produtoResponseDomain
      */
-    private Object consultarSeCategoriaTemProduto(CategoriaResponseDomain categoriaResponseDomain) {
+    private Object consultarSeCategoriaTemProduto(CategoriaResponseDomain categoriaResponseDomain, Pageable pageable) {
         CategoriaResponseDomain categoriaSalva = categoriaGateway.consultarCategoriaPeloNome(categoriaResponseDomain.getNomeCategoria());
-        List<ProdutoResponseDomain> produtoResponseDomain = produtoGateway.consultarProdutosPelaMarca(categoriaSalva.getNomeCategoria());
+        Page<ProdutoResponseDomain> produtoResponseDomain = produtoGateway.consultarProdutosParaExclusaoDeCategorias(categoriaSalva.getNomeCategoria(), pageable);
         if (!produtoResponseDomain.isEmpty()) {
             throw new CategoriaEmUsoException("Categoria em uso para um produto");
         }

@@ -1,15 +1,17 @@
-package challenge.brq.entrypoint.exception;
+package challenge.brq.entrypoint.exception.entities;
 
-import challenge.brq.usecase.exception.CategoriaDuplicadaException;
-import challenge.brq.usecase.exception.CategoriaEmUsoException;
-import challenge.brq.usecase.exception.CategoriaNaoEncontradaException;
+import challenge.brq.usecase.exception.categoria.*;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class ExceptionHandlerTratamentos extends ExceptionModelResponse {
+public class CategoriaExceptionHandlerTratamentos extends ResponseEntityExceptionHandler {
 
 
     @ExceptionHandler(CategoriaNaoEncontradaException.class)
@@ -39,12 +41,35 @@ public class ExceptionHandlerTratamentos extends ExceptionModelResponse {
         return ResponseEntity.status(httpStatus).body(exceptionModelResponse);
     }
 
+    @ExceptionHandler(CategoriaNaoExistenteParaAtualizacaoParcialException.class)
+    public final ResponseEntity<?> categoriaNaoExistenteParaAtualizacaoParcialException(Exception exception) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, exception);
+
+        return ResponseEntity.status(httpStatus).body(exceptionModelResponse);
+    }
+
+    @ExceptionHandler(CamposFaltantesException.class)
+    public final ResponseEntity<?> camposFaltantesException(Exception exception) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        ExceptionModelResponse exceptionModelResponse = montarRespostaExcecao(httpStatus, exception);
+
+        return ResponseEntity.status(httpStatus).body(exceptionModelResponse);
+    }
+
 
     private ExceptionModelResponse montarRespostaExcecao(HttpStatus httpStatus, Exception exception) {
         return ExceptionModelResponse.builder()
                 .codigo(String.valueOf(httpStatus.value()))
                 .mensagem(exception.getMessage())
                 .build();
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return super.handleMethodArgumentNotValid(ex, headers, status, request);
     }
 
 }

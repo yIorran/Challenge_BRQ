@@ -4,15 +4,18 @@ import challenge.brq.entrypoint.mapper.request.ProdutoEntryPointMapperRequest;
 import challenge.brq.entrypoint.mapper.response.ProdutoEntryPointMapperResponse;
 import challenge.brq.entrypoint.model.request.ProdutoModelRequest;
 import challenge.brq.entrypoint.model.response.ProdutoModelResponse;
-import challenge.brq.usecase.service.ProdutoUseCase;
 import challenge.brq.usecase.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
+import challenge.brq.usecase.service.ProdutoUseCase;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
+import java.util.Objects;
 
 
 /**
@@ -39,17 +42,18 @@ public class ProdutoController {
      * Método responsável por retornar todos os produtos, produtos filtrados pela categoria
      * e produtos filtrados pela marca
      *
-     * @param marca {String marca}
+     * @param marca     {String marca}
      * @param categoria {String categoria}
      */
     @GetMapping
-    public ResponseEntity<List<ProdutoModelResponse>> listarProdutosPelaMarca(@RequestParam(required = false) String marca,
-                                                                              @RequestParam(required = false) String categoria) {
-        List<ProdutoResponseDomain> produtosModelRetornaMarcaOuCategoria = produtoUseCase.consultarProdutosPelaMarcaOuCategoria(marca, categoria);
+    public ResponseEntity<Page<ProdutoModelResponse>> listarProdutos(Pageable pageable,
+                                                                     @RequestParam(required = false) String marca,
+                                                                     @RequestParam(required = false) String categoria) {
+        Page<ProdutoResponseDomain> produtosModelRetornaMarcaOuCategoria = produtoUseCase.consultarProdutosPelaMarcaOuCategoria(marca, categoria, pageable);
         if (produtosModelRetornaMarcaOuCategoria.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        List<ProdutoModelResponse> dataModelResponse = ProdutoEntryPointMapperResponse.converter(produtosModelRetornaMarcaOuCategoria);
+        Page<ProdutoModelResponse> dataModelResponse = ProdutoEntryPointMapperResponse.converterPaginaPadrao(produtosModelRetornaMarcaOuCategoria);
         return ResponseEntity.ok(dataModelResponse);
 
     }
@@ -61,8 +65,9 @@ public class ProdutoController {
      * @return Retorna o item referente ao ID informado
      */
     @GetMapping("{idProduto}")
-    public ResponseEntity<Object> consultarProdutosPeloID(@PathVariable Integer idProduto) {
-        ProdutoResponseDomain produtosModel = produtoUseCase.consultarProdutosPeloId(idProduto);
+    public ResponseEntity<Object> consultarProdutosPeloID(@PathVariable Integer idProduto,
+                                                          @RequestParam(required = false) String expand) {
+        ProdutoResponseDomain produtosModel = produtoUseCase.consultarProdutosPeloIdExpandirTabelaNutri(idProduto, expand);
         ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterProduto(produtosModel);
         if (produtoModelResponse == null) {
             return ResponseEntity.notFound().build();
@@ -77,7 +82,7 @@ public class ProdutoController {
      * @return produtoModelResponse
      */
     @PostMapping
-    public ResponseEntity<ProdutoModelResponse> adicionaProduto(@RequestBody ProdutoModelRequest produtoModelRequest) {
+    public ResponseEntity<ProdutoModelResponse> adicionaProduto(@RequestBody @Valid ProdutoModelRequest produtoModelRequest) {
         ProdutoRequestDomain produtoRequestDomain = ProdutoEntryPointMapperRequest.converter(produtoModelRequest);
         ProdutoResponseDomain produtoResponseDomain = produtoUseCase.adicionaProdutos(produtoRequestDomain);
         ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterProduto(produtoResponseDomain);
@@ -97,26 +102,8 @@ public class ProdutoController {
     }
 
     /**
-     * Metodo responsavel por atualizar um produto persistido no banco
-     * Para atualizacao precisa informar no JSON
-     *
-     * @param idProduto
-     * @param produtoModelRequest
-     * @return produtoModelResponse
-     */
-    @PutMapping("{idProduto}")
-    public ResponseEntity<ProdutoModelResponse> atualizarProdutos(@PathVariable Integer idProduto,
-                                                                  @RequestBody ProdutoModelRequest produtoModelRequest) {
-        ProdutoRequestDomain produtoRequestDomain = ProdutoEntryPointMapperRequest.converterParaAtualizacao(produtoModelRequest);
-        ProdutoResponseDomain produtoResponseDomain = produtoUseCase.atualizarProdutos(idProduto, produtoRequestDomain);
-        ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterParaAtualizacao(idProduto, produtoResponseDomain);
-        return new ResponseEntity<>(produtoModelResponse, HttpStatus.OK);
-    }
-
-    /**
      * Metodo responsavel por atualizar parcialmente um produto persistido no banco
      * Para a atualizacao parcial pode informar apenas os atributos desejados
-     * 
      *
      * @param idProduto
      * @param produtoModelRequest
@@ -124,7 +111,7 @@ public class ProdutoController {
      */
     @PatchMapping("{idProduto}")
     public ResponseEntity<ProdutoModelResponse> atualizarProdutosParcial(@PathVariable Integer idProduto,
-                                                                @RequestBody ProdutoModelRequest produtoModelRequest) {
+                                                                         @RequestBody ProdutoModelRequest produtoModelRequest) {
         ProdutoRequestDomain produtoRequestDomain = ProdutoEntryPointMapperRequest.converterParaAtualizacaoParcial(produtoModelRequest);
         ProdutoResponseDomain produtoResponseDomain = produtoUseCase.atualizarProdutosParcial(idProduto, produtoRequestDomain);
         ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterParaAtualizacao(idProduto, produtoResponseDomain);

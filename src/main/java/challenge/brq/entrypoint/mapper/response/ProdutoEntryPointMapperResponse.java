@@ -2,6 +2,7 @@ package challenge.brq.entrypoint.mapper.response;
 
 import challenge.brq.entrypoint.model.response.ProdutoModelResponse;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,14 @@ public class ProdutoEntryPointMapperResponse {
         return produtosModelResponse;
     }
 
+    public static Page<ProdutoModelResponse> converterPaginaComTodosOsAtributos(final Page<ProdutoResponseDomain> produtoResponseDomain) {
+        return produtoResponseDomain.map(ProdutoEntryPointMapperResponse::converterProduto);
+    }
+
+    public static Page<ProdutoModelResponse> converterPaginaPadrao(final Page<ProdutoResponseDomain> produtoResponseDomain) {
+        return produtoResponseDomain.map(ProdutoEntryPointMapperResponse::converterProdutoPadrao);
+    }
+
     public static ProdutoModelResponse converterProduto(ProdutoResponseDomain produtoResponseDomain) {
         return ProdutoModelResponse.builder().idProduto(produtoResponseDomain.getCodigoProduto())
                 .nome(produtoResponseDomain.getNomeProduto())
@@ -29,6 +38,20 @@ public class ProdutoEntryPointMapperResponse {
                 .ofertado(produtoResponseDomain.getProdutoOfertado())
                 .porcentagem(produtoResponseDomain.getPorcentagem())
                 .categoria(CategoriaEntryPointMapperResponse.converterCategoria(produtoResponseDomain.getCategoria()))
+                .tabelaNutricionalModelResponse(TabelaNutricionalEntryPointMapperResponse.converter(produtoResponseDomain.getTabelaNutricionalResponseDomain()))
+                .build();
+    }
+
+    public static ProdutoModelResponse converterProdutoPadrao(ProdutoResponseDomain produtoResponseDomain) {
+        return ProdutoModelResponse.builder().idProduto(produtoResponseDomain.getCodigoProduto())
+                .nome(produtoResponseDomain.getNomeProduto())
+                .descricao(produtoResponseDomain.getDescricaoProduto())
+                .marca(produtoResponseDomain.getMarcaProduto())
+                .quantidade(produtoResponseDomain.getQuantidadeProduto())
+                .preco(produtoResponseDomain.getPrecoProduto())
+                .ativo(produtoResponseDomain.getProdutoAtivo())
+                .ofertado(produtoResponseDomain.getProdutoOfertado())
+                .porcentagem(produtoResponseDomain.getPorcentagem())
                 .build();
     }
 
@@ -45,6 +68,7 @@ public class ProdutoEntryPointMapperResponse {
                 .ofertado(produtoResponseDomain.getProdutoOfertado())
                 .porcentagem(produtoResponseDomain.getPorcentagem())
                 .categoria(CategoriaEntryPointMapperResponse.converterCategoria(produtoResponseDomain.getCategoria()))
+                .tabelaNutricionalModelResponse(TabelaNutricionalEntryPointMapperResponse.converter(produtoResponseDomain.getTabelaNutricionalResponseDomain()))
                 .build();
     }
 
