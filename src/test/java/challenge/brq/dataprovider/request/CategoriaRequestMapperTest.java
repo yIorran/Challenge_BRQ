@@ -40,21 +40,6 @@ public class CategoriaRequestMapperTest {
     }
 
     /**
-     * Teste para checar se o ID da categoria é válido e diferente de nulo
-     */
-    @Test
-    public void testeConverterCategoriaRequestSucessoId(){
-        //cenario
-        CategoriaRequestDomain categoriaRequestDomain = CategoriaRequestDomain.builder()
-                .idCategoria(1)
-                .build();
-        //condicao
-        CategoriaEntity categoria = CategoriaRequestMapper.converterId(categoriaRequestDomain);
-        //validacao
-        assertEquals(1, categoria.getId());
-    }
-
-    /**
      * Teste para checar se o objeto entity da categoria é válido
      */
     @Test
@@ -83,7 +68,7 @@ public class CategoriaRequestMapperTest {
                 .idCategoria(1)
                 .build();
         //condicao
-        CategoriaEntity categoria = CategoriaRequestMapper.converterParaAtualizacao(categoriaResponseDomain);
+        CategoriaEntity categoria = CategoriaRequestMapper.converterIdResponse(categoriaResponseDomain);
         //validacao
         assertEquals(1, categoria.getId());
     }

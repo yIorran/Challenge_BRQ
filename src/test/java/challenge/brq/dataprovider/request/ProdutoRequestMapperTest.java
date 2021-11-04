@@ -30,7 +30,7 @@ public class ProdutoRequestMapperTest {
             .sodio("7")
             .build();
     @Test
-    public void testeConverterProdutoRequestSucesso(){
+    public void testeConverterProdutoRequestSucessoComTodosAtributos(){
         //cenario
         ProdutoRequestDomain produtoRequestDomain = ProdutoRequestDomain.builder()
                 .nomeProduto("Arroz")

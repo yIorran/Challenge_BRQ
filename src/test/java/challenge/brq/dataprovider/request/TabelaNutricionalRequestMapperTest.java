@@ -36,7 +36,7 @@ public class TabelaNutricionalRequestMapperTest {
     }
 
     @Test
-    public void testeConverterTabelaNutricionalResponsetSucesso(){
+    public void testeConverterTabelaNutricionalResponseSucesso(){
         TabelaNutricionalResponseDomain tabelaNutricionalResponseDomain = TabelaNutricionalResponseDomain.builder()
                 .tabelaNutricional("1")
                 .gorduraSaturada("2")
