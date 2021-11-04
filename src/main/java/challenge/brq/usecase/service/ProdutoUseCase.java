@@ -63,14 +63,14 @@ public class ProdutoUseCase {
             return produtoGateway.consultarProdutosPeloIdExpandirTabelaNutri(idProduto, expand);
     }
 
-    public ProdutoResponseDomain consultarCategoriaPeloIdParaAtualizarParcial(Integer idProduto) {
+    public CategoriaResponseDomain consultarCategoriaPeloIdParaAtualizarParcial(Integer idProduto) {
         if (idProduto == null) {
-            return ProdutoResponseDomain.builder().build();
+            return CategoriaResponseDomain.builder().build();
         }
-        if (produtoGateway.consultarProdutosPeloId(idProduto) == null) {
+        if (categoriaGateway.consultarCategoriaPeloId(idProduto) == null) {
             throw new CategoriaNaoExistenteParaAtualizacaoParcialException("Categoria informada inexistente para atualização");
         } else
-            return produtoGateway.consultarProdutosPeloId(idProduto);
+            return categoriaGateway.consultarCategoriaPeloId(idProduto);
     }
 
     public Page<ProdutoResponseDomain> consultarProdutosPelaMarcaOuCategoria(String marca, String categoria, Pageable pageable) {
