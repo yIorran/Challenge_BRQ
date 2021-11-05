@@ -1,5 +1,7 @@
 package challenge.brq.usecase.utils;
 
+import challenge.brq.usecase.exception.categoria.CategoriaDuplicadaException;
+import challenge.brq.usecase.exception.categoria.CategoriaNaoEncontradaException;
 import challenge.brq.usecase.exception.produto.*;
 import challenge.brq.usecase.model.request.CategoriaRequestDomain;
 import challenge.brq.usecase.model.request.ProdutoRequestDomain;
@@ -13,6 +15,18 @@ import java.util.Objects;
 
 @UtilityClass
 public class Utils {
+
+    public static void verificarSeCategoriaFoiEncontrada(CategoriaResponseDomain categoriaResponseDomain, Integer idCategoria){
+        if (categoriaResponseDomain == null) {
+            throw new CategoriaNaoEncontradaException("Categoria não encontrada: " + idCategoria);
+        }
+    }
+
+    public static void verificarSeCategoriaDuplicada(CategoriaResponseDomain categoriaResponseDomain, String nome){
+        if (categoriaResponseDomain != null) {
+            throw new CategoriaDuplicadaException("Categoria já existente: " + nome);
+        }
+    }
 
     public static void verificarSePrecoMenorOuIgualAZero(Double preco) {
         if(preco <= 0) {

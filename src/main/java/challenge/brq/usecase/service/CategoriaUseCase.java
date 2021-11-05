@@ -8,6 +8,7 @@ import challenge.brq.usecase.gateway.ProdutoGateway;
 import challenge.brq.usecase.model.request.CategoriaRequestDomain;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
+import challenge.brq.usecase.utils.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,9 +43,7 @@ public class CategoriaUseCase {
      */
     public CategoriaResponseDomain consultarCategoriasPeloId(Integer idCategoria) {
         CategoriaResponseDomain categoriaResponseDomain = categoriaGateway.consultarCategoriaPeloId(idCategoria);
-        if (categoriaResponseDomain == null) {
-            throw new CategoriaNaoEncontradaException("Categoria não encontrada: " + idCategoria);
-        }
+        Utils.verificarSeCategoriaFoiEncontrada(categoriaResponseDomain, idCategoria);
         return categoriaResponseDomain;
     }
 
@@ -98,9 +97,7 @@ public class CategoriaUseCase {
      */
     private CategoriaResponseDomain consultarCategoriaPeloNome(String nome) {
         CategoriaResponseDomain categoriaResponseDomain = categoriaGateway.consultarCategoriaPeloNome(nome);
-        if (categoriaResponseDomain != null) {
-            throw new CategoriaDuplicadaException("Categoria já existente: " + nome);
-        }
+        Utils.verificarSeCategoriaDuplicada(categoriaResponseDomain,nome);
         return categoriaGateway.consultarCategoriaPeloNome(nome);
     }
 
