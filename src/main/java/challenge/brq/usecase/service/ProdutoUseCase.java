@@ -54,8 +54,11 @@ public class ProdutoUseCase {
     }
 
     public ProdutoResponseDomain consultarProdutosPeloIdExpandirTabelaNutri(Integer idProduto, String expand) {
+        if(expand == null){
+            return produtoGateway.consultarProdutosPeloId(idProduto);
+        }
         if(!Objects.equals(expand, "tabela_nutricional")){
-            throw new TabelaNutricionalValorDiferenteException("Valor não reconhecido: " + expand);
+            throw new TabelaNutricionalValorDiferenteException("Valor não reconhecido: " + expand + " valor disponível para filtro: tabela_nutricional");
         }
         if (produtoGateway.consultarProdutosPeloIdExpandirTabelaNutri(idProduto, expand) == null) {
             throw new ProdutoPorIDNaoEncontrado("Id não encontrado em nossa base: " + idProduto);
@@ -83,8 +86,8 @@ public class ProdutoUseCase {
     }
 
     public ProdutoResponseDomain atualizarProdutosParcial(Integer id, ProdutoRequestDomain produtoRequestDomain) {
-        consultarCategoriaPeloIdParaAtualizarParcial(produtoRequestDomain.getCategoria().getIdCategoria());
         ProdutoResponseDomain produtoAtual = consultarProdutosPeloId(id);
+        consultarCategoriaPeloIdParaAtualizarParcial(produtoRequestDomain.getCategoria().getIdCategoria());
         CategoriaResponseDomain categoriaResponseDomain = categoriaGateway.consultarCategoriaPeloId(produtoRequestDomain.getCategoria().getIdCategoria());
         Utils.verificarSeCategoriaExisteParaAtualizarParcial(categoriaResponseDomain);
         produtoAtual = Utils.converterProdutoComValoresValidos(produtoRequestDomain, produtoAtual);

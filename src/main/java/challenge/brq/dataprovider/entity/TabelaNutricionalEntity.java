@@ -15,8 +15,6 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class TabelaNutricionalEntity {
 
-    @Column(name = "tb_tabelaNutricional")
-    private String tabelaNutricional;
     @Column(name = "tb_valorEnergetico")
     private String valorEnergetico;
     @Column(name = "tb_gorduraSaturada")

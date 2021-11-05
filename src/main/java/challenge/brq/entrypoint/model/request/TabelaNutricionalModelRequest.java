@@ -14,8 +14,6 @@ import javax.validation.constraints.NotBlank;
 public class TabelaNutricionalModelRequest {
 
     @NotBlank
-    private String tabelaNutricional;
-    @NotBlank
     private String valorEnergetico;
     @NotBlank
     private String gorduraSaturada;

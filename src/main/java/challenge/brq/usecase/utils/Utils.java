@@ -104,7 +104,6 @@ public class Utils {
     public static TabelaNutricionalResponseDomain converterTabela(TabelaNutricionalRequestDomain tabelaNutricionalRequestDomain, TabelaNutricionalResponseDomain tabelaNutricionalResponseDomain){
         if(Objects.isNull(tabelaNutricionalRequestDomain)){
             return TabelaNutricionalResponseDomain.builder()
-                    .tabelaNutricional(tabelaNutricionalResponseDomain.getTabelaNutricional() == null ? tabelaNutricionalResponseDomain.getTabelaNutricional() : tabelaNutricionalRequestDomain.getTabelaNutricional())
                     .gorduraSaturada(tabelaNutricionalResponseDomain.getGorduraSaturada() == null ? tabelaNutricionalResponseDomain.getGorduraSaturada() : tabelaNutricionalRequestDomain.getGorduraSaturada())
                     .valorEnergetico(tabelaNutricionalResponseDomain.getValorEnergetico() == null ? tabelaNutricionalResponseDomain.getValorEnergetico() : tabelaNutricionalRequestDomain.getValorEnergetico())
                     .acucar(tabelaNutricionalResponseDomain.getAcucar() == null ? tabelaNutricionalResponseDomain.getAcucar() : tabelaNutricionalRequestDomain.getAcucar())
@@ -114,7 +113,6 @@ public class Utils {
                     .build();
         }
         return TabelaNutricionalResponseDomain.builder()
-                .tabelaNutricional(tabelaNutricionalRequestDomain.getTabelaNutricional() == null ? tabelaNutricionalResponseDomain.getTabelaNutricional() : tabelaNutricionalRequestDomain.getTabelaNutricional())
                 .gorduraSaturada(tabelaNutricionalRequestDomain.getGorduraSaturada() == null ? tabelaNutricionalResponseDomain.getGorduraSaturada() : tabelaNutricionalRequestDomain.getGorduraSaturada())
                 .valorEnergetico(tabelaNutricionalRequestDomain.getValorEnergetico() == null ? tabelaNutricionalResponseDomain.getValorEnergetico() : tabelaNutricionalRequestDomain.getValorEnergetico())
                 .acucar(tabelaNutricionalRequestDomain.getAcucar() == null ? tabelaNutricionalResponseDomain.getAcucar() : tabelaNutricionalRequestDomain.getAcucar())

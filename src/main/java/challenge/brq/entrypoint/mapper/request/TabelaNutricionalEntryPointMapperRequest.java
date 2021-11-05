@@ -13,7 +13,6 @@ public class TabelaNutricionalEntryPointMapperRequest {
             return null;
         }
         return TabelaNutricionalRequestDomain.builder()
-                .tabelaNutricional(tabelaNutricionalModelRequest.getTabelaNutricional())
                 .gorduraSaturada(tabelaNutricionalModelRequest.getGorduraSaturada())
                 .valorEnergetico(tabelaNutricionalModelRequest.getValorEnergetico())
                 .acucar(tabelaNutricionalModelRequest.getAcucar())

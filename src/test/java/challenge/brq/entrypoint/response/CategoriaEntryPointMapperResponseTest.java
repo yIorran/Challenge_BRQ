@@ -1,18 +1,15 @@
 package challenge.brq.entrypoint.response;
 
-import challenge.brq.entrypoint.mapper.request.CategoriaEntryPointMapperRequest;
 import challenge.brq.entrypoint.mapper.response.CategoriaEntryPointMapperResponse;
-import challenge.brq.entrypoint.model.request.CategoriaModelRequestID;
-import challenge.brq.entrypoint.model.request.CategoriaModelRequestNome;
 import challenge.brq.entrypoint.model.response.CategoriaModelResponse;
-import challenge.brq.usecase.model.request.CategoriaRequestDomain;
 import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CategoriaEntryPointMapperResponseTest {
 

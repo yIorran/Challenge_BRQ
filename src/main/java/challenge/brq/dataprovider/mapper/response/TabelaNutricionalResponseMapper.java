@@ -13,7 +13,6 @@ public class TabelaNutricionalResponseMapper {
             return TabelaNutricionalResponseDomain.builder().build();
         }
         return TabelaNutricionalResponseDomain.builder()
-                .tabelaNutricional(tabelaNutricionalEntity.getTabelaNutricional())
                 .gorduraSaturada(tabelaNutricionalEntity.getGorduraSaturada())
                 .valorEnergetico(tabelaNutricionalEntity.getValorEnergetico())
                 .acucar(tabelaNutricionalEntity.getAcucar())
@@ -27,7 +26,6 @@ public class TabelaNutricionalResponseMapper {
             return TabelaNutricionalResponseDomain.builder().build();
         }
         return TabelaNutricionalResponseDomain.builder()
-                .tabelaNutricional(tabelaNutricionalEntity.getTabelaNutricional())
                 .gorduraSaturada(tabelaNutricionalEntity.getGorduraSaturada())
                 .valorEnergetico(tabelaNutricionalEntity.getValorEnergetico())
                 .acucar(tabelaNutricionalEntity.getAcucar())

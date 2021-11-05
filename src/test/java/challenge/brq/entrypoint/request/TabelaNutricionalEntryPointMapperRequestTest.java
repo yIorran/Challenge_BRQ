@@ -13,7 +13,6 @@ public class TabelaNutricionalEntryPointMapperRequestTest {
     @Test
     public void testeConverterTabelaNutricionalRequestSucesso(){
         TabelaNutricionalRequestDomain tabelaNutricionalRequestDomain = TabelaNutricionalEntryPointMapperRequest.converter(TabelaNutricionalModelRequest.builder()
-                .tabelaNutricional("1")
                 .gorduraSaturada("2")
                 .valorEnergetico("3")
                 .acucar("4")
@@ -22,7 +21,6 @@ public class TabelaNutricionalEntryPointMapperRequestTest {
                 .sodio("7")
                 .build());
         assertAll(() -> {
-            assertEquals("1", tabelaNutricionalRequestDomain.getTabelaNutricional());
             assertEquals("2", tabelaNutricionalRequestDomain.getGorduraSaturada());
             assertEquals("3", tabelaNutricionalRequestDomain.getValorEnergetico());
             assertEquals("4", tabelaNutricionalRequestDomain.getAcucar());

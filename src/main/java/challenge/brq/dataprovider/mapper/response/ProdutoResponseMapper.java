@@ -46,6 +46,21 @@ public class ProdutoResponseMapper {
                 .build();
     }
 
+    public static ProdutoResponseDomain converterProdutoComBuscaPorIDSemExpand(ProdutoEntity produtoEntity) {
+        return ProdutoResponseDomain.builder()
+                .codigoProduto(produtoEntity.getCodigoProduto())
+                .nomeProduto(produtoEntity.getNomeProduto())
+                .descricaoProduto(produtoEntity.getDescricaoProduto())
+                .marcaProduto(produtoEntity.getMarcaProduto())
+                .quantidadeProduto(produtoEntity.getQuantidadeProduto())
+                .precoProduto(produtoEntity.getPrecoProduto())
+                .produtoAtivo(produtoEntity.getProdutoAtivo())
+                .produtoOfertado(produtoEntity.getProdutoOfertado())
+                .porcentagem(produtoEntity.getPorcentagemoferta())
+                .categoria(CategoriaResponseMapper.converterCategoria(produtoEntity.getCategoria()))
+                .build();
+    }
+
     public static ProdutoResponseDomain converterProdutoComTodosAtributosExpand(ProdutoEntity produtoEntity, String expand) {
         return ProdutoResponseDomain.builder()
                 .codigoProduto(produtoEntity.getCodigoProduto())

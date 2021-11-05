@@ -4,15 +4,8 @@ package challenge.brq.dataprovider.response;
 import challenge.brq.dataprovider.entity.CategoriaEntity;
 import challenge.brq.dataprovider.entity.ProdutoEntity;
 import challenge.brq.dataprovider.entity.TabelaNutricionalEntity;
-import challenge.brq.dataprovider.mapper.request.ProdutoRequestMapper;
 import challenge.brq.dataprovider.mapper.response.ProdutoResponseMapper;
-import challenge.brq.usecase.model.request.CategoriaRequestDomain;
-import challenge.brq.usecase.model.request.ProdutoRequestDomain;
-import challenge.brq.usecase.model.request.TabelaNutricionalRequestDomain;
-import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
-import challenge.brq.usecase.model.response.TabelaNutricionalResponseDomain;
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -41,7 +34,6 @@ public class ProdutoResponseMapperTest {
                         .id(1)
                         .build())
                 .tabelaNutricionalEntity(TabelaNutricionalEntity.builder()
-                        .tabelaNutricional("1")
                         .gorduraSaturada("2")
                         .valorEnergetico("3")
                         .acucar("4")
@@ -62,7 +54,6 @@ public class ProdutoResponseMapperTest {
             assertEquals(true, produto.getProdutoAtivo());
             assertEquals(false, produto.getProdutoOfertado());
             assertEquals(0, produto.getPorcentagem());
-            assertEquals("1", produto.getTabelaNutricionalResponseDomain().getTabelaNutricional());
             assertEquals("2", produto.getTabelaNutricionalResponseDomain().getGorduraSaturada());
             assertEquals("3", produto.getTabelaNutricionalResponseDomain().getValorEnergetico());
             assertEquals("4", produto.getTabelaNutricionalResponseDomain().getAcucar());
@@ -86,7 +77,6 @@ public class ProdutoResponseMapperTest {
             assertEquals(true, produtoResponseDomain.getContent().get(0).getProdutoAtivo());
             assertEquals(false, produtoResponseDomain.getContent().get(0).getProdutoOfertado());
             assertEquals(0, produtoResponseDomain.getContent().get(0).getPorcentagem());
-            assertEquals("1", produtoResponseDomain.getContent().get(0).getTabelaNutricionalResponseDomain().getTabelaNutricional());
             assertEquals("2", produtoResponseDomain.getContent().get(0).getTabelaNutricionalResponseDomain().getGorduraSaturada());
             assertEquals("3", produtoResponseDomain.getContent().get(0).getTabelaNutricionalResponseDomain().getValorEnergetico());
             assertEquals("4", produtoResponseDomain.getContent().get(0).getTabelaNutricionalResponseDomain().getAcucar());
@@ -127,7 +117,6 @@ public class ProdutoResponseMapperTest {
         assertEquals(true, produtoResponseDomain.get(0).getProdutoAtivo());
         assertEquals(false, produtoResponseDomain.get(0).getProdutoOfertado());
         assertEquals(0, produtoResponseDomain.get(0).getPorcentagem());
-        assertEquals("1", produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getTabelaNutricional());
         assertEquals("2", produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getGorduraSaturada());
         assertEquals("3", produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getValorEnergetico());
         assertEquals("4", produtoResponseDomain.get(0).getTabelaNutricionalResponseDomain().getAcucar());
@@ -154,7 +143,6 @@ public class ProdutoResponseMapperTest {
                         .id(1)
                         .build())
                 .tabelaNutricionalEntity(TabelaNutricionalEntity.builder()
-                        .tabelaNutricional("1")
                         .gorduraSaturada("2")
                         .valorEnergetico("3")
                         .acucar("4")

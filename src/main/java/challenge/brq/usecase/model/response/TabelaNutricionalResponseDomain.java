@@ -7,7 +7,6 @@ import lombok.Getter;
 @Builder
 public class TabelaNutricionalResponseDomain {
 
-    private String tabelaNutricional;
     private String valorEnergetico;
     private String gorduraSaturada;
     private String sodio;

@@ -15,7 +15,6 @@ public class TabelaNutricionalRequestMapperTest {
     @Test
     public void testeConverterTabelaNutricionalRequestSucesso(){
         TabelaNutricionalRequestDomain tabelaNutricionalRequestDomain = TabelaNutricionalRequestDomain.builder()
-                .tabelaNutricional("1")
                 .gorduraSaturada("2")
                 .valorEnergetico("3")
                 .acucar("4")
@@ -25,7 +24,6 @@ public class TabelaNutricionalRequestMapperTest {
                 .build();
         TabelaNutricionalEntity tabelaNutricional = TabelaNutricionalRequestMapper.converter(tabelaNutricionalRequestDomain);
         assertAll(() -> {
-            assertEquals("1", tabelaNutricional.getTabelaNutricional());
             assertEquals("2", tabelaNutricional.getGorduraSaturada());
             assertEquals("3", tabelaNutricional.getValorEnergetico());
             assertEquals("4", tabelaNutricional.getAcucar());
@@ -38,7 +36,6 @@ public class TabelaNutricionalRequestMapperTest {
     @Test
     public void testeConverterTabelaNutricionalResponseSucesso(){
         TabelaNutricionalResponseDomain tabelaNutricionalResponseDomain = TabelaNutricionalResponseDomain.builder()
-                .tabelaNutricional("1")
                 .gorduraSaturada("2")
                 .valorEnergetico("3")
                 .acucar("4")
@@ -48,7 +45,6 @@ public class TabelaNutricionalRequestMapperTest {
                 .build();
         TabelaNutricionalEntity tabelaNutricional = TabelaNutricionalRequestMapper.converterResponse(tabelaNutricionalResponseDomain);
         assertAll(() -> {
-            assertEquals("1", tabelaNutricional.getTabelaNutricional());
             assertEquals("2", tabelaNutricional.getGorduraSaturada());
             assertEquals("3", tabelaNutricional.getValorEnergetico());
             assertEquals("4", tabelaNutricional.getAcucar());

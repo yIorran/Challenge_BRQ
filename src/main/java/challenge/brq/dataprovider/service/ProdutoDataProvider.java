@@ -43,7 +43,7 @@ public class ProdutoDataProvider implements ProdutoGateway {
         if (produtoEntity.isEmpty()) {
             return null;
         }
-        return ProdutoResponseMapper.converterProdutoComTodosAtributos(produtoEntity.get());
+        return ProdutoResponseMapper.converterProdutoComBuscaPorIDSemExpand(produtoEntity.get());
     }
 
     @Transactional
@@ -101,7 +101,7 @@ public class ProdutoDataProvider implements ProdutoGateway {
     @Override
     public Page<ProdutoResponseDomain> consultarProdutoPorStatus(Pageable pageable) {
         Page<ProdutoEntity> produtoEntity = produtoRepository.findByProdutoOfertadoTrue(pageable);
-        return ProdutoResponseMapper.converterPaginaComTodosAtributos(produtoEntity);
+        return ProdutoResponseMapper.converterPaginaPadrao(produtoEntity);
     }
 
 }

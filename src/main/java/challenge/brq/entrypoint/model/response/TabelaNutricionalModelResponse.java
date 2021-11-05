@@ -13,8 +13,6 @@ import lombok.*;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TabelaNutricionalModelResponse {
 
-    @JsonProperty(value = "tabelaNutricional")
-    private String tabelaNutricional;
     @JsonProperty(value = "valorEnergetico")
     private String valorEnergetico;
     @JsonProperty(value = "gorduraSaturada")
