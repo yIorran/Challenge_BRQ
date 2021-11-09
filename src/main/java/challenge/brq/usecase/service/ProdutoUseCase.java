@@ -76,11 +76,22 @@ public class ProdutoUseCase {
             return categoriaGateway.consultarCategoriaPeloId(idProduto);
     }
 
-    public Page<ProdutoResponseDomain> consultarProdutosPelaMarcaOuCategoria(String marca, String categoria, Pageable pageable) {
-        if (StringUtils.isNotBlank(categoria)) {
-            return produtoGateway.consultarProdutosPelaCategoria(categoria, pageable);
-        } else if (StringUtils.isNotBlank(marca)) {
-            return produtoGateway.consultarProdutosPelaMarca(marca, pageable);
+    public Page<ProdutoResponseDomain> consultarProdutosPelaMarcaOuCategoria(ProdutoRequestDomain produtoRequestDomain, Pageable pageable) {
+        Double preco = produtoRequestDomain.getPrecoProduto();
+        if(produtoRequestDomain.getPrecoProduto() == null){
+            preco = 15000.00;
+        }
+        if (StringUtils.isNotBlank(produtoRequestDomain.getNomeProduto())) {
+            return produtoGateway.consultarProdutosPeloNome(produtoRequestDomain.getNomeProduto(), preco, pageable);
+        }
+         else if (StringUtils.isNotBlank(produtoRequestDomain.getMarcaProduto())) {
+            return produtoGateway.consultarProdutosPelaMarca(produtoRequestDomain.getMarcaProduto(), preco, pageable);
+        }
+        else if (!Objects.isNull(produtoRequestDomain.getCategoria()) && StringUtils.isNotBlank(produtoRequestDomain.getCategoria().getNomeCategoria())) {
+            return produtoGateway.consultarProdutosPelaCategoria(produtoRequestDomain.getCategoria().getNomeCategoria(), preco, pageable);
+        }
+        else if (preco != null) {
+            return produtoGateway.consultarProdutosPeloPreco(preco, pageable);
         }
         return consultarProdutos(pageable);
     }

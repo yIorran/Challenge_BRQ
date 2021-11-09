@@ -3,6 +3,7 @@ package challenge.brq.entrypoint.controller;
 import challenge.brq.entrypoint.mapper.request.ProdutoEntryPointMapperRequest;
 import challenge.brq.entrypoint.mapper.response.ProdutoEntryPointMapperResponse;
 import challenge.brq.entrypoint.model.request.ProdutoModelRequest;
+import challenge.brq.entrypoint.model.request.ProdutoModelRequestFiltro;
 import challenge.brq.entrypoint.model.response.ProdutoModelResponse;
 import challenge.brq.usecase.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
@@ -41,14 +42,13 @@ public class ProdutoController {
      * Método responsável por retornar todos os produtos, produtos filtrados pela categoria
      * e produtos filtrados pela marca
      *
-     * @param marca     {String marca}
-     * @param categoria {String categoria}
+     * @param produtoModelRequestFiltro
      */
     @GetMapping
     public ResponseEntity<Page<ProdutoModelResponse>> listarProdutos(Pageable pageable,
-                                                                     @RequestParam(required = false) String marca,
-                                                                     @RequestParam(required = false) String categoria) {
-        Page<ProdutoResponseDomain> produtosModelRetornaMarcaOuCategoria = produtoUseCase.consultarProdutosPelaMarcaOuCategoria(marca, categoria, pageable);
+                                                                     @RequestBody(required = false) ProdutoModelRequestFiltro produtoModelRequestFiltro) {
+        ProdutoRequestDomain produtoRequestDomain = ProdutoEntryPointMapperRequest.converterPesquisaFiltro(produtoModelRequestFiltro);
+        Page<ProdutoResponseDomain> produtosModelRetornaMarcaOuCategoria = produtoUseCase.consultarProdutosPelaMarcaOuCategoria(produtoRequestDomain, pageable);
         if (produtosModelRetornaMarcaOuCategoria.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

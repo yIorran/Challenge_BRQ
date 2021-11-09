@@ -9,6 +9,9 @@ import java.util.Objects;
 public class CategoriaEntryPointMapperRequest {
 
     public static CategoriaRequestDomain converterNome(CategoriaModelRequestNome categoriaModelRequestNome) {
+        if (Objects.isNull(categoriaModelRequestNome)) {
+            return CategoriaRequestDomain.builder().build();
+        }
         return CategoriaRequestDomain.builder().nomeCategoria(categoriaModelRequestNome.getNome()).build();
     }
 

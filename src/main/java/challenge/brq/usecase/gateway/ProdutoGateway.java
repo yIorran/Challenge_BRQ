@@ -17,9 +17,13 @@ public interface ProdutoGateway {
 
     void excluirProdutosPeloId(Integer idProduto);
 
-    Page<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca, Pageable pageable);
+    Page<ProdutoResponseDomain> consultarProdutosPeloNome(String nome, Double preco, Pageable pageable);
 
-    Page<ProdutoResponseDomain> consultarProdutosPelaCategoria(String categoria, Pageable pageable);
+    Page<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca, Double preco,  Pageable pageable);
+
+    Page<ProdutoResponseDomain> consultarProdutosPelaCategoria(String categoria, Double preco, Pageable pageable);
+
+    Page<ProdutoResponseDomain> consultarProdutosPeloPreco(Double preco, Pageable pageable);
 
     ProdutoResponseDomain atualizarProdutosParcial(ProdutoResponseDomain produtoResponseDomain);
 

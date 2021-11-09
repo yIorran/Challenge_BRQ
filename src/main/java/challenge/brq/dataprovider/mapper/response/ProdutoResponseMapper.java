@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ProdutoResponseMapper {
 
@@ -31,6 +32,9 @@ public class ProdutoResponseMapper {
     }
 
     public static ProdutoResponseDomain converterProdutoComTodosAtributos(ProdutoEntity produtoEntity) {
+        if(Objects.isNull(produtoEntity)){
+            return ProdutoResponseDomain.builder().build();
+        }
         return ProdutoResponseDomain.builder()
                 .codigoProduto(produtoEntity.getCodigoProduto())
                 .nomeProduto(produtoEntity.getNomeProduto())
