@@ -27,7 +27,7 @@ public class ProdutoEntryPointMapperRequest {
 
     public static ProdutoRequestDomain converterPesquisaFiltro(ProdutoModelRequestFiltro produtoModelRequestFiltro) {
         if(Objects.isNull(produtoModelRequestFiltro)){
-            return ProdutoRequestDomain.builder().build();
+            return null;
         }
         return ProdutoRequestDomain.builder()
                 .nomeProduto(produtoModelRequestFiltro.getNome())

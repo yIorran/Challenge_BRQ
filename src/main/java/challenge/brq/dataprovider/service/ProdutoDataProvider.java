@@ -65,6 +65,13 @@ public class ProdutoDataProvider implements ProdutoGateway {
     }
 
     @Override
+    public Page<ProdutoResponseDomain> consultaDinamicaProdutos(ProdutoRequestDomain produtoRequestDomain) {
+        ProdutoEntity produtoEntity = ProdutoRequestMapper.converterTodosAtributos(produtoRequestDomain);
+        Page<ProdutoEntity> produtoEntitySalvo = produtoRepository.listarComFiltro(produtoEntity);
+        return ProdutoResponseMapper.converterPaginaComTodosAtributos(produtoEntitySalvo);
+    }
+
+    @Override
     public Page<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca, Pageable pageable) {
         Page<ProdutoEntity> produtoEntityMarca = produtoRepository.pesquisarPorMarcaProdutoParaExclusao(marca, pageable);
         if (produtoEntityMarca.isEmpty()) {

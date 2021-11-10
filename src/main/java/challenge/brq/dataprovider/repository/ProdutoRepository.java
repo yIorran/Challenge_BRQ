@@ -1,6 +1,8 @@
 package challenge.brq.dataprovider.repository;
 
+import challenge.brq.dataprovider.entity.CategoriaEntity;
 import challenge.brq.dataprovider.entity.ProdutoEntity;
+import challenge.brq.entrypoint.model.request.CategoriaModelRequestNome;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,6 +26,6 @@ public interface ProdutoRepository extends JpaRepository<ProdutoEntity, Integer>
     @Query("select p from ProdutoEntity p join p.categoria categoria where categoria.nomeCategoria=:nome")
     Page<ProdutoEntity> pesquisarPorNomeCategoria(@Param("nome") String nome, Pageable pageable);
 
-
+    Page<ProdutoEntity> listarComFiltro(ProdutoEntity produtoEntity);
 
 }

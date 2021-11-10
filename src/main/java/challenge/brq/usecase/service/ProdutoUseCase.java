@@ -1,5 +1,6 @@
 package challenge.brq.usecase.service;
 
+import challenge.brq.entrypoint.model.request.ProdutoModelRequestFiltro;
 import challenge.brq.usecase.exception.categoria.CategoriaNaoExistenteParaAtualizacaoParcialException;
 import challenge.brq.usecase.exception.produto.ProdutoPorIDNaoEncontrado;
 import challenge.brq.usecase.exception.produto.TabelaNutricionalValorDiferenteException;
@@ -76,14 +77,12 @@ public class ProdutoUseCase {
             return categoriaGateway.consultarCategoriaPeloId(idProduto);
     }
 
-    public Page<ProdutoResponseDomain> consultarProdutosPelaMarcaOuCategoria(String marca, String categoria, Pageable pageable) {
-         if (StringUtils.isNotBlank(marca)) {
-            return produtoGateway.consultarProdutosPelaMarca(marca, pageable);
+    public Page<ProdutoResponseDomain> consultarProdutosDeFormaDinamica(ProdutoRequestDomain produtoRequestDomain, Pageable pageable) {
+         if (Objects.isNull(produtoRequestDomain)) {
+             return consultarProdutos(pageable);
         }
-        else if (!Objects.isNull(categoria)) {
-            return produtoGateway.consultarProdutosPelaCategoria(categoria, pageable);
-        }
-        return consultarProdutos(pageable);
+         else
+        return produtoGateway.consultaDinamicaProdutos(produtoRequestDomain);
     }
 
     public ProdutoResponseDomain atualizarProdutosParcial(Integer id, ProdutoRequestDomain produtoRequestDomain) {
