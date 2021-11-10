@@ -46,9 +46,11 @@ public class ProdutoController {
      */
     @GetMapping
     public ResponseEntity<Page<ProdutoModelResponse>> listarProdutos(Pageable pageable,
-                                                                     @RequestBody(required = false) ProdutoModelRequestFiltro produtoModelRequestFiltro) {
-        ProdutoRequestDomain produtoRequestDomain = ProdutoEntryPointMapperRequest.converterPesquisaFiltro(produtoModelRequestFiltro);
-        Page<ProdutoResponseDomain> produtosModelRetornaMarcaOuCategoria = produtoUseCase.consultarProdutosPelaMarcaOuCategoria(produtoRequestDomain, pageable);
+                                                                     @RequestParam(required = false) String marca,
+                                                                     @RequestParam(required = false) String categoria) {
+//        @RequestParam(required = false) ProdutoModelRequestFiltro produtoModelRequestFiltro
+//        ProdutoRequestDomain produtoRequestDomain = ProdutoEntryPointMapperRequest.converterPesquisaFiltro(produtoModelRequestFiltro);
+        Page<ProdutoResponseDomain> produtosModelRetornaMarcaOuCategoria = produtoUseCase.consultarProdutosPelaMarcaOuCategoria(marca, categoria, pageable);
         if (produtosModelRetornaMarcaOuCategoria.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

@@ -65,39 +65,18 @@ public class ProdutoDataProvider implements ProdutoGateway {
     }
 
     @Override
-    public Page<ProdutoResponseDomain> consultarProdutosPeloNome(String nome, Double preco, Pageable pageable) {
-        Page<ProdutoEntity> produtoEntityPorNome = produtoRepository.pesquisarPorNomeProdutoEPrecoMenorQueValor(nome, preco, pageable);
-        if (produtoEntityPorNome.isEmpty()) {
-            consultarProdutosPelaMarca(nome,preco, pageable);
-        }
-        return ProdutoResponseMapper.converterPaginaComTodosAtributos(produtoEntityPorNome);
-    }
-
-    @Override
-    public Page<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca, Double preco, Pageable pageable) {
-        Page<ProdutoEntity> produtoEntityMarca = produtoRepository.pesquisarPorProdutoEPrecoMenorQueValor(marca, preco, pageable);
+    public Page<ProdutoResponseDomain> consultarProdutosPelaMarca(String marca, Pageable pageable) {
+        Page<ProdutoEntity> produtoEntityMarca = produtoRepository.pesquisarPorMarcaProdutoParaExclusao(marca, pageable);
         if (produtoEntityMarca.isEmpty()) {
-            consultarProdutosPelaCategoria(marca, preco, pageable);
+            consultarProdutosPelaCategoria(marca, pageable);
         }
         return ProdutoResponseMapper.converterPaginaComTodosAtributos(produtoEntityMarca);
     }
 
     @Override
-    public Page<ProdutoResponseDomain> consultarProdutosPelaCategoria(String categoria, Double preco, Pageable pageable) {
-        Page<ProdutoEntity> produtoEntityCategoria = produtoRepository.pesquisarPorNomeCategoriaEPrecoMenorQueValor(categoria, preco, pageable);
-        if (produtoEntityCategoria.isEmpty()) {
-            produtoEntityCategoria = produtoRepository.pesquisarPorNomeCategoria(categoria, pageable);
-        }
-        else if (produtoEntityCategoria.isEmpty()){
-            consultarProdutosPeloPreco(preco, pageable);
-        }
+    public Page<ProdutoResponseDomain> consultarProdutosPelaCategoria(String categoria, Pageable pageable) {
+        Page<ProdutoEntity> produtoEntityCategoria = produtoRepository.pesquisarPorNomeCategoria(categoria, pageable);
         return ProdutoResponseMapper.converterPaginaComTodosAtributos(produtoEntityCategoria);
-    }
-
-    @Override
-    public Page<ProdutoResponseDomain> consultarProdutosPeloPreco(Double preco, Pageable pageable) {
-        Page<ProdutoEntity> produtoEntityPreco = produtoRepository.findByPrecoProduto(preco, pageable);
-        return ProdutoResponseMapper.converterPaginaComTodosAtributos(produtoEntityPreco);
     }
 
     @Override
@@ -111,7 +90,7 @@ public class ProdutoDataProvider implements ProdutoGateway {
     public Page<ProdutoResponseDomain> consultarProdutosParaExclusaoDeCategorias(String marcaOuCategoria, Pageable pageable) {
         Page<ProdutoEntity> produtoEntityMarcaOuCategoria = produtoRepository.pesquisarPorMarcaProdutoParaExclusao(marcaOuCategoria, pageable);
         if (produtoEntityMarcaOuCategoria.isEmpty()) {
-            produtoEntityMarcaOuCategoria = produtoRepository.pesquisarPorNomeCategoriaParaExclusao(marcaOuCategoria, pageable);
+            produtoEntityMarcaOuCategoria = produtoRepository.pesquisarPorNomeCategoria(marcaOuCategoria, pageable);
         }
         return ProdutoResponseMapper.converterPaginaComTodosAtributos(produtoEntityMarcaOuCategoria);
     }
