@@ -1,8 +1,6 @@
 package challenge.brq.usecase.service;
 
-import challenge.brq.usecase.exception.categoria.CategoriaDuplicadaException;
 import challenge.brq.usecase.exception.categoria.CategoriaEmUsoException;
-import challenge.brq.usecase.exception.categoria.CategoriaNaoEncontradaException;
 import challenge.brq.usecase.gateway.CategoriaGateway;
 import challenge.brq.usecase.gateway.ProdutoGateway;
 import challenge.brq.usecase.model.request.CategoriaRequestDomain;

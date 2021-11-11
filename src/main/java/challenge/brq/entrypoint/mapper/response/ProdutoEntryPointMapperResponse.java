@@ -19,10 +19,6 @@ public class ProdutoEntryPointMapperResponse {
         return produtosModelResponse;
     }
 
-    public static Page<ProdutoModelResponse> converterPaginaComTodosOsAtributos(final Page<ProdutoResponseDomain> produtoResponseDomain) {
-        return produtoResponseDomain.map(ProdutoEntryPointMapperResponse::converterProduto);
-    }
-
     public static Page<ProdutoModelResponse> converterPaginaPadrao(final Page<ProdutoResponseDomain> produtoResponseDomain) {
         return produtoResponseDomain.map(ProdutoEntryPointMapperResponse::converterProdutoPadrao);
     }

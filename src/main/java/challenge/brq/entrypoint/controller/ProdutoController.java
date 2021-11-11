@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 /**
@@ -114,6 +115,30 @@ public class ProdutoController {
         ProdutoResponseDomain produtoResponseDomain = produtoUseCase.atualizarProdutosParcial(idProduto, produtoRequestDomain);
         ProdutoModelResponse produtoModelResponse = ProdutoEntryPointMapperResponse.converterParaAtualizacao(idProduto, produtoResponseDomain);
         return new ResponseEntity<>(produtoModelResponse, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{idProduto}/ativo")
+    public ResponseEntity<ProdutoModelResponse> ativarProdutosEmUnico(@PathVariable Integer idProduto) {
+        produtoUseCase.ativarProdutoUnico(idProduto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/{idProduto}/ativo")
+    public ResponseEntity<Page<ProdutoModelResponse>> desativarProdutosEmMassa(@PathVariable Integer idProduto) {
+        produtoUseCase.destivarProdutoUnico(idProduto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PatchMapping("/ativacoes")
+    public ResponseEntity<ProdutoModelResponse> ativarProdutosEmUnico(@RequestBody List<Integer> idProduto) {
+        produtoUseCase.ativarProdutosEmMassa(idProduto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/ativacoes")
+    public ResponseEntity<ProdutoModelResponse> desativarProdutosEmMassa(@RequestBody List<Integer> idProduto) {
+        produtoUseCase.desativarProdutosEmMassa(idProduto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
 

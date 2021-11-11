@@ -9,10 +9,12 @@ import challenge.brq.usecase.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -35,6 +37,28 @@ public class ProdutoDataProvider implements ProdutoGateway {
             return null;
         }
         return ProdutoResponseMapper.converterProdutoComTodosAtributosExpand(produtoEntity.get(), expand);
+    }
+
+    @Override
+    public ProdutoResponseDomain ativarProdutoUnico(Integer idProduto) {
+        Optional<ProdutoEntity> produtoEntity = produtoRepository.findById(idProduto);
+        if (produtoEntity.isEmpty()) {
+            return null;
+        }
+        ProdutoEntity produtoSalvo =  ProdutoRequestMapper.converterProdutoEmtityComTodosAtributosAtivacao(produtoEntity.get());
+        produtoRepository.save(produtoSalvo);
+       return ProdutoResponseMapper.converterProdutoComTodosAtributosAtivacaoTrue(produtoSalvo);
+    }
+
+    @Override
+    public ProdutoResponseDomain desativarProdutoUnico(Integer idProduto) {
+        Optional<ProdutoEntity> produtoEntity = produtoRepository.findById(idProduto);
+        if (produtoEntity.isEmpty()) {
+            return null;
+        }
+        ProdutoEntity produtoSalvo =  ProdutoRequestMapper.converterProdutoEmtityComTodosAtributosDesativacao(produtoEntity.get());
+        produtoRepository.save(produtoSalvo);
+        return ProdutoResponseMapper.converterProdutoComTodosAtributosAtivacaoFalse(produtoSalvo);
     }
 
     @Override
@@ -106,6 +130,24 @@ public class ProdutoDataProvider implements ProdutoGateway {
     public Page<ProdutoResponseDomain> consultarProdutoPorStatus(Pageable pageable) {
         Page<ProdutoEntity> produtoEntity = produtoRepository.findByProdutoOfertadoTrue(pageable);
         return ProdutoResponseMapper.converterPaginaPadrao(produtoEntity);
+    }
+
+    @Override
+    public Page<ProdutoResponseDomain> consultarProdutosParaAtivacaoEmMassa(List<Integer> ids) {
+        List<ProdutoEntity> produtoEntities = produtoRepository.findAllById(ids);
+        Page<ProdutoEntity> produtoEntitiePage = new PageImpl<>(produtoEntities);
+        Page<ProdutoEntity> produtoEntityPageSalvo = ProdutoRequestMapper.converterPaginaComTodosAtributosEntityAtivacao(produtoEntitiePage);
+        produtoRepository.saveAll(produtoEntityPageSalvo);
+        return ProdutoResponseMapper.converterPaginaComTodosAtributosAtivacao(produtoEntitiePage);
+    }
+
+    @Override
+    public Page<ProdutoResponseDomain> consultarProdutosParaDesativacaoEmMassa(List<Integer> ids) {
+        List<ProdutoEntity> produtoEntities = produtoRepository.findAllById(ids);
+        Page<ProdutoEntity> produtoEntitiePage = new PageImpl<>(produtoEntities);
+        Page<ProdutoEntity> produtoEntityPageSalvo = ProdutoRequestMapper.converterPaginaComTodosAtributosEntityDesativacao(produtoEntitiePage);
+        produtoRepository.saveAll(produtoEntityPageSalvo);
+        return ProdutoResponseMapper.converterPaginaComTodosAtributosDesativacao(produtoEntitiePage);
     }
 
 }

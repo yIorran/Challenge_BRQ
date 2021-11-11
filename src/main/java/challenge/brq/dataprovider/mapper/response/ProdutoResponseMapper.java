@@ -31,6 +31,7 @@ public class ProdutoResponseMapper {
         return produtoEntity.map(ProdutoResponseMapper::converterProdutoPadrao);
     }
 
+
     public static ProdutoResponseDomain converterProdutoComTodosAtributos(ProdutoEntity produtoEntity) {
         if(Objects.isNull(produtoEntity)){
             return ProdutoResponseDomain.builder().build();
@@ -112,6 +113,46 @@ public class ProdutoResponseMapper {
                 .categoria(CategoriaResponseMapper.converterCategoria(produtoEntity.getCategoria()))
                 .tabelaNutricionalResponseDomain(TabelaNutricionalResponseMapper.converter(produtoEntity.getTabelaNutricionalEntity()))
                 .build();
+    }
+
+    public static ProdutoResponseDomain converterProdutoComTodosAtributosAtivacaoFalse(ProdutoEntity produtoEntity) {
+        return ProdutoResponseDomain.builder()
+                .codigoProduto(produtoEntity.getCodigoProduto())
+                .nomeProduto(produtoEntity.getNomeProduto())
+                .descricaoProduto(produtoEntity.getDescricaoProduto())
+                .marcaProduto(produtoEntity.getMarcaProduto())
+                .quantidadeProduto(produtoEntity.getQuantidadeProduto())
+                .precoProduto(produtoEntity.getPrecoProduto())
+                .produtoAtivo(false)
+                .produtoOfertado(produtoEntity.getProdutoOfertado())
+                .porcentagem(produtoEntity.getPorcentagemoferta())
+                .categoria(CategoriaResponseMapper.converterCategoria(produtoEntity.getCategoria()))
+                .tabelaNutricionalResponseDomain(TabelaNutricionalResponseMapper.converter(produtoEntity.getTabelaNutricionalEntity()))
+                .build();
+    }
+
+    public static ProdutoResponseDomain converterProdutoComTodosAtributosAtivacaoTrue(ProdutoEntity produtoEntity) {
+        return ProdutoResponseDomain.builder()
+                .codigoProduto(produtoEntity.getCodigoProduto())
+                .nomeProduto(produtoEntity.getNomeProduto())
+                .descricaoProduto(produtoEntity.getDescricaoProduto())
+                .marcaProduto(produtoEntity.getMarcaProduto())
+                .quantidadeProduto(produtoEntity.getQuantidadeProduto())
+                .precoProduto(produtoEntity.getPrecoProduto())
+                .produtoAtivo(true)
+                .produtoOfertado(produtoEntity.getProdutoOfertado())
+                .porcentagem(produtoEntity.getPorcentagemoferta())
+                .categoria(CategoriaResponseMapper.converterCategoria(produtoEntity.getCategoria()))
+                .tabelaNutricionalResponseDomain(TabelaNutricionalResponseMapper.converter(produtoEntity.getTabelaNutricionalEntity()))
+                .build();
+    }
+
+    public static Page<ProdutoResponseDomain> converterPaginaComTodosAtributosAtivacao(Page<ProdutoEntity> produtoEntity) {
+        return produtoEntity.map(ProdutoResponseMapper::converterProdutoComTodosAtributosAtivacaoTrue);
+    }
+
+    public static Page<ProdutoResponseDomain> converterPaginaComTodosAtributosDesativacao(Page<ProdutoEntity> produtoEntity) {
+        return produtoEntity.map(ProdutoResponseMapper::converterProdutoComTodosAtributosAtivacaoFalse);
     }
 
 }

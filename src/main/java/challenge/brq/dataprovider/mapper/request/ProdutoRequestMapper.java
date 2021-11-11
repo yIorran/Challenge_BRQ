@@ -1,24 +1,49 @@
 package challenge.brq.dataprovider.mapper.request;
 
 import challenge.brq.dataprovider.entity.ProdutoEntity;
-import challenge.brq.entrypoint.mapper.response.ProdutoEntryPointMapperResponse;
-import challenge.brq.entrypoint.model.response.ProdutoModelResponse;
 import challenge.brq.usecase.model.request.ProdutoRequestDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import org.springframework.data.domain.Page;
 
 public class ProdutoRequestMapper {
 
-    public static ProdutoEntity converterPagina(ProdutoRequestDomain produtoRequestDomain) {
+    public static Page<ProdutoEntity> converterPaginaComTodosAtributosEntityDesativacao(Page<ProdutoEntity> produtoEntity) {
+        return produtoEntity.map(ProdutoRequestMapper::converterProdutoEmtityComTodosAtributosDesativacao);
+    }
+
+    public static Page<ProdutoEntity> converterPaginaComTodosAtributosEntityAtivacao(Page<ProdutoEntity> produtoEntity) {
+        return produtoEntity.map(ProdutoRequestMapper::converterProdutoEmtityComTodosAtributosAtivacao);
+    }
+
+    public static ProdutoEntity converterProdutoEmtityComTodosAtributosAtivacao(ProdutoEntity produtoEntity) {
         return ProdutoEntity.builder()
-                .nomeProduto(produtoRequestDomain.getNomeProduto())
-                .descricaoProduto(produtoRequestDomain.getDescricaoProduto())
-                .marcaProduto(produtoRequestDomain.getMarcaProduto())
-                .quantidadeProduto(produtoRequestDomain.getQuantidadeProduto())
-                .precoProduto(produtoRequestDomain.getPrecoProduto())
+                .codigoProduto(produtoEntity.getCodigoProduto())
+                .nomeProduto(produtoEntity.getNomeProduto())
+                .descricaoProduto(produtoEntity.getDescricaoProduto())
+                .marcaProduto(produtoEntity.getMarcaProduto())
+                .quantidadeProduto(produtoEntity.getQuantidadeProduto())
+                .precoProduto(produtoEntity.getPrecoProduto())
                 .produtoAtivo(true)
-                .produtoOfertado(false)
-                .porcentagemoferta(0)
+                .produtoOfertado(produtoEntity.getProdutoOfertado())
+                .porcentagemoferta(produtoEntity.getPorcentagemoferta())
+                .categoria(produtoEntity.getCategoria())
+                .tabelaNutricionalEntity(produtoEntity.getTabelaNutricionalEntity())
+                .build();
+    }
+
+    public static ProdutoEntity converterProdutoEmtityComTodosAtributosDesativacao(ProdutoEntity produtoEntity) {
+        return ProdutoEntity.builder()
+                .codigoProduto(produtoEntity.getCodigoProduto())
+                .nomeProduto(produtoEntity.getNomeProduto())
+                .descricaoProduto(produtoEntity.getDescricaoProduto())
+                .marcaProduto(produtoEntity.getMarcaProduto())
+                .quantidadeProduto(produtoEntity.getQuantidadeProduto())
+                .precoProduto(produtoEntity.getPrecoProduto())
+                .produtoAtivo(false)
+                .produtoOfertado(produtoEntity.getProdutoOfertado())
+                .porcentagemoferta(produtoEntity.getPorcentagemoferta())
+                .categoria(produtoEntity.getCategoria())
+                .tabelaNutricionalEntity(produtoEntity.getTabelaNutricionalEntity())
                 .build();
     }
 

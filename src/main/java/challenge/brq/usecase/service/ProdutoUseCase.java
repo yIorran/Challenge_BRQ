@@ -1,6 +1,5 @@
 package challenge.brq.usecase.service;
 
-import challenge.brq.entrypoint.model.request.ProdutoModelRequestFiltro;
 import challenge.brq.usecase.exception.categoria.CategoriaNaoExistenteParaAtualizacaoParcialException;
 import challenge.brq.usecase.exception.produto.ProdutoPorIDNaoEncontrado;
 import challenge.brq.usecase.exception.produto.TabelaNutricionalValorDiferenteException;
@@ -11,11 +10,11 @@ import challenge.brq.usecase.model.response.CategoriaResponseDomain;
 import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import challenge.brq.usecase.utils.Utils;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -41,6 +40,30 @@ public class ProdutoUseCase {
         Utils.verificarSePrecoMenorOuIgualAZero(produtoRequestDomain.getPrecoProduto());
         return produtoGateway.adicionaProdutos(produtoRequestDomain);
     }
+
+    public ProdutoResponseDomain ativarProdutoUnico(Integer idProduto) {
+        if (produtoGateway.consultarProdutosPeloId(idProduto) == null) {
+            throw new ProdutoPorIDNaoEncontrado("Id não encontrado em nossa base: " + idProduto);
+        }
+        else
+        return produtoGateway.ativarProdutoUnico(idProduto);
+    }
+
+    public ProdutoResponseDomain destivarProdutoUnico(Integer idProduto) {
+        if (produtoGateway.consultarProdutosPeloId(idProduto) == null) {
+            throw new ProdutoPorIDNaoEncontrado("Id não encontrado em nossa base: " + idProduto);
+        }
+        else
+            return produtoGateway.desativarProdutoUnico(idProduto);
+    }
+
+    public Page<ProdutoResponseDomain> ativarProdutosEmMassa(List<Integer> produtoRequestDomain) {
+        return produtoGateway.consultarProdutosParaAtivacaoEmMassa(produtoRequestDomain);
+    }
+    public Page<ProdutoResponseDomain> desativarProdutosEmMassa(List<Integer> produtoRequestDomain) {
+        return produtoGateway.consultarProdutosParaDesativacaoEmMassa(produtoRequestDomain);
+    }
+
 
     public void excluiProdutoPeloId(Integer idCategoria) {
         consultarProdutosPeloId(idCategoria);
