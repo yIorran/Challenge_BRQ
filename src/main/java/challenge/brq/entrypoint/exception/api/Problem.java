@@ -1,4 +1,4 @@
-package challenge.brq.entrypoint.exception.entities;
+package challenge.brq.entrypoint.exception.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;

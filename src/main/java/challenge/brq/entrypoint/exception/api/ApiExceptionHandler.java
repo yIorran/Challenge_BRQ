@@ -1,4 +1,4 @@
-package challenge.brq.entrypoint.exception.entities;
+package challenge.brq.entrypoint.exception.api;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
