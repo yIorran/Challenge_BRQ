@@ -72,4 +72,6 @@ public class CategoriaExceptionHandlerTratamentos extends ResponseEntityExceptio
         return super.handleMethodArgumentNotValid(ex, headers, status, request);
     }
 
+
+
 }

@@ -16,7 +16,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class CategoriaModelRequestNome {
 
-    @NotBlank(message = "Nome não pode ser nulo ou estar em branco.")
+
     private String nome;
 
 }

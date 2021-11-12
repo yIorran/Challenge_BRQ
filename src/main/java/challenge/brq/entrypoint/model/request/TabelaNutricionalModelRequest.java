@@ -13,17 +13,17 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class TabelaNutricionalModelRequest {
 
-    @NotBlank
+    @NotBlank(message = "Valor não pode ser nulo ou vazio")
     private String valorEnergetico;
-    @NotBlank
+    @NotBlank(message = "Valor não pode ser nulo ou vazio")
     private String gorduraSaturada;
-    @NotBlank
+    @NotBlank(message = "Valor não pode ser nulo ou vazio")
     private String sodio;
-    @NotBlank
+    @NotBlank(message = "Valor não pode ser nulo ou vazio")
     private String acucar;
-    @NotBlank
+    @NotBlank(message = "Valor não pode ser nulo ou vazio")
     private String proteinas;
-    @NotBlank
+    @NotBlank(message = "Valor não pode ser nulo ou vazio")
     private String fibras;
 
 }

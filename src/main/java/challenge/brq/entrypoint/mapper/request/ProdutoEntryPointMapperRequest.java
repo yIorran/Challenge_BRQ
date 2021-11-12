@@ -24,7 +24,6 @@ public class ProdutoEntryPointMapperRequest {
                 .build();
     }
 
-
     public static ProdutoRequestDomain converterPesquisaFiltro(ProdutoModelRequestFiltro produtoModelRequestFiltro) {
         if(Objects.isNull(produtoModelRequestFiltro)){
             return null;
@@ -36,7 +35,6 @@ public class ProdutoEntryPointMapperRequest {
                 .categoria(CategoriaEntryPointMapperRequest.converterNome(produtoModelRequestFiltro.getCategoria()))
                 .build();
     }
-
 
     public static ProdutoRequestDomain converterParaAtualizacaoParcial(ProdutoModelRequest produtoModelRequest) {
         return ProdutoRequestDomain.builder()

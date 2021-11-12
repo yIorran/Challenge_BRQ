@@ -37,7 +37,6 @@ public class ProdutoModelRequest {
     @NotNull(message = "Valor não pode ser nulo ou vazio")
     @Valid
     private CategoriaModelRequestID categoria;
-
     @Valid
     private TabelaNutricionalModelRequest tabelaNutricional;
 

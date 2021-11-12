@@ -1,4 +1,4 @@
-package challenge.brq.entrypoint.exception.api;
+package challenge.brq.entrypoint.exception.entities;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
 
         ProblemType problemType = ProblemType.DADOS_INVALIDOS;
-        String detail = "Um ou mais campos estão inválidos, faça o preenchimento correto e tente novamente.";
+        String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
 
         BindingResult bindingResult = ex.getBindingResult();
 
@@ -32,13 +32,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .collect(Collectors.toList());
 
         Problem problem = createProblemBuilder(status, problemType, detail)
-                .mensagem(detail)
+                .problema(detail)
                 .campos(problemFields)
                 .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
-
     private Problem.ProblemBuilder createProblemBuilder(HttpStatus status,
                                                         ProblemType problemType, String detail) {
         return Problem.builder()

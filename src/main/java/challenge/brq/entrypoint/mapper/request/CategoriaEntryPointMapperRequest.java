@@ -25,7 +25,7 @@ public class CategoriaEntryPointMapperRequest {
     }
 
     public static CategoriaRequestDomain converter(CategoriaModelRequestNome categoriaModelRequestNome) {
-        if (categoriaModelRequestNome == null) {
+        if (Objects.isNull(categoriaModelRequestNome)) {
             return CategoriaRequestDomain.builder().build();
         }
         return CategoriaRequestDomain.builder()

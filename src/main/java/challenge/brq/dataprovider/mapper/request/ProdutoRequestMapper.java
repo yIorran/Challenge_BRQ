@@ -72,7 +72,7 @@ public class ProdutoRequestMapper {
                 .produtoAtivo(produtoRequestDomain.getProdutoAtivo())
                 .produtoOfertado(produtoRequestDomain.getProdutoOfertado())
                 .porcentagemoferta(produtoRequestDomain.getPorcentagem())
-                .categoria(CategoriaRequestMapper.converterId(produtoRequestDomain.getCategoria()))
+                .categoria(CategoriaRequestMapper.converter(produtoRequestDomain.getCategoria()))
                 .tabelaNutricionalEntity(TabelaNutricionalRequestMapper.converter(produtoRequestDomain.getTabelaNutricionalRequestDomain()))
                 .build();
     }

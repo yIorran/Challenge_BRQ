@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.*;
 
 /**
  * Classe responsavel por conter os atributos de entryPoint
@@ -19,14 +17,13 @@ import javax.validation.constraints.PositiveOrZero;
 @NoArgsConstructor
 public class ProdutoModelRequestFiltro {
 
-    @NotBlank(message = "Valor não pode ser nulo ou vazio")
+
     private String nome;
-    @NotBlank(message = "Valor não pode ser nulo ou vazio")
+
     private String marca;
-    @PositiveOrZero
+
     private Double preco;
-    @NotNull(message = "Valor não pode ser nulo ou vazio")
-    @Valid
+
     private CategoriaModelRequestNome categoria;
 
 
