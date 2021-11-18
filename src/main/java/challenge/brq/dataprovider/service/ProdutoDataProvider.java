@@ -67,7 +67,7 @@ public class ProdutoDataProvider implements ProdutoGateway {
         if (produtoEntity.isEmpty()) {
             return null;
         }
-        return ProdutoResponseMapper.converterProdutoComBuscaPorIDSemExpand(produtoEntity.get());
+        return ProdutoResponseMapper.converterProdutoParaAtualizacao(produtoEntity.get());
     }
 
     @Transactional
@@ -149,5 +149,4 @@ public class ProdutoDataProvider implements ProdutoGateway {
         produtoRepository.saveAll(produtoEntityPageSalvo);
         return ProdutoResponseMapper.converterPaginaComTodosAtributosDesativacao(produtoEntitiePage);
     }
-
 }

@@ -28,6 +28,12 @@ public class Utils {
         }
     }
 
+    public static void verificarSeIdExiste(ProdutoResponseDomain produtoResponseDomain){
+        if (produtoResponseDomain == null) {
+            throw new CategoriaDuplicadaException("ID não encontrado na nossa base");
+        }
+    }
+
     public static void verificarSePrecoMenorOuIgualAZero(Double preco) {
         if(preco <= 0) {
             throw new PrecoMenorOuIgualAZeroException("Preço não pode ser menor ou igual a zero");

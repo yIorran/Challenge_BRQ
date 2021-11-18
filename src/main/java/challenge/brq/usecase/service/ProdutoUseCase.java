@@ -1,5 +1,7 @@
 package challenge.brq.usecase.service;
 
+import challenge.brq.dataprovider.entity.ProdutoEntity;
+import challenge.brq.dataprovider.mapper.response.ProdutoResponseMapper;
 import challenge.brq.usecase.exception.categoria.CategoriaNaoExistenteParaAtualizacaoParcialException;
 import challenge.brq.usecase.exception.produto.ProdutoPorIDNaoEncontrado;
 import challenge.brq.usecase.exception.produto.TabelaNutricionalValorDiferenteException;
@@ -11,6 +13,7 @@ import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import challenge.brq.usecase.utils.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -42,19 +45,13 @@ public class ProdutoUseCase {
     }
 
     public ProdutoResponseDomain ativarProdutoUnico(Integer idProduto) {
-        if (produtoGateway.consultarProdutosPeloId(idProduto) == null) {
-            throw new ProdutoPorIDNaoEncontrado("Id não encontrado em nossa base: " + idProduto);
-        }
-        else
+        Utils.verificarSeIdExiste(produtoGateway.consultarProdutosPeloId(idProduto));
         return produtoGateway.ativarProdutoUnico(idProduto);
     }
 
     public ProdutoResponseDomain destivarProdutoUnico(Integer idProduto) {
-        if (produtoGateway.consultarProdutosPeloId(idProduto) == null) {
-            throw new ProdutoPorIDNaoEncontrado("Id não encontrado em nossa base: " + idProduto);
-        }
-        else
-            return produtoGateway.desativarProdutoUnico(idProduto);
+        Utils.verificarSeIdExiste(produtoGateway.consultarProdutosPeloId(idProduto));
+        return produtoGateway.desativarProdutoUnico(idProduto);
     }
 
     public Page<ProdutoResponseDomain> ativarProdutosEmMassa(List<Integer> produtoRequestDomain) {
@@ -64,22 +61,19 @@ public class ProdutoUseCase {
         return produtoGateway.consultarProdutosParaDesativacaoEmMassa(produtoRequestDomain);
     }
 
-
     public void excluiProdutoPeloId(Integer idCategoria) {
         consultarProdutosPeloId(idCategoria);
         produtoGateway.excluirProdutosPeloId(idCategoria);
     }
 
     public ProdutoResponseDomain consultarProdutosPeloId(Integer idProduto) {
-        if (produtoGateway.consultarProdutosPeloId(idProduto) == null) {
-            throw new ProdutoPorIDNaoEncontrado("Id não encontrado em nossa base: " + idProduto);
-        } else
-            return produtoGateway.consultarProdutosPeloId(idProduto);
+        Utils.verificarSeIdExiste(produtoGateway.consultarProdutosPeloId(idProduto));
+        return produtoGateway.consultarProdutosPeloId(idProduto);
     }
 
     public ProdutoResponseDomain consultarProdutosPeloIdExpandirTabelaNutri(Integer idProduto, String expand) {
         if(expand == null){
-            return produtoGateway.consultarProdutosPeloId(idProduto);
+            return produtoGateway.consultarProdutosPeloIdExpandirTabelaNutri(idProduto, expand);
         }
         if(!Objects.equals(expand, "tabela_nutricional")){
             throw new TabelaNutricionalValorDiferenteException("Valor não reconhecido: " + expand + " valor disponível para filtro: tabela_nutricional");

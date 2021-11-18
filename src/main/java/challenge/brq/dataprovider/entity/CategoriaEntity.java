@@ -14,7 +14,7 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "TB_CATEGORIA_PROD")
+@Table(name = "TB_CATEGORIA")
 @Entity
 public class CategoriaEntity {
 
