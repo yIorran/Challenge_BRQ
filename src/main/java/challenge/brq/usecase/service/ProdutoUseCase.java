@@ -1,7 +1,5 @@
 package challenge.brq.usecase.service;
 
-import challenge.brq.dataprovider.entity.ProdutoEntity;
-import challenge.brq.dataprovider.mapper.response.ProdutoResponseMapper;
 import challenge.brq.usecase.exception.categoria.CategoriaNaoExistenteParaAtualizacaoParcialException;
 import challenge.brq.usecase.exception.produto.ProdutoPorIDNaoEncontrado;
 import challenge.brq.usecase.exception.produto.TabelaNutricionalValorDiferenteException;
@@ -13,7 +11,6 @@ import challenge.brq.usecase.model.response.ProdutoResponseDomain;
 import challenge.brq.usecase.utils.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 

@@ -20,21 +20,21 @@ import javax.validation.constraints.PositiveOrZero;
 public class ProdutoModelRequest {
 
     private Integer idProduto;
-    @NotBlank(message = "Valor não pode ser nulo ou vazio")
+    @NotBlank
     private String nome;
-    @NotBlank(message = "Valor não pode ser nulo ou vazio")
+    @NotBlank
     private String descricao;
-    @NotBlank(message = "Valor não pode ser nulo ou vazio")
+    @NotBlank
     private String marca;
-    @NotNull(message = "Valor não pode ser nulo ou vazio")
+    @NotNull
     private Integer quantidade;
-    @NotNull(message = "Valor não pode ser nulo ou vazio")
+    @NotNull
     @PositiveOrZero
     private Double preco;
     private Boolean ativo;
     private Boolean ofertado;
     private Integer porcentagem;
-    @NotNull(message = "Valor não pode ser nulo ou vazio")
+    @NotNull
     @Valid
     private CategoriaModelRequestID categoria;
     @Valid
