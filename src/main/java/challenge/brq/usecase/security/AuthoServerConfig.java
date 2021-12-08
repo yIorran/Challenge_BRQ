@@ -32,13 +32,6 @@ public class AuthoServerConfig extends AuthorizationServerConfigurerAdapter {
                 .authorizedGrantTypes("password", "refresh_token")
                 .scopes("write", "read")
                 .accessTokenValiditySeconds(60 * 60 * 2);
-
-//                .and()
-//                .withClient("abc")
-//                .secret(passwordEncoder.encode("123"))
-//                .authorizedGrantTypes("authorization_code")
-//                .scopes("write", "read")
-//                .redirectUris("http://localhost:8079/produtos");
     }
 
     @Override
