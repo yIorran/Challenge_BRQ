@@ -21,6 +21,7 @@ public class ProdutoRequestMapperTest {
             .idCategoria(1)
             .build();
     private final TabelaNutricionalRequestDomain tabelaNutricionalRequestDomain = TabelaNutricionalRequestDomain.builder()
+            .tabelaNutricional("1")
             .gorduraSaturada("2")
             .valorEnergetico("3")
             .acucar("4")
@@ -29,7 +30,7 @@ public class ProdutoRequestMapperTest {
             .sodio("7")
             .build();
     @Test
-    public void testeConverterProdutoRequestSucessoComTodosAtributos(){
+    public void testeConverterProdutoRequestSucesso(){
         //cenario
         ProdutoRequestDomain produtoRequestDomain = ProdutoRequestDomain.builder()
                 .nomeProduto("Arroz")
@@ -55,6 +56,7 @@ public class ProdutoRequestMapperTest {
             assertEquals(true ,produto.getProdutoAtivo());
             assertEquals(false ,produto.getProdutoOfertado());
             assertEquals(0 ,produto.getPorcentagemoferta());
+            assertEquals("1", produto.getTabelaNutricionalEntity().getTabelaNutricional());
             assertEquals("2", produto.getTabelaNutricionalEntity().getGorduraSaturada());
             assertEquals("3", produto.getTabelaNutricionalEntity().getValorEnergetico());
             assertEquals("4", produto.getTabelaNutricionalEntity().getAcucar());
@@ -70,6 +72,7 @@ public class ProdutoRequestMapperTest {
             .idCategoria(1)
             .build();
     private final TabelaNutricionalResponseDomain tabelaNutricionalResponseDomain = TabelaNutricionalResponseDomain.builder()
+            .tabelaNutricional("1")
             .gorduraSaturada("2")
             .valorEnergetico("3")
             .acucar("4")
@@ -105,6 +108,7 @@ public class ProdutoRequestMapperTest {
             assertEquals(true ,produto.getProdutoAtivo());
             assertEquals(false ,produto.getProdutoOfertado());
             assertEquals(0 ,produto.getPorcentagemoferta());
+            assertEquals("1", produto.getTabelaNutricionalEntity().getTabelaNutricional());
             assertEquals("2", produto.getTabelaNutricionalEntity().getGorduraSaturada());
             assertEquals("3", produto.getTabelaNutricionalEntity().getValorEnergetico());
             assertEquals("4", produto.getTabelaNutricionalEntity().getAcucar());
